@@ -30,14 +30,14 @@ public class World{
     public void setPanjang(int panjang){
         this.panjang=panjang;
     }    
-    public int setLebar(int lebar){
+    public void setLebar(int lebar){
         this.lebar=lebar;
     }
-    public int setHari(int hari){
+    public void setHari(int hari){
         this.hari=hari;
     }
 
-    public int setWaktu(int waktu){
+    public void setWaktu(int waktu){
         this.waktu=waktu;
     }
 
