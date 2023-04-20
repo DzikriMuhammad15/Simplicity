@@ -20,7 +20,7 @@ public class Rumah {
         return this.lokasi;
     }
 
-    public ArrayList<Ruangan> getArrayOfRuangan()
+    public arrayList<Ruangan> getArrayOfRuangan
     {
         return this.arrOfRuangan;
     }
@@ -35,4 +35,20 @@ public class Rumah {
         // nanti threadnya ditambah di upgradeRumah trus di akhir threadnya panggil
         // addRuangan ini
     }
+
+    // Zik
+    // Rumah dikasih method getRuangan gak?
+    // Tapi parameternya string nama ruangan
+    // Returnya null atau tipe Ruangan
+
+    public Ruangan getRuangan(String nama) {
+        for (Ruangan r : arrOfRuangan) {
+            String namaRuangan = r.getNamaRuangan();
+            if (namaRuangan.equals(nama)) {
+                return r;
+            }
+        }
+        return null;
+    }
+
 }
