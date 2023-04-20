@@ -31,5 +31,15 @@ public class Sim {
 
     // Menginisiasi rumah
     Rumah rumah = new Rumah(new Point(0,0));
-}
+    }
+
+
+    public void changePekerjaan(Pekerjaan kerjaBaru){
+        this.pekerjaan = kerjaBaru;
+    }
+
+    
+    public void gotToBarang(Barang barang){
+
+    }
 }
