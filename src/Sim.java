@@ -8,14 +8,16 @@ public class Sim {
     private Kesejahteraan kesejahteraan;
     private String status;
     private Posisi posisi;
-}
 
-public Sim(String namaLengkap){
+    public Sim(String namaLengkap){
+    // Menginisiasi kesejahteraan dan uang
     Kesejahteraan kesejahteraan = new Kesejahteraan();
     kesejahteraan.setKesehatan(80);
     kesejahteraan.setKekenyangan(80);
     kesejahteraan.setMood(80);
     this.uang = 100;
+
+    // Menginisiasi pekerjaan secara random
     Pekerjaan[] daftarPekerjaan = {
         new Pekerjaan("Badut Sulap", 15),
         new Pekerjaan("Koki", 30),
@@ -26,4 +28,8 @@ public Sim(String namaLengkap){
     Random random = new Random();
     int randomIndex = random.nextInt(daftarPekerjaan.length);
     changePekerjaan(daftarPekerjaan[randomIndex]);
+
+    // Menginisiasi rumah
+    Rumah rumah = new Rumah(new Point(0,0));
+}
 }
