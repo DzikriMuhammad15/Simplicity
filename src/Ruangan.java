@@ -3,7 +3,7 @@ import java.util.*;
 public class Ruangan {
     // atribut
     private String namaRuangan;
-    private ArrayList<Barang> barangInRuangan = new ArrayList<>();
+    private ArrayList<Barang> barangInRuangan = new ArrayList<Barang>();
     private String[] daftarBarangFix = { "kasur single", "kasur queen size", "kasur king size", "toilet", "kompor gas",
             "kompor listrik", "meja dan kursi", "jam", "televisi", "laptop" };
     private int[][] denahRuangan = new int[6][6];
@@ -87,7 +87,7 @@ public class Ruangan {
 
             // cek apakah tempat kosong
 
-            if (x + ukuranHorizontalBarang < 6 && y + ukuranVertikalBarang < 6) {
+            if (x + ukuranHorizontalBarang <= 6 && y + ukuranVertikalBarang <= 6) {
                 int i;
                 int j;
                 boolean valid = true;
@@ -124,6 +124,18 @@ public class Ruangan {
             }
         }
 
+    }
+
+    public void display() {
+        int i;
+        int j;
+
+        for (i = 0; i < 6; i++) {
+            for (j = 0; j < 6; j++) {
+                System.out.print(denahRuangan[i][j] + "\t");
+            }
+            System.out.println("");
+        }
     }
 
     public void rotate() {

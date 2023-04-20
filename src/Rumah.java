@@ -3,7 +3,7 @@ import java.util.*;
 public class Rumah {
     // atribut
     private Point lokasi;
-    private ArrayList<Ruangan> arrOfRuangan = new ArrayList<>();
+    private ArrayList<Ruangan> arrOfRuangan = new ArrayList<Ruangan>();
 
     // konstruktor
     public Rumah(Point lokasi) {
@@ -20,8 +20,7 @@ public class Rumah {
         return this.lokasi;
     }
 
-    public arrayList<Ruangan> getArrayOfRuangan
-    {
+    public ArrayList<Ruangan> getArrayOfRuangan() {
         return this.arrOfRuangan;
     }
 
@@ -35,11 +34,6 @@ public class Rumah {
         // nanti threadnya ditambah di upgradeRumah trus di akhir threadnya panggil
         // addRuangan ini
     }
-
-    // Zik
-    // Rumah dikasih method getRuangan gak?
-    // Tapi parameternya string nama ruangan
-    // Returnya null atau tipe Ruangan
 
     public Ruangan getRuangan(String nama) {
         for (Ruangan r : arrOfRuangan) {
