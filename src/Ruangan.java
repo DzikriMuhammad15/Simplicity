@@ -3,7 +3,7 @@ import java.util.*;
 public class Ruangan {
     // atribut
     private String namaRuangan;
-    private ArrayList<Barang> barangInRuangan = new arrayList<>();
+    private ArrayList<Barang> barangInRuangan = new ArrayList<>();
     private String[] daftarBarangFix = { "kasur single", "kasur queen size", "kasur king size", "toilet", "kompor gas",
             "kompor listrik", "meja dan kursi", "jam", "televisi", "laptop" };
     private int[][] denahRuangan = new int[6][6];
@@ -27,7 +27,7 @@ public class Ruangan {
     }
 
     // method-method
-    public arrayList<Barang> getBarangInRuangan() {
+    public ArrayList<Barang> getBarangInRuangan() {
         return this.barangInRuangan;
     }
 
@@ -81,9 +81,9 @@ public class Ruangan {
 
         // cast dulu barang menjadi nonMakanan
         if (barang instanceof NonMakanan) {
-            NonMakanan nonMakanan = (nonMakanan) barang;
-            ukuranHorizontalBarang = nonMakanan.panjang;
-            ukuranVertikalBarang = nonMakanan.lebar;
+            NonMakanan nonMakanan = (NonMakanan) barang;
+            ukuranHorizontalBarang = nonMakanan.getPanjang();
+            ukuranVertikalBarang = nonMakanan.getLebar();
 
             // cek apakah tempat kosong
 

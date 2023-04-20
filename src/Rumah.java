@@ -20,7 +20,7 @@ public class Rumah {
         return this.lokasi;
     }
 
-    public arrayList<Ruangan> getArrayOfRuangan
+    public ArrayList<Ruangan> getArrayOfRuangan()
     {
         return this.arrOfRuangan;
     }
