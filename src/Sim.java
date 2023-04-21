@@ -1,4 +1,4 @@
-public class Sim {
+public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private String namaLengkap;
     private Pekerjaan pekerjaan;
     private int uang;
