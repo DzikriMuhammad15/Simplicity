@@ -139,4 +139,42 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 
 /* ------------------------------- AKSI PASIF ----------------------------------- */
+    public void moveToRoom(String ruangTujuan);
+
+    public void lihatInventory();
+
+    public void pasangBarang(String namaBarang, int x, int y);
+
+    public void lihatWaktu();
+
+    public void pukulSim(Sim otherSim);
+
+    public void bercanda(Sim otherSim);
+
+/* --------------------------------AKSI AKTIF ------------------------------------ */
+
+    public void kerja(int waktu);
+
+    public void olahraga(int waktu);
+
+    public void makan(Makanan makanan);
+
+    public void makan(Bahanmakanan bahanmakanan);
+
+    public void tidur(int waktu);
+
+    public void masak(Makanan makanan);
+
+    public void berkunjung(Rumah rumahSim);
+
+    public void buangAir();
+
+    public void nontonTV(int waktu);
+
+    public void ngoding(int waktu, String bahasaProgram);
+
+    public void dengerMusik(int waktu, String genre);
+
+    public void mainGame(int waktu);
+
 }
