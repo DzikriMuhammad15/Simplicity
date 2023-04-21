@@ -9,6 +9,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private String status;
     private Posisi posisi;
 
+
+/* -------------------KONSTRUKTOR------------------- */
+
     public Sim(String namaLengkap){
     // Menginisiasi kesejahteraan dan uang
     Kesejahteraan kesejahteraan = new Kesejahteraan();
@@ -33,6 +36,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     Rumah rumah = new Rumah(new Point(0,0));
     }
 
+
+/* ----------------------GETTER-------------------------- */
 
     public String getName(){
         return namaLengkap;
@@ -70,12 +75,68 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         return posisi;
     }
 
+/* --------------------------SETTER------------------------------ */
+
+    public void setName(String namaLengkap){
+        this.namaLengkap = namaLengkap;
+    }
+
+    public void setPekerjaan(Pekerjaan pekerjaan){
+        this.pekerjaan = pekerjaan;
+    }
+
+    public void setUang(int uang){
+        this.uang = uang;
+    }
+
+    public void setRumah(Rumah rumah){
+        this.rumah = rumah;
+    }
+
+    public void setInventory(HashMap<String, Integer> inventory){
+        this.inventory = inventory;
+    }
+
+    public void setOnDelivery(Barang[] onDelivery){
+        this.onDelivery = onDelivery;
+    }
+
+    public void setKesejahteraan(Kesejahteraan kesejahteraan){
+        this.kesejahteraan = kesejahteraan;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
+    }
+
+    public void setPosisi(Posisi posisi){
+        this.posisi = posisi;
+    }
+
     public void changePekerjaan(Pekerjaan kerjaBaru){
         this.pekerjaan = kerjaBaru;
     }
-
     
+/* ----------------------GO TO OBJECT---------------------------- */
+   
     public void gotToBarang(Barang barang){
 
     }
+
+/* -------------------------------- AKSI DITINGGAL ----------------------------------- */
+
+    @override
+    public void bunuhDiri(){
+        kesejahteraan.setMood(0);
+        kesejahteraan.setKesehatan(0);
+        kesejahteraan.setKekenyangan(0);
+        kesejahteraan.setDead(true);
+    }
+
+    public void upgradeRumah(String ruanganBaru, String posisi);
+
+    public void beliBarang(String namaBarang);
+
+
+/* ------------------------------- AKSI PASIF ----------------------------------- */
 }
