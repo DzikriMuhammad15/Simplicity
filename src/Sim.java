@@ -34,6 +34,42 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
 
+    public String getName(){
+        return namaLengkap;
+    }
+
+    public Pekerjaan getPekerjaan(){
+        return pekerjaan;
+    }
+
+    public int getUang(){
+        return uang;
+    }
+
+    public Rumah getRumah(){
+        return rumah;
+    }
+
+    public HashMap<String, Integer> getInventory(){
+        return inventory;
+    }
+
+    public Barang[] getOnDelivery(){
+        return onDelivery;
+    }
+
+    public Kesejahteraan getKesejahteraan(){
+        return kesejahteraan;
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public Posisi getPosisi(){
+        return posisi;
+    }
+
     public void changePekerjaan(Pekerjaan kerjaBaru){
         this.pekerjaan = kerjaBaru;
     }
