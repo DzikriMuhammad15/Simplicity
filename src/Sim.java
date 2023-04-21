@@ -1,9 +1,10 @@
+import java.util.*;
 public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private String namaLengkap;
     private Pekerjaan pekerjaan;
     private int uang;
     private Rumah rumah;
-    private HashMap<String, Integer> inventory;
+    private HashMap<String, Integer> inventory = new HashMap<>();
     private Barang[] onDelivery;
     private Kesejahteraan kesejahteraan;
     private String status;
@@ -14,10 +15,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public Sim(String namaLengkap){
     // Menginisiasi kesejahteraan dan uang
-    Kesejahteraan kesejahteraan = new Kesejahteraan();
-    kesejahteraan.setKesehatan(80);
-    kesejahteraan.setKekenyangan(80);
-    kesejahteraan.setMood(80);
+    Kesejahteraan kesejahteraan = new Kesejahteraan(false,80,80,80);
+    this.kesejahteraan = kesejahteraan;
     this.uang = 100;
 
     // Menginisiasi pekerjaan secara random
@@ -34,6 +33,11 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     // Menginisiasi rumah
     Rumah rumah = new Rumah(new Point(0,0));
+    this.rumah=rumah;
+    this.posisi= new Posisi(rumah, rumah.getArrayOfRuangan().get(0), null);
+
+    //menginisiasi nama
+    this.namaLengkap = namaLengkap;
     }
 
 
@@ -125,7 +129,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 /* -------------------------------- AKSI DITINGGAL ----------------------------------- */
 
-    @override
+    @Override
     public void bunuhDiri(){
         kesejahteraan.setMood(0);
         kesejahteraan.setKesehatan(0);
@@ -133,48 +137,47 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         kesejahteraan.setDead(true);
     }
 
-    public void upgradeRumah(String ruanganBaru, String posisi);
-
-    public void beliBarang(String namaBarang);
+    public void upgradeRumah(String ruanganBaru, String posisi){}
+    public void beliBarang(String namaBarang){}
 
 
 /* ------------------------------- AKSI PASIF ----------------------------------- */
-    public void moveToRoom(String ruangTujuan);
+    public void moveToRoom(String ruangTujuan){}
 
-    public void lihatInventory();
+    public void lihatInventory(){}
 
-    public void pasangBarang(String namaBarang, int x, int y);
+    public void pasangBarang(String namaBarang, int x, int y){}
 
-    public void lihatWaktu();
+    public void lihatWaktu(){}
 
-    public void pukulSim(Sim otherSim);
+    public void pukulSim(Sim otherSim){}
 
-    public void bercanda(Sim otherSim);
+    public void bercanda(Sim otherSim){}
 
 /* --------------------------------AKSI AKTIF ------------------------------------ */
 
-    public void kerja(int waktu);
+    public void kerja(int waktu){}
 
-    public void olahraga(int waktu);
+    public void olahraga(int waktu){}
 
-    public void makan(Makanan makanan);
+    public void makan(Makanan makanan){}
 
-    public void makan(Bahanmakanan bahanmakanan);
+    public void makan(BahanMakanan bahanmakanan){}
 
-    public void tidur(int waktu);
+    public void tidur(int waktu){}
 
-    public void masak(Makanan makanan);
+    public void masak(Makanan makanan){}
 
-    public void berkunjung(Rumah rumahSim);
+    public void berkunjung(Rumah rumahSim){}
 
-    public void buangAir();
+    public void buangAir(){}
 
-    public void nontonTV(int waktu);
+    public void nontonTV(int waktu){}
 
-    public void ngoding(int waktu, String bahasaProgram);
+    public void ngoding(int waktu, String bahasaProgram){}
 
-    public void dengerMusik(int waktu, String genre);
+    public void dengerMusik(int waktu, String genre){}
 
-    public void mainGame(int waktu);
+    public void mainGame(int waktu){}
 
 }
