@@ -29,7 +29,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     };
     Random random = new Random();
     int randomIndex = random.nextInt(daftarPekerjaan.length);
-    changePekerjaan(daftarPekerjaan[randomIndex]);
+    this.pekerjaan = daftarPekerjaan[randomIndex];
 
     // Menginisiasi rumah
     Rumah rumah = new Rumah(new Point(0,0));
