@@ -27,4 +27,12 @@ public class Point {
     public void setY(int y){
         this.Y = y;
     }
+    public boolean isEqual(int x, int y){
+        if (this.x == x && this.y == y){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 }
