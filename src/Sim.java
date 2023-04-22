@@ -146,13 +146,24 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void lihatInventory(){}
 
-    public void pasangBarang(String namaBarang, int x, int y){}
+    public void pasangBarang(String namaBarang, int x, int y){
+        NonMakanan barang = new NonMakanan(namaBarang);
+        barang.setPosisi(new Point(x, y));
+    }
 
-    public void lihatWaktu(){}
+    public void lihatWaktu(){
+        
+    }
 
-    public void pukulSim(Sim otherSim){}
+    public void pukulSim(Sim otherSim){
+        int kesehatanAwal = otherSim.getKesejahteraan().getKesehatan();
+        otherSim.getKesejahteraan().setKesehatan(kesehatanAwal-10);
+    }
 
-    public void bercanda(Sim otherSim){}
+    public void bercanda(Sim otherSim){
+        int moodAwal = otherSim.getKesejahteraan().getMood();
+        otherSim.getKesejahteraan().setMood(moodAwal+10);
+    }
 
 /* --------------------------------AKSI AKTIF ------------------------------------ */
 
