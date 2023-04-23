@@ -1,4 +1,3 @@
-import java.awt.Point;
 import java.util.Random;
 
 public class NonMakanan extends Barang {
@@ -7,10 +6,12 @@ public class NonMakanan extends Barang {
     private int harga;
     private int shippingTime;
     private Point posisi;
+    private int orientasi;
 
     public NonMakanan(String namaNonMakanan) {
         super(namaNonMakanan);
         posisi = null;
+        orientasi = 0;
         if (namaNonMakanan.equals("Kasur Single")) {
             panjang = 4;
             lebar = 1;
@@ -46,6 +47,14 @@ public class NonMakanan extends Barang {
         }
         Random rand = new Random();
         shippingTime = rand.nextInt(10) + 1;
+    }
+
+    public void setOrientasi(int orientasi) {
+        this.orientasi = orientasi;
+    }
+
+    public int getOrientasi() {
+        return this.orientasi;
     }
 
     public int getPanjang() {
@@ -97,7 +106,7 @@ public class NonMakanan extends Barang {
             return false;
         }
         NonMakanan nm = (NonMakanan) o;
-        return nm.getNamaBarang().equals(getNamaBarang());
+        return nm.getNama().equals(getNama());
     }
 
 }

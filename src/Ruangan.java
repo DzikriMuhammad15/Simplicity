@@ -125,6 +125,11 @@ public class Ruangan {
                             denahRuangan[m][n] = angka;
                         }
                     }
+
+                    // tambah titik ke dalam atribut NonMakanan
+
+                    nonMakanan.setPosisi(new Point(x, y));
+
                 } else {
                     System.out.println("Sudah ada barang lain di posisi tersebut");
                 }
@@ -162,7 +167,189 @@ public class Ruangan {
         System.out.println("9 : Laptop");
     }
 
-    public void rotate() {
-        // belum
+    public void rotate(Barang barang, int degree) {
+        // konstanta
+        int sin90;
+        int sin180;
+        int sin270;
+        int cos90;
+        int cos180;
+        int cos270;
+
+        sin90 = 1;
+        sin180 = 0;
+        sin270 = -1;
+        cos90 = 0;
+        cos180 = -1;
+        cos270 = 0;
+
+        int a;
+        int b;
+        int panjang;
+        int lebar;
+
+        NonMakanan non = (NonMakanan) barang;
+        Point p = non.getPosisi();
+
+        // a dan b adalah porosnya
+        a = p.getX();
+        b = p.getY();
+
+        // tentukan panjang dan lebar barang yang akan dirotate
+        panjang = non.getPanjang();
+        lebar = non.getLebar();
+        int orientasi;
+        orientasi = non.getOrientasi();
+
+        // untuk orientasi yang berbeda
+        if (orientasi == 90) {
+            int temp;
+            temp = panjang;
+            panjang = lebar;
+            lebar = temp;
+        } else if (orientasi == 180) {
+            panjang = -1 * panjang;
+        } else if (orientasi == 270) {
+            int temp;
+            temp = panjang;
+            panjang = lebar;
+            lebar = -1 * temp;
+        }
+
+        // rotate tiap titiknya
+        int xCek;
+        int yCek;
+        int xCermin;
+        int yCermin;
+        int i;
+        int j;
+        boolean valid = true;
+        int sin;
+        int cos;
+        int angka = denahRuangan[b][a];
+
+        if (degree == 90) {
+            sin = sin90;
+            cos = cos90;
+        } else if (degree == 180) {
+            sin = sin180;
+            cos = cos180;
+        } else {
+            sin = sin270;
+            cos = cos270;
+        }
+        if (panjang > 0 && lebar > 0) {
+
+            for (i = b; i < b + lebar; i++) {
+                for (j = a; j < a + panjang; j++) {
+                    // mengunjungi setiap titik dan memutarnya
+                    xCek = ((j - a) * cos) - ((i - b) * sin) + a;
+                    yCek = ((j - a) * sin) + ((i - b) * cos) + b;
+
+                    if (xCek < 0 || xCek > 5 || yCek < 0 || yCek > 5) {
+                        valid = false;
+                    } else {
+                        if (denahRuangan[yCek][xCek] != -1 && !(j == a && i == b)) {
+                            valid = false;
+                        }
+                    }
+                }
+            }
+
+            if (valid) {
+                // hapus item yang lama di denah
+                for (i = b; i < b + lebar; i++) {
+                    for (j = a; j < a + panjang; j++) {
+                        // mengunjungi tiap titik
+                        xCermin = ((j - a) * cos) - ((i - b) * sin) + a;
+                        yCermin = ((j - a) * sin) + ((i - b) * cos) + b;
+                        denahRuangan[i][j] = -1;
+                        denahRuangan[yCermin][xCermin] = angka;
+                    }
+                }
+                // mengubah si orientasinya
+                int orientasiBaru = (non.getOrientasi() + degree) % 360;
+                non.setOrientasi(orientasiBaru);
+            } else {
+                System.out.println("rotasi melanggar syarat");
+            }
+        }
+
+        // UNTUK PANJANG NEGATIF
+        else if (panjang < 0) {
+
+            for (i = b; i < b + lebar; i++) {
+                for (j = a; j > a + panjang; j--) {
+                    // mengunjungi setiap titik dan memutarnya
+                    xCek = ((j - a) * cos) - ((i - b) * sin) + a;
+                    yCek = ((j - a) * sin) + ((i - b) * cos) + b;
+
+                    if (xCek < 0 || xCek > 5 || yCek < 0 || yCek > 5) {
+                        valid = false;
+                    } else {
+                        if (denahRuangan[yCek][xCek] != -1 && !(j == a && i == b)) {
+                            valid = false;
+                        }
+                    }
+                }
+            }
+
+            if (valid) {
+                // hapus item yang lama di denah
+                for (i = b; i < b + lebar; i++) {
+                    for (j = a; j > a + panjang; j--) {
+                        // mengunjungi tiap titik
+                        xCermin = ((j - a) * cos) - ((i - b) * sin) + a;
+                        yCermin = ((j - a) * sin) + ((i - b) * cos) + b;
+                        denahRuangan[i][j] = -1;
+                        denahRuangan[yCermin][xCermin] = angka;
+                    }
+                }
+                // mengubah si orientasinya
+                int orientasiBaru = (non.getOrientasi() + degree) % 360;
+                non.setOrientasi(orientasiBaru);
+            } else {
+                System.out.println("rotasi melanggar syarat");
+            }
+        }
+
+        // UNTUK LEBAR NEGATIF
+        else if (lebar < 0) {
+
+            for (i = b; i > b + lebar; i--) {
+                for (j = a; j < a + panjang; j++) {
+                    // mengunjungi setiap titik dan memutarnya
+                    xCek = ((j - a) * cos) - ((i - b) * sin) + a;
+                    yCek = ((j - a) * sin) + ((i - b) * cos) + b;
+
+                    if (xCek < 0 || xCek > 5 || yCek < 0 || yCek > 5) {
+                        valid = false;
+                    } else {
+                        if (denahRuangan[yCek][xCek] != -1 && !(j == a && i == b)) {
+                            valid = false;
+                        }
+                    }
+                }
+            }
+
+            if (valid) {
+                // hapus item yang lama di denah
+                for (i = b; i > b + lebar; i--) {
+                    for (j = a; j < a + panjang; j++) {
+                        // mengunjungi tiap titik
+                        xCermin = ((j - a) * cos) - ((i - b) * sin) + a;
+                        yCermin = ((j - a) * sin) + ((i - b) * cos) + b;
+                        denahRuangan[i][j] = -1;
+                        denahRuangan[yCermin][xCermin] = angka;
+                    }
+                }
+                // mengubah si orientasinya
+                int orientasiBaru = (non.getOrientasi() + degree) % 360;
+                non.setOrientasi(orientasiBaru);
+            } else {
+                System.out.println("rotasi melanggar syarat");
+            }
+        }
+
     }
 }
