@@ -11,6 +11,28 @@ public class Rumah {
         // membuat ruangan utama
         Ruangan r = new Ruangan("ruangUtama");
         arrOfRuangan.add(r);
+
+        // instansiasi barang2 untuk dimasukkan ke dalam ruanganUtama
+        NonMakanan meja = new NonMakanan("Meja dan Kursi");
+        NonMakanan jam = new NonMakanan("Jam");
+        NonMakanan kompor = new NonMakanan("Kompor Gas");
+        NonMakanan toilet = new NonMakanan("Toilet");
+        NonMakanan kasur = new NonMakanan("Kasur Single");
+
+        // masukkin ke dalam ruanganUtama
+        r.addBarangInRuangan(kasur);
+        r.addBarangInRuangan(toilet);
+        r.addBarangInRuangan(kompor);
+        r.addBarangInRuangan(jam);
+        r.addBarangInRuangan(meja);
+
+        // locate barang
+        r.locateBarang(kasur, 0, 0);
+        r.locateBarang(toilet, 5, 5);
+        r.locateBarang(kompor, 4, 0);
+        r.locateBarang(jam, 5, 3);
+        r.locateBarang(meja, 0, 3);
+
     }
 
     // method-method
