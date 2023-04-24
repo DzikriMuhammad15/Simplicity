@@ -64,7 +64,7 @@ public class World{
 
     //getter untuk mendapatkan sim yang memiliki rumah yang sedang dikunjungi sim saat ini
     public Sim getSimOwnRumah(Rumah rumah){
-        Sim sim2;
+        Sim sim2=null;
         for (Sim i:ArrSim){
             if (i.getRumah().equals(rumah)){
                 sim2=i;
@@ -72,5 +72,4 @@ public class World{
         }
         return sim2;
     }
-
 }
