@@ -4,7 +4,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private Pekerjaan pekerjaan;
     private int uang;
     private Rumah rumah;
-    private HashMap<String, Integer> inventory = new HashMap<>();
+    private Map<String, Integer> inventory = new HashMap<>();
     private Barang[] onDelivery;
     private Kesejahteraan kesejahteraan;
     private String status;
@@ -137,14 +137,30 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         kesejahteraan.setDead(true);
     }
 
-    public void upgradeRumah(String ruanganBaru, String posisi){}
-    public void beliBarang(String namaBarang){}
+    public void upgradeRumah(String ruanganBaru, String posisi){
+
+    }
+    public void beliBarang(String namaBarang){
+
+    }
 
 
 /* ------------------------------- AKSI PASIF ----------------------------------- */
-    public void moveToRoom(String ruangTujuan){}
+    public void moveToRoom(String ruangTujuan){
 
-    public void lihatInventory(){}
+    }
+
+    public void lihatInventory(){
+        System.out.printf("| %-10s | %-8s |%n", "Barang", "Jumlah");
+        System.out.println("|------------|----------|");
+
+        // Loop over entries in the HashMap and print them in table format
+        for (Map.Entry<String, Integer> entry : inventory.entrySet()) {
+            String barang = entry.getKey();
+            int jumlah = entry.getValue();
+            System.out.printf("| %-10s | %-8d |%n", barang, jumlah);
+        }
+    }
 
     public void pasangBarang(String namaBarang, int x, int y){
         NonMakanan barang = new NonMakanan(namaBarang);
@@ -153,7 +169,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void lihatWaktu(){
-        
+        World world = World.getInstance();
+        int waktu = world.getWaktu();
+        System.out.println("Waktu saat ini adalah : ", +waktu);
     }
 
     public void pukulSim(Sim otherSim){
@@ -170,24 +188,25 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void kerja(int waktu){
         // thread nya
-        if (pekerjaan.getNamaPekerjaan() == "Badut Sulap"){
-            uang += 15;
-        }
-        else if (pekerjaan.getNamaPekerjaan() == "Koki"){
-            uang += 30;
-        }
-        else if (pekerjaan.getNamaPekerjaan() == "Polisi"){
-            uang += 35;
-        }
-        else if (pekerjaan.getNamaPekerjaan() == "Programmer"){
-            uang += 45;
-        }
-        else if (pekerjaan.getNamaPekerjaan() == "Dokter"){
-            uang += 50;
-        }
-        else{
-            System.out.println("Pekerjaan tidak terdaftar.");
-        }
+        uang += pekerjaan.getGajiHarian();
+        // if (pekerjaan.getNamaPekerjaan() == "Badut Sulap"){
+        //     uang += 15;
+        // }
+        // else if (pekerjaan.getNamaPekerjaan() == "Koki"){
+        //     uang += 30;
+        // }
+        // else if (pekerjaan.getNamaPekerjaan() == "Polisi"){
+        //     uang += 35;
+        // }
+        // else if (pekerjaan.getNamaPekerjaan() == "Programmer"){
+        //     uang += 45;
+        // }
+        // else if (pekerjaan.getNamaPekerjaan() == "Dokter"){
+        //     uang += 50;
+        // }
+        // else{
+        //     System.out.println("Pekerjaan tidak terdaftar.");
+        // }
         }
 
 
@@ -223,22 +242,22 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         if (namaMakanan == "Nasi Ayam" && inventory.containsKey("Nasi Ayam")){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+16);
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
         }
         else if (namaMakanan == "Nasi Kari"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+30);
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
         }
         else if (namaMakanan == "Susu Kacang"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+5);
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
         }
         else if (namaMakanan == "Tumis Sayur"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+5);
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
         }
         else if (namaMakanan == "Bistik"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+22);
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
         }
         else {
-            System.out.println("Makanan tidak ada");
+            System.out.println("Makanan tidak ada, buat makanan terlebih dahulu!");
         }
     }
 
