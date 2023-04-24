@@ -149,6 +149,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void pasangBarang(String namaBarang, int x, int y){
         NonMakanan barang = new NonMakanan(namaBarang);
         barang.setPosisi(new Point(x, y));
+        // ngurangin barang dari inventory, kalo 0 dihapus dr invnt
     }
 
     public void lihatWaktu(){
@@ -167,27 +168,111 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 /* --------------------------------AKSI AKTIF ------------------------------------ */
 
-    public void kerja(int waktu){}
+    public void kerja(int waktu){
+        // thread nya
+        if (pekerjaan.getNamaPekerjaan() == "Badut Sulap"){
+            uang += 15;
+        }
+        else if (pekerjaan.getNamaPekerjaan() == "Koki"){
+            uang += 30;
+        }
+        else if (pekerjaan.getNamaPekerjaan() == "Polisi"){
+            uang += 35;
+        }
+        else if (pekerjaan.getNamaPekerjaan() == "Programmer"){
+            uang += 45;
+        }
+        else if (pekerjaan.getNamaPekerjaan() == "Dokter"){
+            uang += 50;
+        }
+        else{
+            System.out.println("Pekerjaan tidak terdaftar.");
+        }
+        }
 
-    public void olahraga(int waktu){}
 
-    public void makan(Makanan makanan){}
+    public void olahraga(int waktu){
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                lock.lock(); // Kunci sumber daya
+                try {
+                    int count = waktu / 20; // Hitung jumlah iterasi yang diperlukan
+                    for (int i = 0; i < count; i++) {
+                        int kesehatanAwal = kesejahteraan.getKesehatan();
+                        int kekenyanganAwal = kesejahteraan.getKekenyangan();
+                        int moodAwal = kesejahteraan.getMood();
+                        kesejahteraan.setKesehatan(kesehatanAwal+5);
+                        kesejahteraan.setKekenyangan(kekenyanganAwal-5);
+                        kesejahteraan.setMood(moodAwal+10);
+                        try {
+                            Thread.sleep(20000); // Tunggu selama 20 detik
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } finally {
+                    lock.unlock(); // Lepaskan kunci sumber daya
+                }
+            }
+        });
+        t.start();
+    }
 
-    public void makan(BahanMakanan bahanmakanan){}
+    public void makan(Makanan makanan){
+        String namaMakanan = makanan.getNama();
+        int kekenyanganAwal = kesejahteraan.getKekenyangan();
+        if (namaMakanan == "Nasi Ayam" && inventory.containsKey("Nasi Ayam")){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+16);
+        }
+        else if (namaMakanan == "Nasi Kari"){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+30);
+        }
+        else if (namaMakanan == "Susu Kacang"){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+5);
+        }
+        else if (namaMakanan == "Tumis Sayur"){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+5);
+        }
+        else if (namaMakanan == "Bistik"){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+22);
+        }
+        else {
+            System.out.println("Makanan tidak ada");
+        }
+    }
 
-    public void tidur(int waktu){}
+    public void makan(BahanMakanan bahanmakanan){
 
-    public void masak(Makanan makanan){}
+    }
 
-    public void berkunjung(Rumah rumahSim){}
+    public void tidur(int waktu){
 
-    public void buangAir(){}
+    }
 
-    public void nontonTV(int waktu){}
+    public void masak(Makanan makanan){
 
-    public void ngoding(int waktu, String bahasaProgram){}
+    }
 
-    public void dengerMusik(int waktu, String genre){}
+    public void berkunjung(Rumah rumahSim){
+
+    }
+
+    public void buangAir(){
+
+    }
+
+    public void nontonTV(int waktu){
+
+    }
+
+    public void ngoding(int waktu, String bahasaProgram){
+
+    }
+
+    public void dengerMusik(int waktu, String genre){
+
+    }
 
     public void mainGame(int waktu){}
 
