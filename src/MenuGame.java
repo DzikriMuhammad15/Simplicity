@@ -6,7 +6,6 @@ public class MenuGame {
 
     Scanner scan = new Scanner(System.in);
     Random random = new Random();
-
     //belum fix
     public void startGame(){
         //daftar makanan dan bahan makanan
@@ -84,6 +83,18 @@ public class MenuGame {
                         makan();
                     }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Jam")){
                         lihatWaktu();
+                    }else if (currSim.getPosisi().getCurrBarang().getNama().equals("TV")){
+                        nontonTV();
+                    }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Laptop")){
+                        System.out.println("Pilih aksi yang ingin dilakukan Ngoding/Dengar Musik/Main Game");
+                        String aksiOnLaptop = scan.nextLine();
+                        if (aksiOnLaptop.equals("Ngoding")){
+                            ngoding();
+                        }else if(aksiOnLaptop.equals("Dengar Musik")){
+                            dengarMusik();
+                        }else if(aksiOnLaptop.equals("Main Game")){
+                            mainGame();
+                        }
                     }
                 }else{
                     System.out.println("Sim tidak menghadapi barang apapun, tidak ada aksi yang dapat dilakukan");
@@ -140,17 +151,107 @@ public class MenuGame {
                 }
             }else if(aksi.equals("Help")){
                 help();
+            }else if(aksi.equals("Pukul")){
+                pukul();
+            }else if(aksi.equals("Bercanda")){
+                bercanda();
+            }else if(aksi.equals("Bunuh Diri")){
+                bunuhDiri();
             }else{
                 System.out.println("Masukkan aksi yang sesuai");
             }
         }
     }
     
-    public void moveRoom(String namaruangan){
-        //nunggu dzikri
-        currSim.getPosisi().setCurrRuangan(currSim.getRumah().getRuangan(namaruangan));
+    public void pukul(){
+        System.out.println("Siapa yang ingin anda pukul?");
+        String otherSim = scan.nextLine();
+        boolean check = false;
+        for (Sim i: world.getArrSim()){
+            if (i.getName().equals(otherSim)){
+                currSim.pukulSim(i);
+                check=true;
+            }
+        }
+        if (check){
+            System.out.println(otherSim+" terpukul hingga babak belur");
+        }else{
+            System.out.println("Gagal memukul");
+        }
     }
-    
+
+    public void nontonTV(){
+        System.out.println("Berapa lama?");
+        int waktu = Integer.parseInt(scan.nextLine());
+        currSim.nontonTV(waktu);
+        System.out.println("Berhasil menonton TV");
+    }
+
+    public void ngoding(){
+        System.out.println("Beberapa bahasa pemrograman yang dikuasai");
+        System.out.println("phyton,c,c++,java");    
+        String bahasa = scan.nextLine();
+        System.out.println("Berapa lama?");
+        int waktu = Integer.parseInt(scan.nextLine());
+        currSim.ngoding(waktu, bahasa);
+    }
+
+    public void bercanda(){
+        //untuk semua Sim di ruangan yang sama mendapat effect bercanda
+        boolean check=false;
+        for (Sim i: world.getArrSim()){
+            if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
+                currSim.bercanda(i);
+                check=true;
+            }
+        }
+        if (check){
+            System.out.println("Semua orang di dalam ruangan tertawa terpingkal-pingkal");
+        }else{
+            System.out.println("Tidak ada orang yang diajak bercanda");
+        }
+    }
+
+    public void dengarMusik(){
+        System.out.println("Beberapa genre lagu yang dapat diputar");
+        System.out.println("1. Indie");
+        System.out.println("2. Dangdut");
+        System.out.println("3. Pop");
+        System.out.println("4. K-Pop");
+        System.out.println("5. Reggae");
+        System.out.println("6. WOTA");
+        String genre = scan.nextLine();
+        System.out.println("Berapa lama");
+        int waktu = Integer.parseInt(scan.nextLine());
+        if (genre.equals("Indie")||genre.equals("Dangdut")||genre.equals("Pop")||genre.equals("K-Pop")||genre.equals("Reggae")||genre.equals("WOTA")){
+            currSim.dengerMusik(waktu, genre);
+        }
+        else{
+            System.out.println("Genre musik tidak tersedia");
+        }
+        
+    }
+
+    public void mainGame(){
+        System.out.println("Berapa lama?");
+        int waktu = Integer.parseInt(scan.nextLine());
+        currSim.mainGame(waktu);
+    }
+
+    public void bunuhDiri(){
+        currSim.getKesejahteraan().setKesehatan(0);
+        currSim.getKesejahteraan().setDead(true);
+        checkSim();
+        if (!world.getArrSim().isEmpty()){
+            System.out.println("Pilih Sim lain untuk tetap bermain");
+            for (Sim i : world.getArrSim()){
+                System.out.println(i.getName());
+            }
+            String simBaru = scan.nextLine();
+            changeSim(simBaru);
+        }
+    }
+
     public void help(){
         System.out.println("Berikut adalah command-command yang dapat digunakan");
     }
@@ -163,7 +264,10 @@ public class MenuGame {
     }
     
     // Menunggu class Sim
-    public void upgradeHouse(){}
+    public void upgradeHouse(){
+
+    }
+    
     public void editRoom(){
         System.out.println("Anda dapat memindahkan barang, merotasi, meletakkan barang atau memindahkan ke dalam inventory");
         System.out.println("Gunakan command [memindahkan {barang}, meletakkan {barang}, merotasi {barang}, memindahkan {barang} ke inventory]");
@@ -215,6 +319,14 @@ public class MenuGame {
         for (Sim i:world.getArrSim()){
             if (i.getName().equals(simBaru)){
                 currSim=i;
+            }
+        }
+    }
+
+    public void checkSim(){
+        for (Sim i:world.getArrSim()){
+            if (i.getKesejahteraan().isDead()||i.getKesejahteraan().getKekenyangan()==0||i.getKesejahteraan().getKesehatan()==0||i.getKesejahteraan().getMood()==0){
+                world.getArrSim().remove(i);
             }
         }
     }
