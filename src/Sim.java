@@ -145,7 +145,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     }
     public void beliBarang(String namaBarang){
-
+        // if barang apa aja, kurangi uang, masuk ke onDelivery
+        // waktu diinisiasi barangnya (dr nama barang) tar inisiasinya barang atau nonmakanan/bahanmakanan? kan beda tuch
     }
 
 
@@ -194,8 +195,24 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void kerja(int waktu){
         // thread nya
-        uang += pekerjaan.getGajiHarian();
-        }
+        Thread t = new Thread(new Runnable(){
+            public void run(){
+               try {
+                    int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
+                    for (int i = 0; i < count; i++) {
+                        uang += pekerjaan.getGajiHarian();
+                        // cara ngubah waktunya gimana lgsung set tambah aja kh?
+                        try {
+                            Thread.sleep(240000); // Tunggu selama 4 menit
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } 
+            }
+        });
+        t.start();
+    }
 
 
     public void olahraga(int waktu){
@@ -266,6 +283,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void masak(Makanan makanan){
+        int moodAwal = kesejahteraan.getMood();
+        int waktuMemasak = 1.5*(makanan.getKekenyangan());
         ArrayList<String> arrayOfBahanMakanan = makanan.getArrayOfBahanMakanan();
         for (String bahan : arrayOfBahanMakanan) {
             int jumlah = inventory.getOrDefault(bahan, 0);
@@ -274,12 +293,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 return; // keluar dari method masak jika bahan tidak tersedia
             }
         }
+        //thread
         for (String bahan : bahanMakanan) {
             int jumlah = inventory.get(bahan);
             inventory.put(bahan, jumlah - 1);
         }
         int jumlahMakananAwal = inventory.get(makanan.getNama());
         inventory.put(makanan.getNama(), jumlahMakananAwal+1);
+        kesejahteraan.setMood(moodAwal+10);
     }
 
     public void berkunjung(Rumah rumahSim){
@@ -309,17 +330,36 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void nontonTV(int waktu){
-
+        //thread
+        int moodAwal = kesejahteraan.getMood();
+        kesejahteraan.setMood(moodAwal+5);
     }
 
     public void ngoding(int waktu, String bahasaProgram){
+        //thread
+        if (bahasaProgram == "Java"){
 
+        }
+        else if(bahasaProgram == "C"){
+
+        }
+        else if (bahasaProgram == "Python"){
+
+        }
     }
 
     public void dengerMusik(int waktu, String genre){
+        if (genre.equals("Rnb")){
 
+        }
+        else if (genre.equals("Pop")){
+
+        }
+        else if (genre.equals("Rock"))
     }
 
-    public void mainGame(int waktu){}
+    public void mainGame(int waktu){
+
+    }
 
 }
