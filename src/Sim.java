@@ -11,35 +11,37 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private Kesejahteraan kesejahteraan;
     private String status;
     private Posisi posisi;
+    private int waktuMakanAwal;
 
 
 /* -------------------KONSTRUKTOR------------------- */
 
     public Sim(String namaLengkap){
-    // Menginisiasi kesejahteraan dan uang
-    Kesejahteraan kesejahteraan = new Kesejahteraan(false,80,80,80);
-    this.kesejahteraan = kesejahteraan;
-    this.uang = 100;
+        // Menginisiasi kesejahteraan dan uang
+        Kesejahteraan kesejahteraan = new Kesejahteraan(false,80,80,80);
+        this.kesejahteraan = kesejahteraan;
+        this.uang = 100;
 
-    // Menginisiasi pekerjaan secara random
-    Pekerjaan[] daftarPekerjaan = {
-        new Pekerjaan("Badut Sulap", 15),
-        new Pekerjaan("Koki", 30),
-        new Pekerjaan("Polisi", 35),
-        new Pekerjaan("Programmer", 45),
-        new Pekerjaan("Dokter", 50),
-    };
-    Random random = new Random();
-    int randomIndex = random.nextInt(daftarPekerjaan.length);
-    this.pekerjaan = daftarPekerjaan[randomIndex];
+        // Menginisiasi pekerjaan secara random
+        Pekerjaan[] daftarPekerjaan = {
+            new Pekerjaan("Badut Sulap", 15),
+            new Pekerjaan("Koki", 30),
+            new Pekerjaan("Polisi", 35),
+            new Pekerjaan("Programmer", 45),
+            new Pekerjaan("Dokter", 50),
+        };
+        Random random = new Random();
+        int randomIndex = random.nextInt(daftarPekerjaan.length);
+        this.pekerjaan = daftarPekerjaan[randomIndex];
 
-    // Menginisiasi rumah
-    Rumah rumah = new Rumah(new Point(0,0));
-    this.rumah=rumah;
-    this.posisi= new Posisi(rumah, rumah.getArrayOfRuangan().get(0), null);
+        // Menginisiasi rumah
+        Rumah rumah = new Rumah(new Point(0,0));
+        this.rumah=rumah;
+        this.posisi= new Posisi(rumah, rumah.getArrayOfRuangan().get(0), null);
 
-    //menginisiasi nama
-    this.namaLengkap = namaLengkap;
+        //menginisiasi nama
+        this.namaLengkap = namaLengkap;
+        posisi.setCurrRumah(rumah);
     }
 
 
@@ -193,24 +195,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void kerja(int waktu){
         // thread nya
         uang += pekerjaan.getGajiHarian();
-        // if (pekerjaan.getNamaPekerjaan() == "Badut Sulap"){
-        //     uang += 15;
-        // }
-        // else if (pekerjaan.getNamaPekerjaan() == "Koki"){
-        //     uang += 30;
-        // }
-        // else if (pekerjaan.getNamaPekerjaan() == "Polisi"){
-        //     uang += 35;
-        // }
-        // else if (pekerjaan.getNamaPekerjaan() == "Programmer"){
-        //     uang += 45;
-        // }
-        // else if (pekerjaan.getNamaPekerjaan() == "Dokter"){
-        //     uang += 50;
-        // }
-        // else{
-        //     System.out.println("Pekerjaan tidak terdaftar.");
-        // }
         }
 
 
@@ -309,7 +293,19 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void buangAir(){
-
+        World world = World.getInstance();
+        int waktuBuangAir = world.getWaktu();
+        int kekenyanganAwal = kesejahteraan.getKekenyangan();
+        int moodAwal = kesejahteraan.getMood();
+        int kesehatanAwal = kesehatanAwal.getKesehatan();
+        if (waktuBuangAir-waktuMakanAwal <= 240000){
+            kesejahteraan.setKekenyangan(kekenyanganAwal-20);
+            kesejahteraan.setMood(moodAwal+10);
+        }
+        else{
+            kesejahteraan.setKesehatan(kesehatanAwal-5);
+            kesejahteraan.setMood(moodAwal-5);
+        }
     }
 
     public void nontonTV(int waktu){
