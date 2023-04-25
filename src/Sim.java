@@ -124,7 +124,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 /* ----------------------GO TO OBJECT---------------------------- */
    
     public void gotToBarang(Barang barang){
-
+        posisi.setCurrBarang(barang);
     }
 
 /* -------------------------------- AKSI DITINGGAL ----------------------------------- */
@@ -169,9 +169,11 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void lihatWaktu(){
-        World world = World.getInstance();
-        int waktu = world.getWaktu();
-        System.out.println("Waktu saat ini adalah : ", +waktu);
+        if (posisi.getCurrBarang().getNama()=="Jam"){
+            World world = World.getInstance();
+            int waktu = world.getWaktu();
+            System.out.println("Waktu saat ini adalah : ", +waktu);
+        }
     }
 
     public void pukulSim(Sim otherSim){
@@ -241,29 +243,37 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void makan(Makanan makanan){
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
-        if (namaMakanan == "Nasi Ayam" && inventory.containsKey("Nasi Ayam")){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
+        int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
+
+        if (inventory.containsKey(namaMakanan) || currentQuantity>0){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.kekenyangan())
+            inventory.put(namaMakanan, currentQuantity - 1);
+            if (currentQuantity - 1 == 0) {
+                inventory.remove(namaMakanan);
+            }
         }
-        else if (namaMakanan == "Nasi Kari"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
-        }
-        else if (namaMakanan == "Susu Kacang"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
-        }
-        else if (namaMakanan == "Tumis Sayur"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
-        }
-        else if (namaMakanan == "Bistik"){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
-        }
-        else {
-            System.out.println("Makanan tidak ada, buat makanan terlebih dahulu!");
+        else{
+            System.out.println("Makanan habis atau tidak tersedia.")
         }
     }
 
-    public void makan(BahanMakanan bahanmakanan){
+    public void makan(BahanMakanan bahanMakanan){
+        int kekenyanganAwal = kesejahteraan.getKekenyangan();
+        String namaBahanMakanan = bahanMakanan.getNama();
+        int currentQuantity = inventory.getOrDefault(namaBahanMakanan, 0);
 
+        if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
+            kesejahteraan.setKekenyangan(kekenyanganAwal+bahanMakanan.kekenyangan())
+            inventory.put(namaBahanMakanan, currentQuantity - 1);
+            if (currentQuantity - 1 == 0) {
+                inventory.remove(namaBahanMakanan);
+            }
+        }
+        else{
+            System.out.println("Bahan makanan habis atau tidak tersedia.")
+        }
     }
+    
 
     public void tidur(int waktu){
 
