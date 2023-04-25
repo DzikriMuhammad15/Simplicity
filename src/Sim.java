@@ -1,4 +1,6 @@
 import java.util.*;
+import java.lang.Math;
+
 public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private String namaLengkap;
     private Pekerjaan pekerjaan;
@@ -297,6 +299,11 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void berkunjung(Rumah rumahSim){
+        int x1 = posisi.getX();
+        int y1 = posisi.getY();
+        int x2 = rumahSim.getLokasi().getX();
+        int y2 = rumahSim.getLokasi().getY();
+        int waktu = Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
         posisi.setCurrRumah(rumahSim);
         // posisi.setCurrRuangan();
     }
