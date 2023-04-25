@@ -21,7 +21,7 @@ public class MenuGame {
             }else if(aksi.equals("View Current Location")){
                 viewCurrentLocation();
             }else if(aksi.equals("View Inventory")){
-                viewInventory();
+                currSim.lihatInventory();
             }else if(aksi.equals("Upgrade House")){
                 System.out.println("Masukkan nama ruangan");
                 String nama = scan.nextLine();
@@ -31,6 +31,7 @@ public class MenuGame {
                 //belum menghandle kasus ruangan gak bisa ditambah
                 //di sim.java harus dihandle
             }else if(aksi.equals("Move Room")){
+                // cari objeknya dulu
                 System.out.println("Pergi ke ruangan mana?");
                 String namaRuangan = scan.nextLine();
                 currSim.moveToRoom(namaRuangan);
@@ -239,8 +240,7 @@ public class MenuGame {
     }
 
     public void bunuhDiri(){
-        currSim.getKesejahteraan().setKesehatan(0);
-        currSim.getKesejahteraan().setDead(true);
+        currSim.bunuhDiri();
         checkSim();
         if (!world.getArrSim().isEmpty()){
             System.out.println("Pilih Sim lain untuk tetap bermain");
@@ -254,13 +254,6 @@ public class MenuGame {
 
     public void help(){
         System.out.println("Berikut adalah command-command yang dapat digunakan");
-    }
-
-    public void viewInventory(){
-        System.out.println("Berikut adalah daftar barang di dalam inventory");
-        for (HashMap.Entry<String,Integer> i : currSim.getInventory().entrySet()){
-            System.out.println("1. "+i.getKey()+" ada "+i.getValue()+" buah");
-        }
     }
     
     // Menunggu class Sim

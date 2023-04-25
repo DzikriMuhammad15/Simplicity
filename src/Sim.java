@@ -41,7 +41,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
         //menginisiasi nama
         this.namaLengkap = namaLengkap;
-        posisi.setCurrRumah(rumah);
     }
 
 
@@ -142,7 +141,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void upgradeRumah(String ruanganBaru, String posisi){
-
+        
     }
     public void beliBarang(String namaBarang){
         // if barang apa aja, kurangi uang, masuk ke onDelivery
@@ -151,8 +150,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 
 /* ------------------------------- AKSI PASIF ----------------------------------- */
-    public void moveToRoom(String ruangTujuan){
-        posisi.setCurrRuangan();
+    public void moveToRoom(Ruangan ruangTujuan){
+        posisi.setCurrRuangan(ruangTujuan);
     }
 
     public void lihatInventory(){
@@ -168,8 +167,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void pasangBarang(String namaBarang, int x, int y){
-        NonMakanan barang = new NonMakanan(namaBarang);
-        barang.setPosisi(new Point(x, y));
+        int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
+        if (inventory.containsKey(namaBarang)){
+            NonMakanan barang = new NonMakanan(namaBarang);
+            barang.setPosisi(new Point(x, y));
+            inventory.put(namaBarang, currentQuantity - 1);
+            if (currentQuantity - 1 == 0) {
+                inventory.remove(namaMakanan);
+        }
         // ngurangin barang dari inventory, kalo 0 dihapus dr invnt
     }
 
@@ -212,6 +217,10 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             }
         });
         t.start();
+        // set waktu
+        // int currentTime
+        // cek makan
+        // cek tidur
     }
 
 
