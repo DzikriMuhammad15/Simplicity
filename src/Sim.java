@@ -147,7 +147,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 /* ------------------------------- AKSI PASIF ----------------------------------- */
     public void moveToRoom(String ruangTujuan){
-
+        posisi.setCurrRuangan();
     }
 
     public void lihatInventory(){
@@ -280,11 +280,25 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void masak(Makanan makanan){
-
+        ArrayList<String> arrayOfBahanMakanan = makanan.getArrayOfBahanMakanan();
+        for (String bahan : arrayOfBahanMakanan) {
+            int jumlah = inventory.getOrDefault(bahan, 0);
+            if (jumlah <= 0) {
+                System.out.println("Bahan makanan " + bahan + " tidak tersedia dalam inventory. Pilih menu yang lain!");
+                return; // keluar dari method masak jika bahan tidak tersedia
+            }
+        }
+        for (String bahan : bahanMakanan) {
+            int jumlah = inventory.get(bahan);
+            inventory.put(bahan, jumlah - 1);
+        }
+        int jumlahMakananAwal = inventory.get(makanan.getNama());
+        inventory.put(makanan.getNama(), jumlahMakananAwal+1);
     }
 
     public void berkunjung(Rumah rumahSim){
-
+        posisi.setCurrRumah(rumahSim);
+        // posisi.setCurrRuangan();
     }
 
     public void buangAir(){
