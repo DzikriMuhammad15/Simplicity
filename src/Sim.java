@@ -237,7 +237,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             }
         });
         t.start();
-        cekTidurdanBuangAir(waktu);
+        cekTidurdanBuangAir(waktu); // cek tidur dan buang air udah sekalian update waktu world
     }
 
 
