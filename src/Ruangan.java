@@ -167,7 +167,9 @@ public class Ruangan {
         System.out.println("9 : Laptop");
     }
 
-    public void rotate(Barang barang, int degree) {
+    public void rotate(Barang barang, int derajat) {
+        int degree;
+        degree = derajat % 360;
         // konstanta
         int sin90;
         int sin180;

@@ -1,73 +1,79 @@
 import java.util.ArrayList;
 
-public class World{
+public class World {
     private int panjang = 64;
     private int lebar = 64;
     private int hari = 0;
-    private int waktu=0;
-    private ArrayList<Sim>  ArrSim = new ArrayList<>(0);
+    private int waktu = 0;
+    private ArrayList<Sim> ArrSim = new ArrayList<>(0);
     private static World instance = new World();
-    
-    //konstruktor world
-    private World(){}
+    private Object lock = new Object();
 
-    //getter world
-    static World getInstance(){
+    // konstruktor world
+    private World() {
+    }
+
+    // getter world
+    static World getInstance() {
         return instance;
     }
 
-    //getter panjang
-    public int getPanjang(){
-        return panjang;
-    }    
+    public Object getLock() {
+        return this.lock;
+    }
 
-    //getter lebar
-    public int getLebar(){
+    // getter panjang
+    public int getPanjang() {
+        return panjang;
+    }
+
+    // getter lebar
+    public int getLebar() {
         return lebar;
     }
 
-    //getter hari
-    public int getHari(){
+    // getter hari
+    public int getHari() {
         return hari;
     }
 
-    //getter waktu
-    public int getWaktu(){
+    // getter waktu
+    public int getWaktu() {
         return waktu;
     }
 
-    //setter panjang
-    public void setPanjang(int panjang){
-        this.panjang=panjang;
-    }    
-
-    //setter lebar
-    public void setLebar(int lebar){
-        this.lebar=lebar;
+    // setter panjang
+    public void setPanjang(int panjang) {
+        this.panjang = panjang;
     }
 
-    //setter hari
-    public void setHari(int hari){
-        this.hari=hari;
+    // setter lebar
+    public void setLebar(int lebar) {
+        this.lebar = lebar;
     }
 
-
-    //setter waktu
-    public void setWaktu(int waktu){
-        this.waktu=waktu;
+    // setter hari
+    public void setHari(int hari) {
+        this.hari = hari;
     }
 
-    //getter arraylist
-    public ArrayList<Sim> getArrSim(){
+    // setter waktu
+    public void setWaktu(int waktu) {
+        this.waktu = waktu;
+    }
+
+    // getter arraylist
+    public ArrayList<Sim> getArrSim() {
         return ArrSim;
     }
 
-    //getter untuk mendapatkan sim yang memiliki rumah yang sedang dikunjungi sim saat ini
-    public Sim getSimOwnRumah(Rumah rumah){
-        Sim sim2=null;
-        for (Sim i:ArrSim){
-            if (i.getRumah().equals(rumah)){
-                sim2=i;
+    // getter untuk mendapatkan sim yang memiliki rumah yang sedang dikunjungi sim
+    // saat ini
+    public Sim getSimOwnRumah(Rumah rumah) {
+        Sim sim2 = null;
+        for (Sim i : ArrSim) {
+            if (i.getRumah().equals(rumah)) {
+                sim2 = i;
             }
         }
         return sim2;
