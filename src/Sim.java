@@ -141,7 +141,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void upgradeRumah(String ruanganBaru, String posisi){
-        
+        TimerRumah timerRumah = new TimerRumah(this.sim, ruanganBaru, posisi.getCurrRuangan(), posisi);
+        timerRumah.start();
     }
     public void beliBarang(String namaBarang){
         // if barang apa aja, kurangi uang, masuk ke onDelivery
@@ -200,6 +201,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void kerja(int waktu){
         // thread nya
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         Thread t = new Thread(new Runnable(){
             public void run(){
                try {
@@ -225,6 +228,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 
     public void olahraga(int waktu){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -253,6 +258,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void makan(Makanan makanan){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
@@ -270,6 +277,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void makan(BahanMakanan bahanMakanan){
+        World world = World.getInstance();
+        int waktuMakanAwal = world.getWaktu();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         String namaBahanMakanan = bahanMakanan.getNama();
         int currentQuantity = inventory.getOrDefault(namaBahanMakanan, 0);
@@ -288,10 +297,13 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     
 
     public void tidur(int waktu){
-
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
     }
 
     public void masak(Makanan makanan){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         int moodAwal = kesejahteraan.getMood();
         int waktuMemasak = 1.5*(makanan.getKekenyangan());
         ArrayList<String> arrayOfBahanMakanan = makanan.getArrayOfBahanMakanan();
@@ -313,6 +325,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void berkunjung(Rumah rumahSim){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         int x1 = posisi.getX();
         int y1 = posisi.getY();
         int x2 = rumahSim.getLokasi().getX();
@@ -339,12 +353,16 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void nontonTV(int waktu){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         //thread
         int moodAwal = kesejahteraan.getMood();
         kesejahteraan.setMood(moodAwal+5);
     }
 
     public void ngoding(int waktu, String bahasaProgram){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         //thread
         if (bahasaProgram == "Java"){
 
@@ -358,6 +376,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void dengerMusik(int waktu, String genre){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
         if (genre.equals("Rnb")){
 
         }
@@ -368,7 +388,10 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void mainGame(int waktu){
+        World world = World.getInstance();
+        int currentTime = world.getWaktu();
 
     }
 
+}
 }
