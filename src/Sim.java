@@ -12,6 +12,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private String status;
     private Posisi posisi;
     private int waktuMakanAwal;
+    private int waktuTidurAwal;
 
 
 /* -------------------KONSTRUKTOR------------------- */
@@ -123,6 +124,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void changePekerjaan(Pekerjaan kerjaBaru){
         this.pekerjaan = kerjaBaru;
     }
+    public void setWaktuTidurAwal(int waktuTidurAwal){
+        this.waktuTidurAwal = waktuTidurAwal;
+    }
     
 /* ----------------------GO TO OBJECT---------------------------- */
    
@@ -196,13 +200,26 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int moodAwal = otherSim.getKesejahteraan().getMood();
         otherSim.getKesejahteraan().setMood(moodAwal+10);
     }
+    public void cekTidurdanBuangAir(int waktu){
+        World world = World.getInstance();
+        int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
+        world.setWaktu(currentTime);
+        if (currentTime-waktuMakanAwal >= 240){
+            kesejahteraan.setKesehatan(kesehatanAwal-5);
+            kesejahteraan.setMood(moodAwal-5);
+        }
+        if (currentTime-waktuTidurAwal >= 600){
+            kesejahteraan.setKesehatan(kesehatanAwal-5);
+            kesejahteraan.setMood(moodAwal-5);
+        }
+    }
 
 /* --------------------------------AKSI AKTIF ------------------------------------ */
 
     public void kerja(int waktu){
         // thread nya
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
+        int kesehatanAwal = kesejahteraan.getKesehatan();
+        int moodAwal = kesejahteraan.getMood();
         Thread t = new Thread(new Runnable(){
             public void run(){
                try {
@@ -220,10 +237,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             }
         });
         t.start();
-        // set waktu
-        // int currentTime
-        // cek makan
-        // cek tidur
+        cekTidurdanBuangAir(waktu);
     }
 
 
@@ -255,6 +269,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             }
         });
         t.start();
+        cekTidurdanBuangAir(waktu);
     }
 
     public void makan(Makanan makanan){
@@ -298,7 +313,10 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void tidur(int waktu){
         World world = World.getInstance();
-        int currentTime = world.getWaktu();
+        int currentTime = world.getHari()*720 + world.getWaktu();
+        setWaktuTidurAwal(currentTime);
+
+        cekTidurdanBuangAir(waktu);
     }
 
     public void masak(Makanan makanan){
@@ -322,6 +340,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int jumlahMakananAwal = inventory.get(makanan.getNama());
         inventory.put(makanan.getNama(), jumlahMakananAwal+1);
         kesejahteraan.setMood(moodAwal+10);
+
+        cekTidurdanBuangAir(waktuMemasak);
     }
 
     public void berkunjung(Rumah rumahSim){
@@ -333,7 +353,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int y2 = rumahSim.getLokasi().getY();
         int waktu = Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
         posisi.setCurrRumah(rumahSim);
-        // posisi.setCurrRuangan();
+        posisi.setCurrRuangan(rumahSim.getRuangan("ruangUtama"));
+        cekTidurdanBuangAir(waktu);
     }
 
     public void buangAir(){
@@ -358,6 +379,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         //thread
         int moodAwal = kesejahteraan.getMood();
         kesejahteraan.setMood(moodAwal+5);
+        cekTidurdanBuangAir(waktu);
     }
 
     public void ngoding(int waktu, String bahasaProgram){
@@ -373,6 +395,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         else if (bahasaProgram == "Python"){
 
         }
+        cekTidurdanBuangAir(waktu);
     }
 
     public void dengerMusik(int waktu, String genre){
@@ -384,13 +407,16 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         else if (genre.equals("Pop")){
 
         }
-        else if (genre.equals("Rock"))
+        else if (genre.equals("Rock")){
+
+        }
+        cekTidurdanBuangAir(waktu);
     }
 
     public void mainGame(int waktu){
         World world = World.getInstance();
         int currentTime = world.getWaktu();
-
+        cekTidurdanBuangAir(waktu);
     }
 
 }
