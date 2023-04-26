@@ -3,6 +3,7 @@ public class TimerRumah extends Thread {
     private String namaRuangan;
     private Ruangan ruanganSekarang;
     private String lokasi;
+    private Object lock = World.getInstance().getLock();
 
     public TimerRumah(Sim sim, String namaRuangan, Ruangan ruanganSekarang, String lokasi) {
         this.sim = sim;
@@ -12,22 +13,18 @@ public class TimerRumah extends Thread {
     }
 
     public void run() {
-        int waktuSelesai = World.getHari() * 12 + World.getWaktu() + 6;
+        World instance = World.getInstance();
+        int waktuSelesai = instance.getHari() * 12 + instance.getWaktu() + 6;
         boolean muter = true;
-        while (muter) {
-            if (World.getHari() * 12 + World.getWaktu() >= waktuSelesai) {
-                muter = false;
-            }
-        }
-
-        // baru tambahin ruangan ke dalam rumah
         Ruangan ruangBaru = new Ruangan(namaRuangan);
+        // masukin dulu ke denah sehingga saat proses
         if (lokasi.equals("kanan")) {
             if (ruanganSekarang.getRuangKanan() == null) {
                 ruanganSekarang.setRuangKanan(ruangBaru);
                 ruangBaru.setRuangKiri(ruanganSekarang);
             } else {
                 System.out.println("Di sebelah kanan sudah ada ruangan");
+                return;
             }
 
         } else if (lokasi.equals("kiri")) {
@@ -36,6 +33,7 @@ public class TimerRumah extends Thread {
                 ruangBaru.setRuangKanan(ruanganSekarang);
             } else {
                 System.out.println("Di sebelah kiri sudah ada ruangan");
+                return;
             }
         } else if (lokasi.equals("atas")) {
             if (ruanganSekarang.getRuangAtas() == null) {
@@ -43,6 +41,7 @@ public class TimerRumah extends Thread {
                 ruangBaru.setRuangBawah(ruanganSekarang);
             } else {
                 System.out.println("Di atas sudah ada ruangan");
+                return;
             }
         } else if (lokasi.equals("bawah")) {
             if (ruanganSekarang.getRuangBawah() == null) {
@@ -50,8 +49,22 @@ public class TimerRumah extends Thread {
                 ruangBaru.setRuangAtas(ruanganSekarang);
             } else {
                 System.out.println("Di bawah sudah ada ruangan");
+                return;
             }
         }
+        while (muter) {
+            try {
+                lock.wait();
+            } catch (InterruptedException e) {
+                System.err.println(e);
+            }
+            // mengecek jam
+            if (instance.getHari() * 12 + instance.getWaktu() >= waktuSelesai) {
+                muter = false;
+            }
+        }
+
+        // baru tambahin ruangan ke dalam rumah
         this.sim.getRumah().addRuangan(ruangBaru);
     }
 
