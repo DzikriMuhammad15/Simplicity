@@ -145,9 +145,10 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void upgradeRumah(String ruanganBaru, String posisi){
-        TimerRumah timerRumah = new TimerRumah(this.sim, ruanganBaru, posisi.getCurrRuangan(), posisi);
-        timerRumah.start();
+    //     TimerRumah timerRumah = new TimerRumah(this.sim, ruanganBaru, this.posisi.getCurrRuangan(), posisi);
+    //     timerRumah.start();
     }
+
     public void beliBarang(String namaBarang){
         // if barang apa aja, kurangi uang, masuk ke onDelivery
         // waktu diinisiasi barangnya (dr nama barang) tar inisiasinya barang atau nonmakanan/bahanmakanan? kan beda tuch
@@ -201,17 +202,18 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int moodAwal = otherSim.getKesejahteraan().getMood();
         otherSim.getKesejahteraan().setMood(moodAwal+10);
     }
+
     public void cekTidurdanBuangAir(int waktu){
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
         world.setWaktu(currentTime);
         if (currentTime-waktuMakanAwal >= 240){
-            kesejahteraan.setKesehatan(kesehatanAwal-5);
-            kesejahteraan.setMood(moodAwal-5);
+            kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
+            kesejahteraan.setMood(kesejahteraan.getMood()-5);
         }
         if (currentTime-waktuTidurAwal >= 600){
-            kesejahteraan.setKesehatan(kesehatanAwal-5);
-            kesejahteraan.setMood(moodAwal-5);
+            kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
+            kesejahteraan.setMood(kesejahteraan.getMood()-5);
         }
     }
 
@@ -250,7 +252,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                lock.lock(); // Kunci sumber daya
+                //lock.lock(); // Kunci sumber daya
                 try {
                     int count = waktu / 20; // Hitung jumlah iterasi yang diperlukan
                     for (int i = 0; i < count; i++) {
@@ -267,7 +269,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                         }
                     }
                 } finally {
-                    lock.unlock(); // Lepaskan kunci sumber daya
+                    //lock.unlock(); // Lepaskan kunci sumber daya
                 }
             }
         });
@@ -326,7 +328,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentTime = world.getWaktu();
         int moodAwal = kesejahteraan.getMood();
-        int waktuMemasak = 1.5*(makanan.getKekenyangan());
+        int waktuMemasak = (int) (1.5*(makanan.getKekenyangan()));
         ArrayList<String> arrayOfBahanMakanan = makanan.getArrayOfBahanMakanan();
         for (String bahan : arrayOfBahanMakanan) {
             int jumlah = inventory.getOrDefault(bahan, 0);
@@ -354,7 +356,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int y1 = posisi.getCurrRumah().getLokasi().getY();
         int x2 = rumahSim.getLokasi().getX();
         int y2 = rumahSim.getLokasi().getY();
-        int waktu = Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
+        int waktu = (int)Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
         posisi.setCurrRumah(rumahSim);
         posisi.setCurrRuangan(rumahSim.getRuangan("ruangUtama"));
         cekTidurdanBuangAir(waktu);
