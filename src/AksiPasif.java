@@ -1,5 +1,5 @@
 public interface AksiPasif{
-    public void moveToRoom(String ruangTujuan);
+    public void moveToRoom(Ruangan ruangTujuan);
 
     public void lihatInventory();
 

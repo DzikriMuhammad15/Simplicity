@@ -6,7 +6,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private Pekerjaan pekerjaan;
     private int uang;
     private Rumah rumah;
-    private Map<String, Integer> inventory = new HashMap<>();
+    private HashMap<String, Integer> inventory = new HashMap<>();
     private Barang[] onDelivery;
     private Kesejahteraan kesejahteraan;
     private String status;
@@ -172,22 +172,23 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void pasangBarang(String namaBarang, int x, int y){
-        int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
+        int currentQuantity = inventory.getOrDefault(namaBarang, 0);
         if (inventory.containsKey(namaBarang)){
             NonMakanan barang = new NonMakanan(namaBarang);
             barang.setPosisi(new Point(x, y));
             inventory.put(namaBarang, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
-                inventory.remove(namaMakanan);
-        }
+                inventory.remove(namaBarang);
+            }
         // ngurangin barang dari inventory, kalo 0 dihapus dr invnt
+        }
     }
 
     public void lihatWaktu(){
         if (posisi.getCurrBarang().getNama()=="Jam"){
             World world = World.getInstance();
             int waktu = world.getWaktu();
-            System.out.println("Waktu saat ini adalah : ", +waktu);
+            System.out.println("Waktu saat ini adalah : " +waktu);
         }
     }
 
@@ -222,7 +223,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int moodAwal = kesejahteraan.getMood();
         Thread t = new Thread(new Runnable(){
             public void run(){
-               try {
+                try {
                     int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
                     for (int i = 0; i < count; i++) {
                         uang += pekerjaan.getGajiHarian();
@@ -233,7 +234,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                             e.printStackTrace();
                         }
                     }
-                } 
+                }catch(Exception e){
+                    //Silakan isi catchnya yang benar
+                }    
             }
         });
         t.start();
@@ -280,14 +283,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
 
         if (inventory.containsKey(namaMakanan) || currentQuantity>0){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.kekenyangan())
+            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
             inventory.put(namaMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
             }
         }
         else{
-            System.out.println("Makanan habis atau tidak tersedia.")
+            System.out.println("Makanan habis atau tidak tersedia.");
         }
     }
 
@@ -299,14 +302,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int currentQuantity = inventory.getOrDefault(namaBahanMakanan, 0);
 
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
-            kesejahteraan.setKekenyangan(kekenyanganAwal+bahanMakanan.kekenyangan())
+            kesejahteraan.setKekenyangan(kekenyanganAwal+bahanMakanan.getKekenyangan());
             inventory.put(namaBahanMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaBahanMakanan);
             }
         }
         else{
-            System.out.println("Bahan makanan habis atau tidak tersedia.")
+            System.out.println("Bahan makanan habis atau tidak tersedia.");
         }
     }
     
@@ -333,7 +336,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             }
         }
         //thread
-        for (String bahan : bahanMakanan) {
+        for (String bahan : arrayOfBahanMakanan) {
             int jumlah = inventory.get(bahan);
             inventory.put(bahan, jumlah - 1);
         }
@@ -347,8 +350,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void berkunjung(Rumah rumahSim){
         World world = World.getInstance();
         int currentTime = world.getWaktu();
-        int x1 = posisi.getX();
-        int y1 = posisi.getY();
+        int x1 = posisi.getCurrRumah().getLokasi().getX();
+        int y1 = posisi.getCurrRumah().getLokasi().getY();
         int x2 = rumahSim.getLokasi().getX();
         int y2 = rumahSim.getLokasi().getY();
         int waktu = Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
@@ -362,7 +365,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int waktuBuangAir = world.getWaktu();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         int moodAwal = kesejahteraan.getMood();
-        int kesehatanAwal = kesehatanAwal.getKesehatan();
+        int kesehatanAwal = kesejahteraan.getKesehatan();
         if (waktuBuangAir-waktuMakanAwal <= 240000){
             kesejahteraan.setKekenyangan(kekenyanganAwal-20);
             kesejahteraan.setMood(moodAwal+10);
@@ -419,5 +422,4 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         cekTidurdanBuangAir(waktu);
     }
 
-}
 }
