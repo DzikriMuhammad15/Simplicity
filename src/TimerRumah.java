@@ -14,7 +14,7 @@ public class TimerRumah extends Thread {
 
     public void run() {
         World instance = World.getInstance();
-        int waktuSelesai = instance.getHari() * 12 + instance.getWaktu() + 6;
+        int waktuSelesai = instance.getHari() * 720 + instance.getWaktu() + 1080;
         boolean muter = true;
         Ruangan ruangBaru = new Ruangan(namaRuangan);
         // masukin dulu ke denah sehingga saat proses
@@ -53,10 +53,12 @@ public class TimerRumah extends Thread {
             }
         }
         while (muter) {
-            try {
-                lock.wait();
-            } catch (InterruptedException e) {
-                System.err.println(e);
+            synchronized (lock) {
+                try {
+                    lock.wait();
+                } catch (InterruptedException e) {
+                    System.err.println(e);
+                }
             }
             // mengecek jam
             if (instance.getHari() * 12 + instance.getWaktu() >= waktuSelesai) {
