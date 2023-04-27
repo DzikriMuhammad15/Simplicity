@@ -44,7 +44,16 @@ public class NonMakanan extends Barang {
             panjang = 1;
             lebar = 1;
             harga = 10;
+        } else if (namaNonMakanan.equals("TV")) {
+            panjang = 2;
+            lebar = 1;
+            harga = 100;
+        } else if (namaNonMakanan.equals("Laptop")) {
+            panjang = 1;
+            lebar = 1;
+            harga = 200;
         }
+
         Random rand = new Random();
         shippingTime = rand.nextInt(10) + 1;
     }
