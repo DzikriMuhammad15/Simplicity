@@ -129,6 +129,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void setWaktuTidurAwal(int waktuTidurAwal){
         this.waktuTidurAwal = waktuTidurAwal;
     }
+    public void setWaktuMakanAwal(int waktuMakanAwal){
+        this.waktuMakanAwal = waktuMakanAwal;
+    }
     
 /* ----------------------GO TO OBJECT---------------------------- */
    
@@ -283,22 +286,28 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     } 
 
     public void makan(Makanan makanan){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
+        lock.lock();
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
 
         if (inventory.containsKey(namaMakanan) || currentQuantity>0){
+            try {
+                Thread.sleep(30000); // Tunggu selama 20 detik
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
             inventory.put(namaMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
             }
+            cekTidurdanBuangAir(30);
         }
         else{
             System.out.println("Makanan habis atau tidak tersedia.");
         }
+        lock.unlock();
     }
 
     public void makan(BahanMakanan bahanMakanan){
@@ -362,17 +371,20 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         synchronized(l){
             l.notifyAll();
         }
-        lock.unlock()
+        lock.unlock();
     }
 
     public void berkunjung(Rumah rumahSim){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
         int x1 = posisi.getCurrRumah().getLokasi().getX();
         int y1 = posisi.getCurrRumah().getLokasi().getY();
         int x2 = rumahSim.getLokasi().getX();
         int y2 = rumahSim.getLokasi().getY();
         int waktu = (int)Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
+        try {
+            Thread.sleep(waktu);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         posisi.setCurrRumah(rumahSim);
         posisi.setCurrRuangan(rumahSim.getRuangan("ruangUtama"));
         cekTidurdanBuangAir(waktu);
@@ -395,48 +407,69 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void nontonTV(int waktu){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
-        //thread
+        try {
+            Thread.sleep(waktu*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         int moodAwal = kesejahteraan.getMood();
         kesejahteraan.setMood(moodAwal+5);
         cekTidurdanBuangAir(waktu);
     }
 
     public void ngoding(int waktu, String bahasaProgram){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
         //thread
-        if (bahasaProgram == "Java"){
+        if ((bahasaProgram == "Java") || (bahasaProgram == "C") || (bahasaProgram == "C++") || (bahasaProgram == "Python")){
+            try {
+                Thread.sleep(waktu*1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            if (bahasaProgram.equals("Java")){
 
+            }
+            else if(bahasaProgram.equals("C")){
+
+            }
+            else if (bahasaProgram.equal("Python")){
+
+            }
+            else if (bahasaProgram.equal("C++")){
+
+            }
         }
-        else if(bahasaProgram == "C"){
-
-        }
-        else if (bahasaProgram == "Python"){
-
+        else{
+            System.out.println("Bahasa pemrograman tersebut tidak tersedia");
+            return;
         }
         cekTidurdanBuangAir(waktu);
     }
 
     public void dengerMusik(int waktu, String genre){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
-        if (genre.equals("Rnb")){
-
+        int moodAwal = kesejahteraan.getMood();
+        if (genre.equals("Indie")){
+            kesejahteraan.setMood(moodAwal+1);
         }
         else if (genre.equals("Pop")){
-
+            kesejahteraan.setMood(moodAwal+5);
         }
-        else if (genre.equals("Rock")){
-
+        else if (genre.equals("Reggae")){
+            kesejahteraan.setMood(moodAwal+5);
+        }
+        else if (genre.equals("Dangdut")){
+            kesejahteraan.setMood(moodAwal+5);
+        }
+        else if (genre.equals("K-Pop")){
+            kesejahteraan.setMood(moodAwal+5);
+        }
+        else if (genre.equals("WOTA")){
+            kesejahteraan.setMood(moodAwal+10);
         }
         cekTidurdanBuangAir(waktu);
     }
 
     public void mainGame(int waktu){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
+
         cekTidurdanBuangAir(waktu);
     }
 
