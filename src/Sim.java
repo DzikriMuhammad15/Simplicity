@@ -13,6 +13,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private Posisi posisi;
     private int waktuMakanAwal;
     private int waktuTidurAwal;
+    private int waktuKerja;
+    private int hariResign = -9999;
     private Object l = World.getInstance().getLock();
     private ReentrantLock lock = new ReentrantLock();
 
@@ -124,13 +126,26 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void changePekerjaan(Pekerjaan kerjaBaru){
-        this.pekerjaan = kerjaBaru;
+        if (waktuKerja >= 720){
+            this.uang = uang - ((kerjaBaru.getGajiHarian())/2);
+            this.pekerjaan = kerjaBaru;
+            this.waktuKerja = 0; // reset waktu kerja
+            World world = World.getInstance();
+            this.hariResign = world.getHari();
+        }
+        else{
+            System.out.println("Waktu kerja belum mencukupi");
+        }
     }
     public void setWaktuTidurAwal(int waktuTidurAwal){
         this.waktuTidurAwal = waktuTidurAwal;
     }
     public void setWaktuMakanAwal(int waktuMakanAwal){
         this.waktuMakanAwal = waktuMakanAwal;
+    }
+
+    public void setWaktuKerja(int waktuKerja){
+        this.waktuKerja = waktuKerja;
     }
     
 /* ----------------------GO TO OBJECT---------------------------- */
@@ -153,7 +168,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         if (this.uang < 1500) {
             System.out.println("Uang tidak mencukupi untuk melakukan upgrade rumah");
         } else {
-            TimerRumah timerRumah = new TimerRumah(this, ruanganBaru,
+            TimerRumah timerRumah = new TimerRumah(this.sim, ruanganBaru,
                     this.posisi.getCurrRuangan(), posisi);
             timerRumah.start();
         }
@@ -162,6 +177,133 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void beliBarang(String namaBarang){
         // if barang apa aja, kurangi uang, masuk ke onDelivery
         // waktu diinisiasi barangnya (dr nama barang) tar inisiasinya barang atau nonmakanan/bahanmakanan? kan beda tuch
+        if (namaBarang.equals("Kasur Single")) {
+            if (this.uang < 50) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Single"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Kasur Queen Size")) {
+            if (this.uang < 100) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Queen Size"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Kasur King Size")) {
+            if (this.uang < 150) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur King Size"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Toilet")) {
+            if (this.uang < 50) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Toilet"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Kompor Gas")) {
+            if (this.uang < 100) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Gas"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Kompor Listrik")) {
+            if (this.uang < 200) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Listrik"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Meja dan Kursi")) {
+            if (this.uang < 50) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Meja dan Kursi"), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Jam")) {
+            if (this.uang < 10) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("TV")) {
+            if (this.uang < 100) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBarang.equals("Laptop")) {
+            if (this.uang < 200) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        }else if (namaBahan.equals("Nasi")) {
+            if (this.uang < 5) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Kentang")) {
+            if (this.uang < 3) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Ayam")) {
+            if (this.uang < 10) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Sapi")) {
+            if (this.uang < 12) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Wortel")) {
+            if (this.uang < 2) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Bayam")) {
+            if (this.uang < 2) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Kacang")) {
+            if (this.uang < 2) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        } else if (namaBahan.equals("Susu")) {
+            if (this.uang < 2) {
+                System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
+            } else {
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                timerBarang.start();
+            }
+        }
     }
 
 
@@ -235,27 +377,32 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void kerja(int waktu){
         // thread nya
+        World world = World.getInstance();
+        int currentDay = world.getHari();
         if (waktu%120 == 0){
-            lock.lock();
-            int kekenyanganAwal = kesejahteraan.getKekenyangan();
-            int moodAwal = kesejahteraan.getMood();
-            int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
-            for (int i = 0; i < waktu; i+=30){
-                try {
-                    Thread.sleep(30000); // Tunggu selama 4 menit
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            if ((currentDay-hariResign) < 1){
+                lock.lock();
+                int kekenyanganAwal = kesejahteraan.getKekenyangan();
+                int moodAwal = kesejahteraan.getMood();
+                int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
+                for (int i = 0; i < waktu; i+=30){
+                    try {
+                        Thread.sleep(30000); // Tunggu selama 4 menit
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    kesejahteraan.setKekenyangan(kekenyanganAwal-10);
+                    kesejahteraan.setMood(moodAwal-10)
+                    if (i%240 == 0){
+                        this.uang = uang + pekerjaan.getGajiHarian();
+                    }
                 }
-                kesejahteraan.setKekenyangan(kekenyanganAwal-10);
-                kesejahteraan.setMood(moodAwal-10)
-                if (i%240 == 0){
-                    this.uang = uang + pekerjaan.getGajiHarian();
+                this.waktuKerja = waktuKerja + waktu;
+                lock.unlock();
+                cekTidurdanBuangAir(waktu);
+                synchronized(l){
+                    l.notifyAll();
                 }
-            }
-            lock.unlock();
-            cekTidurdanBuangAir(waktu);
-            synchronized(l){
-                l.notifyAll();
             } 
         }    
         else{
@@ -389,6 +536,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             System.out.println("Masukkan waktu minimal 3 menit dan kelipatan 4 menit");
         }
         lock.unlock();
+        }
     }
 
     public void masak(Makanan makanan){
