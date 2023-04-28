@@ -13,6 +13,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private Posisi posisi;
     private int waktuMakanAwal;
     private int waktuTidurAwal;
+    private Object l = World.getInstance().getLock();
 
 
 /* -------------------KONSTRUKTOR------------------- */
@@ -145,8 +146,13 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void upgradeRumah(String ruanganBaru, String posisi){
-    //     TimerRumah timerRumah = new TimerRumah(this.sim, ruanganBaru, this.posisi.getCurrRuangan(), posisi);
-    //     timerRumah.start();
+        if (this.uang < 1500) {
+            System.out.println("Uang tidak mencukupi untuk melakukan upgrade rumah");
+        } else {
+            TimerRumah timerRumah = new TimerRumah(this, ruanganBaru,
+                    this.posisi.getCurrRuangan(), posisi);
+            timerRumah.start();
+        }
     }
 
     public void beliBarang(String namaBarang){
