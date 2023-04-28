@@ -245,12 +245,15 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                     this.uang = uang + pekerjaan.getGajiHarian();
                 }
             }
-            cekTidurdanBuangAir(waktu); 
-            }    
-        }
+            cekTidurdanBuangAir(waktu);
+            synchronized(l){
+                l.notifyAll();
+            } 
+        }    
         else{
             System.out.println("Masukkan waktu dengan kelipatan 120!");
         }
+    }
 
 
     public void olahraga(int waktu){
@@ -261,14 +264,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 int kesehatanAwal = kesejahteraan.getKesehatan();
                 int kekenyanganAwal = kesejahteraan.getKekenyangan();
                 int moodAwal = kesejahteraan.getMood();
-                kesejahteraan.setKesehatan(kesehatanAwal+5);
-                kesejahteraan.setKekenyangan(kekenyanganAwal-5);
-                kesejahteraan.setMood(moodAwal+10);
                 try {
                     Thread.sleep(20000); // Tunggu selama 20 detik
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                kesejahteraan.setKesehatan(kesehatanAwal+5);
+                kesejahteraan.setKekenyangan(kekenyanganAwal-5);
+                kesejahteraan.setMood(moodAwal+10);
             }
         } finally {
             lock.unlock(); // Lepaskan kunci sumber daya
@@ -327,8 +330,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void masak(Makanan makanan){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
+        lock.lock();
         int moodAwal = kesejahteraan.getMood();
         int waktuMemasak = (int) (1.5*(makanan.getKekenyangan()));
         ArrayList<String> arrayOfBahanMakanan = makanan.getArrayOfBahanMakanan();
@@ -336,19 +338,31 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             int jumlah = inventory.getOrDefault(bahan, 0);
             if (jumlah <= 0) {
                 System.out.println("Bahan makanan " + bahan + " tidak tersedia dalam inventory. Pilih menu yang lain!");
+                lock.unlock();
                 return; // keluar dari method masak jika bahan tidak tersedia
             }
         }
         //thread
+        try {
+            Thread.sleep(waktuMemasak*1000); // Tunggu selama 20 detik
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         for (String bahan : arrayOfBahanMakanan) {
             int jumlah = inventory.get(bahan);
             inventory.put(bahan, jumlah - 1);
+            if (jumlah == 0){
+                inventory.remove(bahan);
+            }
         }
-        int jumlahMakananAwal = inventory.get(makanan.getNama());
+        int jumlahMakananAwal = inventory.getOrDefault(makanan.getNama(), 0);
         inventory.put(makanan.getNama(), jumlahMakananAwal+1);
         kesejahteraan.setMood(moodAwal+10);
-
         cekTidurdanBuangAir(waktuMemasak);
+        synchronized(l){
+            l.notifyAll();
+        }
+        lock.unlock()
     }
 
     public void berkunjung(Rumah rumahSim){
