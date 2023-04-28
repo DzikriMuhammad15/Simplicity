@@ -129,7 +129,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         if (waktuKerja >= 720){
             this.uang = uang - ((kerjaBaru.getGajiHarian())/2);
             this.pekerjaan = kerjaBaru;
-            this.waktuKerja = 0; // reset waktu kerja
+            setWaktuKerja(0); // reset waktu kerja
             World world = World.getInstance();
             this.hariResign = world.getHari();
         }
