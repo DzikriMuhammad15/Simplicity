@@ -62,6 +62,14 @@ public class World {
         this.waktu = waktu;
     }
 
+    public void addWaktu(int waktu){
+        if (this.waktu+waktu>720){
+            setHari((this.waktu+waktu)/720);
+            setWaktu((this.waktu+waktu)%720);
+        }else{
+            setWaktu(waktu);
+        }
+    }
     // getter arraylist
     public ArrayList<Sim> getArrSim() {
         return ArrSim;
