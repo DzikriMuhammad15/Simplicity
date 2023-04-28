@@ -380,7 +380,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentDay = world.getHari();
         if (waktu%120 == 0){
-            if ((currentDay-hariResign) < 1){
+            if ((currentDay-hariResign) >= 1){
                 lock.lock();
                 int kekenyanganAwal = kesejahteraan.getKekenyangan();
                 int moodAwal = kesejahteraan.getMood();
@@ -403,6 +403,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 synchronized(l){
                     l.notifyAll();
                 }
+            }
+            else{
+                System.out.println("Anda baru saja mengganti pekerjaan. Kerja bisa mulai dilakukan esok hari.")
             } 
         }    
         else{
