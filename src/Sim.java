@@ -220,10 +220,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         if (currentTime-waktuMakanAwal >= 240){
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
+            setWaktuMakanAwal(waktuMakanAwal+240);
+            // setWaktuMakanAwal(currentTime-(currentTime-waktuMakanAwal-240));
         }
         if (currentTime-waktuTidurAwal >= 600){
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
+            setWaktuTidurAwal(waktuTidurAwal+600);
+            // setWaktuTidurAwal(currentTime-(currentTime-waktuTidurAwal-600));
         }
     }
 
@@ -261,28 +265,33 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
 
     public void olahraga(int waktu){
-        lock.lock(); // Kunci sumber daya
-        try {
-            int count = waktu / 20; // Hitung jumlah iterasi yang diperlukan
-            for (int i = 0; i < count; i++) {
-                int kesehatanAwal = kesejahteraan.getKesehatan();
-                int kekenyanganAwal = kesejahteraan.getKekenyangan();
-                int moodAwal = kesejahteraan.getMood();
-                try {
-                    Thread.sleep(20000); // Tunggu selama 20 detik
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        if (waktu%20 == 0){
+            lock.lock(); // Kunci sumber daya
+            try {
+                int count = waktu / 20; // Hitung jumlah iterasi yang diperlukan
+                for (int i = 0; i < count; i++) {
+                    int kesehatanAwal = kesejahteraan.getKesehatan();
+                    int kekenyanganAwal = kesejahteraan.getKekenyangan();
+                    int moodAwal = kesejahteraan.getMood();
+                    try {
+                        Thread.sleep(20000); // Tunggu selama 20 detik
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    kesejahteraan.setKesehatan(kesehatanAwal+5);
+                    kesejahteraan.setKekenyangan(kekenyanganAwal-5);
+                    kesejahteraan.setMood(moodAwal+10);
                 }
-                kesejahteraan.setKesehatan(kesehatanAwal+5);
-                kesejahteraan.setKekenyangan(kekenyanganAwal-5);
-                kesejahteraan.setMood(moodAwal+10);
+            } finally {
+                lock.unlock(); // Lepaskan kunci sumber daya
             }
-        } finally {
-            lock.unlock(); // Lepaskan kunci sumber daya
+            cekTidurdanBuangAir(waktu);
+            synchronized(l){
+                l.notifyAll();
+            }
         }
-        cekTidurdanBuangAir(waktu);
-        synchronized(l){
-            l.notifyAll();
+        else{
+            System.out.println("Masukkan waktu dengan kelipatan 20!");
         }
     } 
 
@@ -328,7 +337,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
             try {
-                Thread.sleep(30000); // Tunggu selama 20 detik
+                Thread.sleep(30000); // Tunggu selama 30 detik
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -344,12 +353,12 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             return;
         }
         lock.unlock();
-        cekTidurdanBuangAir(waktu);
+        cekTidurdanBuangAir(30);
         synchronized(l){
             l.notifyAll();
         }
         World world = World.getInstance();
-        int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
+        int currentTime = world.getHari()*720 + world.getWaktu() + 30;
         setWaktuMakanAwal(currentTime);
     }
     
