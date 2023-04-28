@@ -15,12 +15,15 @@ public class JSONreader {
             //Read JSON file
             Object obj = jsonParser.parse(reader);
             JSONObject jsonobj = (JSONObject) obj;
-            world.setHari((int) jsonobj.get("hari"));
-            world.setWaktu((int) jsonobj.get("waktu"));
-            world.getLock() = (Object) jsonobj.get("lock");
-            JSONArray arrsim = (JSONArray) jsonobj.get("ArrSim")
-            for (int i=0;i<arrsim.length;i++){
-                world.getArrSim().add((Sim) readSim(arrsim.getJSONObject(i)));
+            String hari = jsonobj.get("Hari").toString();
+            world.setHari(Integer.parseInt(hari));
+            String waktu = jsonobj.get("waktu").toString();
+            world.setWaktu(Integer.parseInt(waktu));
+            
+            // world.getLock() = (Object) jsonobj.get("lock");
+            JSONArray arrsim = (JSONArray) jsonobj.get("ArrSim");
+            for (Object i:arrsim){
+                world.getArrSim().add((Sim) readSim((JSONObject)i));
             }
             
         } catch (FileNotFoundException e) {
@@ -33,7 +36,7 @@ public class JSONreader {
     }
 
     public Sim readSim(JSONObject jsonobj){
-        Sim sim1 = new Sim(jsonobj.get("nama"));
+        Sim sim1 = new Sim((String) jsonobj.get("nama"));
         sim1.setInventory(readInventory(jsonobj.get("inventory")));
         sim1.setKesejahteraan(readKesejahteraan(jsonobj.get("kesejahteraan")));
         sim1.setOnDelivery(readOnDelivery(jsonobj.get("on delivery")));
