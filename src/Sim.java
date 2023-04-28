@@ -7,13 +7,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     private int uang;
     private Rumah rumah;
     private HashMap<String, Integer> inventory = new HashMap<>();
-    private Barang[] onDelivery;
+    private ArrayList<Barang> onDelivery = new ArrayList<Barang>();
     private Kesejahteraan kesejahteraan;
     private String status;
     private Posisi posisi;
     private int waktuMakanAwal;
     private int waktuTidurAwal;
     private Object l = World.getInstance().getLock();
+    private ReentrantLock lock = new ReentrantLock();
 
 
 /* -------------------KONSTRUKTOR------------------- */
@@ -106,7 +107,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         this.inventory = inventory;
     }
 
-    public void setOnDelivery(Barang[] onDelivery){
+    public void setOnDelivery(ArrayList<Barang> onDelivery){
         this.onDelivery = onDelivery;
     }
 
@@ -227,61 +228,56 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void kerja(int waktu){
         // thread nya
-        int kesehatanAwal = kesejahteraan.getKesehatan();
-        int moodAwal = kesejahteraan.getMood();
-        Thread t = new Thread(new Runnable(){
-            public void run(){
+        if (waktu%120 == 0){
+            lock.lock();
+            int kekenyanganAwal = kesejahteraan.getKekenyangan();
+            int moodAwal = kesejahteraan.getMood();
+            int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
+            for (int i = 0; i < waktu; i+=30){
                 try {
-                    int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
-                    for (int i = 0; i < count; i++) {
-                        uang += pekerjaan.getGajiHarian();
-                        // cara ngubah waktunya gimana lgsung set tambah aja kh?
-                        try {
-                            Thread.sleep(240000); // Tunggu selama 4 menit
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }catch(Exception e){
-                    //Silakan isi catchnya yang benar
-                }    
+                    Thread.sleep(30000); // Tunggu selama 4 menit
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                kesejahteraan.setKekenyangan(kekenyanganAwal-10);
+                kesejahteraan.setMood(moodAwal-10)
+                if (i%240 == 0){
+                    this.uang = uang + pekerjaan.getGajiHarian();
+                }
             }
-        });
-        t.start();
-        cekTidurdanBuangAir(waktu); // cek tidur dan buang air udah sekalian update waktu world
-    }
+            cekTidurdanBuangAir(waktu); 
+            }    
+        }
+        else{
+            System.out.println("Masukkan waktu dengan kelipatan 120!");
+        }
 
 
     public void olahraga(int waktu){
-        World world = World.getInstance();
-        int currentTime = world.getWaktu();
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //lock.lock(); // Kunci sumber daya
+        lock.lock(); // Kunci sumber daya
+        try {
+            int count = waktu / 20; // Hitung jumlah iterasi yang diperlukan
+            for (int i = 0; i < count; i++) {
+                int kesehatanAwal = kesejahteraan.getKesehatan();
+                int kekenyanganAwal = kesejahteraan.getKekenyangan();
+                int moodAwal = kesejahteraan.getMood();
+                kesejahteraan.setKesehatan(kesehatanAwal+5);
+                kesejahteraan.setKekenyangan(kekenyanganAwal-5);
+                kesejahteraan.setMood(moodAwal+10);
                 try {
-                    int count = waktu / 20; // Hitung jumlah iterasi yang diperlukan
-                    for (int i = 0; i < count; i++) {
-                        int kesehatanAwal = kesejahteraan.getKesehatan();
-                        int kekenyanganAwal = kesejahteraan.getKekenyangan();
-                        int moodAwal = kesejahteraan.getMood();
-                        kesejahteraan.setKesehatan(kesehatanAwal+5);
-                        kesejahteraan.setKekenyangan(kekenyanganAwal-5);
-                        kesejahteraan.setMood(moodAwal+10);
-                        try {
-                            Thread.sleep(20000); // Tunggu selama 20 detik
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } finally {
-                    //lock.unlock(); // Lepaskan kunci sumber daya
+                    Thread.sleep(20000); // Tunggu selama 20 detik
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
             }
-        });
-        t.start();
+        } finally {
+            lock.unlock(); // Lepaskan kunci sumber daya
+        }
         cekTidurdanBuangAir(waktu);
-    }
+        synchronized(l){
+            l.notifyAll();
+        }
+    } 
 
     public void makan(Makanan makanan){
         World world = World.getInstance();
