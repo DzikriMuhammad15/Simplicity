@@ -3,6 +3,7 @@ import java.util.*;
 public class MenuGame {
     private Sim currSim;
     private World world = World.getInstance();
+    JSONWriter writer = new JSONWriter();
 
     Scanner scan = new Scanner(System.in);
     Random random = new Random();
@@ -153,6 +154,10 @@ public class MenuGame {
                 bercanda();
             }else if(aksi.equals("Bunuh Diri")){
                 bunuhDiri();
+            }else if(aksi.equals("save")){
+                System.out.println("Masukkan nama file!");
+                String namafile = scan.nextLine();
+                writer.writeWorld(world, namafile);
             }else{
                 System.out.println("Masukkan aksi yang sesuai");
             }

@@ -5,7 +5,7 @@ public interface AksiAktif{
 
     public void makan(Makanan makanan);
 
-    public void makan(Bahanmakanan bahanmakanan);
+    public void makan(BahanMakanan bahanmakanan);
 
     public void tidur(int waktu);
 
