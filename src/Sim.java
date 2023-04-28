@@ -385,7 +385,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
         world.setWaktu(currentTime);
-        if (currentTime-waktuMakanAwal >= 240 && sudahBuangAir==false){
+        if (currentTime-waktuMakanAwal >= 240 && sudahBuangAir==false && makanPertama==true){
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
             setWaktuMakanAwal(waktuMakanAwal+240);
@@ -493,6 +493,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             cekTidurdanBuangAir(30);
             cekKesejahteraan();
             sudahBuangAir = false;
+            makanPertama = true;
         }
         else{
             System.out.println("Makanan habis atau tidak tersedia.");
@@ -537,6 +538,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         synchronized(l){
             l.notifyAll();
         }
+        makanPertama = true;
         sudahBuangAir = false;
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu() + 30;
