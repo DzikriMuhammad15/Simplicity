@@ -64,7 +64,7 @@ public class World {
 
     public void addWaktu(int waktu){
         if (this.waktu+waktu>720){
-            setHari((this.waktu+waktu)/720);
+            setHari(hari+(this.waktu+waktu)/720);
             setWaktu((this.waktu+waktu)%720);
         }else{
             setWaktu(waktu);
