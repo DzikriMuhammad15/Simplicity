@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.locks.ReentrantLock;
 import java.lang.Math;
 
 public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
@@ -73,7 +74,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         return inventory;
     }
 
-    public Barang[] getOnDelivery(){
+    public ArrayList<Barang> getOnDelivery(){
         return onDelivery;
     }
 
@@ -273,56 +274,56 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        }else if (namaBahan.equals("Nasi")) {
+        }else if (namaBarang.equals("Nasi")) {
             if (this.uang < 5) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Kentang")) {
+        } else if (namaBarang.equals("Kentang")) {
             if (this.uang < 3) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Ayam")) {
+        } else if (namaBarang.equals("Ayam")) {
             if (this.uang < 10) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Sapi")) {
+        } else if (namaBarang.equals("Sapi")) {
             if (this.uang < 12) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Wortel")) {
+        } else if (namaBarang.equals("Wortel")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Bayam")) {
+        } else if (namaBarang.equals("Bayam")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Kacang")) {
+        } else if (namaBarang.equals("Kacang")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
                 timerBarang.start();
             }
-        } else if (namaBahan.equals("Susu")) {
+        } else if (namaBarang.equals("Susu")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
@@ -418,7 +419,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                         e.printStackTrace();
                     }
                     kesejahteraan.setKekenyangan(kekenyanganAwal-10);
-                    kesejahteraan.setMood(moodAwal-10)
+                    kesejahteraan.setMood(moodAwal-10);
                     if (i%240 == 0){
                         this.uang = uang + pekerjaan.getGajiHarian();
                     }
@@ -432,7 +433,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 }
             }
             else{
-                System.out.println("Anda baru saja mengganti pekerjaan. Kerja bisa mulai dilakukan esok hari.")
+                System.out.println("Anda baru saja mengganti pekerjaan. Kerja bisa mulai dilakukan esok hari.");
             } 
         }    
         else{
@@ -504,7 +505,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         synchronized(l){
             l.notifyAll();
         World world = World.getInstance();
-        int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
+        int currentTime = world.getHari()*720 + world.getWaktu() + 30;
         setWaktuMakanAwal(currentTime);
         }
     }
@@ -569,12 +570,13 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             synchronized(l){
                 l.notifyAll();
             }
+        }
         else{
             System.out.println("Masukkan waktu minimal 3 menit dan kelipatan 4 menit");
         }
         lock.unlock();
-        }
     }
+    
 
     public void masak(Makanan makanan){
         lock.lock();
@@ -622,7 +624,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int moodAwal = kesejahteraan.getMood();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         int waktu = (int)Math.sqrt(Math.pow((x2-x1),2)-Math.pow((y2-y1), 2));
-        int count = waktu/30
+        int count = waktu/30;
         try {
             Thread.sleep(waktu);
         } catch (InterruptedException e) {
@@ -652,8 +654,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         kesejahteraan.setKekenyangan(kekenyanganAwal-20);
         kesejahteraan.setMood(moodAwal+10);
         World world = World.getInstance();
-        int currentTime = (int) world.getHari()*720 + world.getWaktu + 10;
-        world.addWaktu(waktu);
+        int currentTime = (int) world.getHari()*720 + world.getWaktu() + 10;
+        world.addWaktu(10);
         sudahBuangAir = true;
         cekKesejahteraan();
         synchronized(l){
@@ -684,7 +686,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         lock.lock();
         if ((bahasaProgram == "Java") || (bahasaProgram == "C") || (bahasaProgram == "C++") || (bahasaProgram == "Python")){
             int kekenyanganAwal = kesejahteraan.getKekenyangan();
-            int moodAwal = kesejahteraan.getMood()
+            int moodAwal = kesejahteraan.getMood();
             try {
                 Thread.sleep(waktu*1000);
             } catch (InterruptedException e) {
@@ -698,11 +700,11 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 kesejahteraan.setKekenyangan(kekenyanganAwal-10);
                 kesejahteraan.setMood(moodAwal-5);
             }
-            else if (bahasaProgram.equal("Python")){
+            else if (bahasaProgram.equals("Python")){
                 kesejahteraan.setKekenyangan(kekenyanganAwal-10);
                 kesejahteraan.setMood(moodAwal+5);
             }
-            else if (bahasaProgram.equal("C++")){
+            else if (bahasaProgram.equals("C++")){
                 kesejahteraan.setKekenyangan(kekenyanganAwal-10);
                 kesejahteraan.setMood(moodAwal-5);
             }
@@ -780,5 +782,4 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         cekKesejahteraan();
         lock.unlock();
     }
-
 }
