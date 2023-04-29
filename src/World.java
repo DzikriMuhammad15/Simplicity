@@ -67,7 +67,7 @@ public class World {
             setHari(hari+(this.waktu+waktu)/720);
             setWaktu((this.waktu+waktu)%720);
         }else{
-            setWaktu(waktu);
+            setWaktu(this.waktu+waktu);
         }
     }
     // getter arraylist

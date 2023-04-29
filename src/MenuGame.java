@@ -3,7 +3,8 @@ import java.util.*;
 public class MenuGame {
     private Sim currSim;
     private World world = World.getInstance();
-    private JSONWriter writer = new JSONWriter();
+    // private JSONWriter writer = new JSONWriter();
+    private int simSpawn = -1;
 
     Scanner scan = new Scanner(System.in);
     Random random = new Random();
@@ -123,12 +124,15 @@ public class MenuGame {
                 while (i<world.getArrSim().size() && i<tetangga+1){
                     i++;
                 }
+                //whilenya masih perlu diitung
                 currSim.berkunjung(world.getArrSim().get(i).getRumah());
             }else if(aksi.equals("Beli Barang")){
                 System.out.println("Barang apa?");
+                //perlu ngeprint nomor barang biar input lebih valid
                 String barang = scan.nextLine();
                 currSim.beliBarang(barang);
                 //perlu handle di sim apakah pembelian berhasil atau gagal
+                //uang belum berkurang
             }else if(aksi.equals("Move Room")){
                 System.out.println("Silakan masukkan angka untuk ruangan yang dipilih");
                 for (int  i=0;i<currSim.getPosisi().getCurrRumah().getArrayOfRuangan().size();i++){
@@ -169,7 +173,7 @@ public class MenuGame {
                 if (no==1){
                     System.out.println("Masukkan nama file!");
                     String namafile = scan.nextLine();
-                    writer.writeWorld(world, namafile);
+                    // writer.writeWorld(world, namafile);
                 }
                 gameover=true;
             }else{
@@ -337,10 +341,15 @@ public class MenuGame {
     }
 
     public void addSim(){
-        System.out.println("Silakan masukkan nama lengkap Sim mu");
-        String nama = scan.nextLine();
-        Sim sim1 = new Sim(nama);
-        world.getArrSim().add(sim1);
+        if (simSpawn<world.getHari()){
+            System.out.println("Silakan masukkan nama lengkap Sim mu");
+            String nama = scan.nextLine();
+            Sim sim1 = new Sim(nama);
+            world.getArrSim().add(sim1);
+            simSpawn=world.getHari();
+        }else{
+            System.out.println("Belum dapat menspawn sim baru");
+        }
         //belum handle satu hari satu sim
     }
     
@@ -383,16 +392,25 @@ public class MenuGame {
 
     public void memasak(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 6).equals("Kompor")){
-            System.out.println("Memasak apa?");
-            String makanan = scan.nextLine();
             ArrayList<String> daftarmakanan = new ArrayList<>();
             daftarmakanan.add("Nasi Ayam");
             daftarmakanan.add("Nasi Kari");
             daftarmakanan.add("Susu Kacang");
             daftarmakanan.add("Tumis sayur");
             daftarmakanan.add("Bistik");
+            for (int i=0;i<daftarmakanan.size();i++){
+                System.out.println(i+1+". "+daftarmakanan.get(i));
+            }
+            System.out.println("masukkan no makanan?");
+            int noMakanan = Integer.parseInt(scan.nextLine());
+            String makanan = "Nasi Ayam";
+            for (int i=0;i<daftarmakanan.size();i++){
+                if (i==noMakanan-1){
+                    makanan = daftarmakanan.get(i);
+                }
+            }
             if (daftarmakanan.contains(makanan)){
-                // currSim.masak(makanan);
+                currSim.masak(new Makanan(makanan));
                 //di sim perlu menghandle ketersediaan bahan di inventory
             }else{
                 System.out.println("Barang tidak termasuk makanan yang dapat dimasak");
@@ -414,13 +432,14 @@ public class MenuGame {
     public void lihatWaktu(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 3).equals("Jam")){
             currSim.lihatWaktu();
+            //kurang hari dan meintnya belum diatur. 
         }else{
             System.out.println("Sim tidak berada di Jam");
         }
     }
 
     public void makan(){
-            System.out.printf("| %-10s | %-8s |%n", "makanan", "Jumlah");
+            System.out.printf("|%-1s| %-10s | %-8s |%n","no", "makanan", "Jumlah");
             System.out.println("|------------|----------|");
             ArrayList<String> daftarMakanan = new ArrayList<>();
             daftarMakanan.add("Nasi Ayam");
@@ -437,19 +456,37 @@ public class MenuGame {
             daftarMakanan.add("Kacang");
             daftarMakanan.add("Susu");
             // Loop over entries in the HashMap and print them in table format
+            int i=1;
             for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
                 if (daftarMakanan.contains(entry.getKey())){
-                    System.out.printf("| %-10s | %-8d |%n", entry.getKey(),entry.getValue());
+                    System.out.printf("| %-1d | %-10s | %-8d |%n", i,entry.getKey(),entry.getValue());
+                    i++;
                 }    
             }
-            String makanan = scan.nextLine();
-            for (int i=0;i<daftarMakanan.size();i++){
-                if (daftarMakanan.contains(makanan) && i<5){
-                    currSim.makan(new Makanan(makanan));
-                }else{
-                    currSim.makan(new BahanMakanan(makanan));
-                }
+            System.out.println("Masukkan nomor makanan");
+            Integer noMakanan = Integer.parseInt(scan.nextLine());
+            int j=1;
+            String namaMakanan = "Ayam";
+            int k=0;
+            for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
+                if (j==noMakanan){
+                    for (k=0;k<daftarMakanan.size();k++){
+                        if (daftarMakanan.get(k).equals(entry.getKey())){
+                            namaMakanan = entry.getKey();
+                            break;
+                        }
+                    } 
+                    break;
+                }else if (daftarMakanan.contains(entry.getKey())){
+                    j++;
+                }    
             }
+            if (k>=5){
+                currSim.makan(new Makanan(namaMakanan));
+            }else{
+                currSim.makan(new BahanMakanan(namaMakanan));
+            }
+            
     }
 
     

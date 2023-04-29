@@ -368,6 +368,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         if (posisi.getCurrBarang().getNama()=="Jam"){
             World world = World.getInstance();
             int waktu = world.getWaktu();
+            System.out.println("Ini adalah hari ke-"+world.getHari());
             System.out.println("Waktu saat ini adalah : " +waktu);
         }
     }
