@@ -140,6 +140,123 @@ public class Ruangan {
 
     }
 
+    public void moveBarang(Barang barang, int x, int y) {
+        int ukuranHorizontalBarang;
+        int ukuranVertikalBarang;
+
+        // cast dulu barang menjadi nonMakanan
+        if (barang instanceof NonMakanan) {
+            NonMakanan nonMakanan = (NonMakanan) barang;
+            ukuranHorizontalBarang = nonMakanan.getPanjang();
+            ukuranVertikalBarang = nonMakanan.getLebar();
+
+            // cek apakah tempat kosong
+
+            if (x + ukuranHorizontalBarang <= 6 && y + ukuranVertikalBarang <= 6) {
+                int i;
+                int j;
+                boolean valid = true;
+                for (i = y; i < y + ukuranVertikalBarang; i++) {
+                    for (j = x; j < x + ukuranHorizontalBarang; j++) {
+                        if (denahRuangan[i][j] != -1) {
+                            valid = false;
+                        }
+                    }
+                }
+
+                // setelah mengecek
+
+                if (valid) {
+                    // cek dulu barangnya apa
+                    int angka = 0;
+                    for (String s : daftarBarangFix) {
+                        if (barang.getNama().equals(s)) {
+                            break;
+                        }
+                        angka++;
+                    }
+
+                    // HAPUS DULU DI TEMPAT YANG DULUNYA
+                    int xLama;
+                    int yLama;
+                    int panjang;
+                    int lebar;
+                    int orientasi;
+                    int m;
+                    int n;
+
+                    NonMakanan non = (NonMakanan) barang;
+                    Point p = non.getPosisi();
+
+                    // cek setiap xLama dan yLama
+
+                    xLama = p.getX();
+                    yLama = p.getY();
+
+                    panjang = non.getPanjang();
+                    lebar = non.getLebar();
+
+                    orientasi = non.getOrientasi();
+
+                    // untuk orientasi yang berbeda
+                    if (orientasi == 90) {
+                        int temp;
+                        temp = panjang;
+                        panjang = lebar;
+                        lebar = temp;
+                    } else if (orientasi == 180) {
+                        panjang = -1 * panjang;
+                    } else if (orientasi == 270) {
+                        int temp;
+                        temp = panjang;
+                        panjang = lebar;
+                        lebar = -1 * temp;
+                    }
+
+                    // kujungi setiap titiknya lalu hapus
+                    if (panjang > 0 && lebar > 0) {
+                        for (m = yLama; m < yLama + lebar; m++) {
+                            for (n = xLama; n < xLama + panjang; n++) {
+                                this.denahRuangan[m][n] = -1;
+                            }
+                        }
+                    } else if (panjang < 0) {
+                        for (m = yLama; m < yLama + lebar; m++) {
+                            for (n = xLama; n > xLama + panjang; n--) {
+                                this.denahRuangan[m][n] = -1;
+                            }
+                        }
+                    } else if (lebar < 0) {
+                        for (m = yLama; m > lebar; m--) {
+                            for (n = xLama; n < xLama + panjang; n++) {
+                                this.denahRuangan[m][n] = -1;
+                            }
+                        }
+                    }
+
+                    // baru masukin ke denah
+
+                    int a;
+                    int b;
+                    for (a = y; a < y + ukuranVertikalBarang; a++) {
+                        for (b = x; b < x + ukuranHorizontalBarang; b++) {
+                            denahRuangan[a][b] = angka;
+                        }
+                    }
+
+                    // tambah titik ke dalam atribut NonMakanan
+
+                    nonMakanan.setPosisi(new Point(x, y));
+
+                } else {
+                    System.out.println("Sudah ada barang lain di posisi tersebut");
+                }
+            } else {
+                System.out.println("Melebihi ukuran ruangan");
+            }
+        }
+    }
+
     public void display() {
         int i;
         int j;
