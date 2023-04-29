@@ -195,7 +195,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         if (this.uang < 1500) {
             System.out.println("Uang tidak mencukupi untuk melakukan upgrade rumah");
         } else {
-            TimerRumah timerRumah = new TimerRumah(this.sim, ruanganBaru,
+            TimerRumah timerRumah = new TimerRumah(this, ruanganBaru,
                     this.posisi.getCurrRuangan(), posisi);
             timerRumah.start();
         }
@@ -208,126 +208,126 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             if (this.uang < 50) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Single"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Single"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Kasur Queen Size")) {
             if (this.uang < 100) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Queen Size"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Queen Size"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Kasur King Size")) {
             if (this.uang < 150) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur King Size"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur King Size"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Toilet")) {
             if (this.uang < 50) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Toilet"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Toilet"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Kompor Gas")) {
             if (this.uang < 100) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Gas"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Gas"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Kompor Listrik")) {
             if (this.uang < 200) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Listrik"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Listrik"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Meja dan Kursi")) {
             if (this.uang < 50) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Meja dan Kursi"), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan("Meja dan Kursi"), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Jam")) {
             if (this.uang < 10) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("TV")) {
             if (this.uang < 100) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Laptop")) {
             if (this.uang < 200) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this);
                 timerBarang.start();
             }
         }else if (namaBarang.equals("Nasi")) {
             if (this.uang < 5) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Kentang")) {
             if (this.uang < 3) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Ayam")) {
             if (this.uang < 10) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Sapi")) {
             if (this.uang < 12) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Wortel")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Bayam")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Kacang")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         } else if (namaBarang.equals("Susu")) {
             if (this.uang < 2) {
                 System.out.println("Uang tidak mencukupi untuk membeli " +namaBarang);
             } else {
-                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this.sim);
+                TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
             }
         }
