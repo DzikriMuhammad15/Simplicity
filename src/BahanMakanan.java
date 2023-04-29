@@ -1,6 +1,9 @@
+import java.util.Random;
+
 public class BahanMakanan extends Barang {
     private int kekenyangan;
     private int hargaBahan;
+    private int shippingTime;
 
     public BahanMakanan(String namaBahan) {
         super(namaBahan);
@@ -29,6 +32,16 @@ public class BahanMakanan extends Barang {
             kekenyangan = 1;
             hargaBahan = 2;
         }
+        Random rand = new Random();
+        shippingTime = rand.nextInt(10) + 1;
+    }
+
+    public int getShippingTime() {
+        return shippingTime;
+    }
+
+    public void setShippingTime(int shippingTime) {
+        this.shippingTime = shippingTime;
     }
 
     public int getHargaBahan() {

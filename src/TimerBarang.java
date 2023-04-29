@@ -2,15 +2,21 @@ import java.lang.*;
 
 public class TimerBarang extends Thread {
     private int sisaWaktu;
-    private NonMakanan nonMakanan; // ini adalah object yang dibelinya
+    private Barang nonMakanan; // ini adalah object yang dibelinya
     private Sim sim; // sim merupakan sim yang melakukan pembeliannya
     private Object lock = World.getInstance().getLock();
 
     // kosntruktor
-    public TimerBarang(NonMakanan nonMakanan, Sim sim) {
-        this.nonMakanan = nonMakanan;
+    public TimerBarang(Barang barang, Sim sim) {
+        this.nonMakanan = barang;
         this.sim = sim;
-        sisaWaktu = this.nonMakanan.getShippingTime();
+        if (nonMakanan instanceof NonMakanan) {
+            NonMakanan n = (NonMakanan) this.nonMakanan;
+            this.sisaWaktu = n.getShippingTime();
+        } else if (nonMakanan instanceof BahanMakanan) {
+            BahanMakanan bahan = (BahanMakanan) this.nonMakanan;
+            this.sisaWaktu = bahan.getShippingTime();
+        }
     }
 
     // run
