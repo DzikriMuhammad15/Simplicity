@@ -7,6 +7,7 @@ public class NonMakanan extends Barang {
     private int shippingTime;
     private Point posisi;
     private int orientasi;
+    private int waktuSelesai;
 
     public NonMakanan(String namaNonMakanan) {
         super(namaNonMakanan);
@@ -56,6 +57,15 @@ public class NonMakanan extends Barang {
 
         Random rand = new Random();
         shippingTime = rand.nextInt(10) + 1;
+        this.waktuSelesai = World.getInstance().getHari() * 720 + World.getInstance().getWaktu() + this.shippingTime;
+    }
+
+    public int getWaktuSelesai() {
+        return this.waktuSelesai;
+    }
+
+    public void setWaktuSelesai(int waktuSelesai) {
+        this.waktuSelesai = waktuSelesai;
     }
 
     public void setOrientasi(int orientasi) {

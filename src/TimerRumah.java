@@ -17,6 +17,7 @@ public class TimerRumah extends Thread {
         int waktuSelesai = instance.getHari() * 720 + instance.getWaktu() + 1080;
         boolean muter = true;
         Ruangan ruangBaru = new Ruangan(namaRuangan);
+        ruangBaru.setWaktuSelesai(waktuSelesai);
         // masukin dulu ke denah sehingga saat proses
         if (lokasi.equals("kanan")) {
             if (ruanganSekarang.getRuangKanan() == null) {

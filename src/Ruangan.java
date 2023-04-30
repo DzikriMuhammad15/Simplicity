@@ -11,6 +11,7 @@ public class Ruangan {
     private Ruangan ruangBawah = null;
     private Ruangan ruangKiri = null;
     private Ruangan ruangKanan = null;
+    private int waktuSelesai;
 
     // konstruktor
     public Ruangan(String namaRuangan) {
@@ -28,6 +29,14 @@ public class Ruangan {
     }
 
     // method-method
+    public int getWaktuSelesai() {
+        return this.waktuSelesai;
+    }
+
+    public void setWaktuSelesai(int waktuSelesai) {
+        this.waktuSelesai = waktuSelesai;
+    }
+
     public ArrayList<Barang> getBarangInRuangan() {
         return this.barangInRuangan;
     }

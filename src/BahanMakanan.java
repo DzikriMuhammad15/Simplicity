@@ -4,6 +4,7 @@ public class BahanMakanan extends Barang {
     private int kekenyangan;
     private int hargaBahan;
     private int shippingTime;
+    private int waktuSelesai;
 
     public BahanMakanan(String namaBahan) {
         super(namaBahan);
@@ -34,6 +35,15 @@ public class BahanMakanan extends Barang {
         }
         Random rand = new Random();
         shippingTime = rand.nextInt(10) + 1;
+        this.waktuSelesai = World.getInstance().getHari() * 720 + World.getInstance().getWaktu() + this.shippingTime;
+    }
+
+    public int getWaktuSelesai() {
+        return this.waktuSelesai;
+    }
+
+    public void setWaktuSelesai(int waktuSelesai) {
+        this.waktuSelesai = waktuSelesai;
     }
 
     public int getShippingTime() {
