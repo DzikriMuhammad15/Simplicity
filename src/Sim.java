@@ -210,6 +210,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Single"), this);
                 timerBarang.start();
+                this.uang = uang-50;
             }
         } else if (namaBarang.equals("Kasur Queen Size")) {
             if (this.uang < 100) {
@@ -217,6 +218,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur Queen Size"), this);
                 timerBarang.start();
+                this.uang = uang-100;
             }
         } else if (namaBarang.equals("Kasur King Size")) {
             if (this.uang < 150) {
@@ -224,6 +226,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kasur King Size"), this);
                 timerBarang.start();
+                this.uang = uang-150;
             }
         } else if (namaBarang.equals("Toilet")) {
             if (this.uang < 50) {
@@ -231,6 +234,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Toilet"), this);
                 timerBarang.start();
+                this.uang = uang-50;
             }
         } else if (namaBarang.equals("Kompor Gas")) {
             if (this.uang < 100) {
@@ -238,6 +242,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Gas"), this);
                 timerBarang.start();
+                this.uang = uang-100;
             }
         } else if (namaBarang.equals("Kompor Listrik")) {
             if (this.uang < 200) {
@@ -245,6 +250,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Kompor Listrik"), this);
                 timerBarang.start();
+                this.uang = uang-200;
             }
         } else if (namaBarang.equals("Meja dan Kursi")) {
             if (this.uang < 50) {
@@ -252,6 +258,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan("Meja dan Kursi"), this);
                 timerBarang.start();
+                this.uang = uang-50;
             }
         } else if (namaBarang.equals("Jam")) {
             if (this.uang < 10) {
@@ -259,6 +266,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 10;
             }
         } else if (namaBarang.equals("TV")) {
             if (this.uang < 100) {
@@ -266,6 +274,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 100;
             }
         } else if (namaBarang.equals("Laptop")) {
             if (this.uang < 200) {
@@ -273,6 +282,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new NonMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang-200;
             }
         }else if (namaBarang.equals("Nasi")) {
             if (this.uang < 5) {
@@ -280,6 +290,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 5;
             }
         } else if (namaBarang.equals("Kentang")) {
             if (this.uang < 3) {
@@ -287,6 +298,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 3;
             }
         } else if (namaBarang.equals("Ayam")) {
             if (this.uang < 10) {
@@ -294,6 +306,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 10;
             }
         } else if (namaBarang.equals("Sapi")) {
             if (this.uang < 12) {
@@ -301,6 +314,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 12;
             }
         } else if (namaBarang.equals("Wortel")) {
             if (this.uang < 2) {
@@ -308,6 +322,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 2;
             }
         } else if (namaBarang.equals("Bayam")) {
             if (this.uang < 2) {
@@ -315,6 +330,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 2;
             }
         } else if (namaBarang.equals("Kacang")) {
             if (this.uang < 2) {
@@ -322,6 +338,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 2;
             }
         } else if (namaBarang.equals("Susu")) {
             if (this.uang < 2) {
@@ -329,6 +346,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } else {
                 TimerBarang timerBarang = new TimerBarang(new BahanMakanan(namaBarang), this);
                 timerBarang.start();
+                this.uang = uang - 2;
             }
         }
     }
@@ -600,8 +618,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         }
         for (String bahan : arrayOfBahanMakanan) {
             int jumlah = inventory.get(bahan);
-            inventory.put(bahan, jumlah - 1);
-            if (jumlah == 0){
+            inventory.put(bahan, jumlah-1);
+            if (jumlah - 1 == 0){
                 inventory.remove(bahan);
             }
         }
