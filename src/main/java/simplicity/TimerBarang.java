@@ -5,6 +5,7 @@ public class TimerBarang extends Thread {
     private Barang nonMakanan; // ini adalah object yang dibelinya
     private Sim sim; // sim merupakan sim yang melakukan pembeliannya
     private Object lock = World.getInstance().getLock();
+    private int waktuBeres = -1;
 
     // kosntruktor
     public TimerBarang(Barang barang, Sim sim) {
@@ -19,6 +20,20 @@ public class TimerBarang extends Thread {
         }
     }
 
+    public TimerBarang(Barang barang, Sim sim, int waktuSelesai) {
+        // untuk load
+        this.nonMakanan = barang;
+        this.sim = sim;
+        if (nonMakanan instanceof NonMakanan) {
+            NonMakanan n = (NonMakanan) this.nonMakanan;
+            this.sisaWaktu = n.getShippingTime();
+        } else if (nonMakanan instanceof BahanMakanan) {
+            BahanMakanan bahan = (BahanMakanan) this.nonMakanan;
+            this.sisaWaktu = bahan.getShippingTime();
+        }
+        this.waktuBeres = waktuSelesai;
+    }
+
     // run
     public void run() {
         World instance = World.getInstance();
@@ -26,7 +41,12 @@ public class TimerBarang extends Thread {
         boolean muter = true;
         // masukin dulu ke dalem on delivery
         Barang b = nonMakanan;
-        sim.getOnDelivery().add(b);
+        if (this.waktuBeres != -1) {
+            // load
+            waktuSelesai = this.waktuBeres;
+        } else {
+            sim.getOnDelivery().add(b);
+        }
 
         while (muter) {
             synchronized (lock) {
