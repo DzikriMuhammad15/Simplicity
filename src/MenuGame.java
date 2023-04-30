@@ -3,8 +3,9 @@ import java.util.*;
 public class MenuGame {
     private Sim currSim;
     private World world = World.getInstance();
-    // private JSONWriter writer = new JSONWriter();
+    private JSONWriter writer = new JSONWriter();
     private int simSpawn = -1;
+    Display display = new Display();
 
     Scanner scan = new Scanner(System.in);
     Random random = new Random();
@@ -17,6 +18,7 @@ public class MenuGame {
         boolean gameover = false;
         //pilihan load game atau new game
         while (!gameover){
+            currSim.getPosisi().getCurrRuangan().display();
             System.out.println("Apa yang ingin anda lakukan?");
             String aksi = scan.nextLine();
             if (aksi.equals("View Sim Info")){
@@ -136,7 +138,7 @@ public class MenuGame {
             }else if(aksi.equals("Move Room")){
                 System.out.println("Silakan masukkan angka untuk ruangan yang dipilih");
                 for (int  i=0;i<currSim.getPosisi().getCurrRumah().getArrayOfRuangan().size();i++){
-                    System.out.println(i+1+". "+currSim.getPosisi().getCurrRumah().getArrayOfRuangan().get(i));
+                    System.out.println(i+1+". "+currSim.getPosisi().getCurrRumah().getArrayOfRuangan().get(i).getNamaRuangan());
                 }
                 int noruangan = Integer.parseInt(scan.nextLine());
                 currSim.moveToRoom(currSim.getPosisi().getCurrRumah().getArrayOfRuangan().get(noruangan-1));
@@ -173,7 +175,7 @@ public class MenuGame {
                 if (no==1){
                     System.out.println("Masukkan nama file!");
                     String namafile = scan.nextLine();
-                    // writer.writeWorld(world, namafile);
+                    writer.writeWorld(world, namafile);
                 }
                 gameover=true;
             }else{
@@ -297,22 +299,43 @@ public class MenuGame {
     }
     
     public void editRoom(){
-        System.out.println("Anda dapat memindahkan barang, merotasi, meletakkan barang atau memindahkan ke dalam inventory");
-        System.out.println("Gunakan command [memindahkan {barang}, meletakkan {barang}, merotasi {barang}, memindahkan {barang} ke inventory]");
-        String edit = scan.nextLine();
-        if (edit.length()>=11 && edit.substring(0,11).equals("memindahkan")){
-
-        }else if(edit.length()>=10 && edit.substring(0, 10).equals("meletakkan")){
-
-        }else if(edit.length()>=8 && edit.substring(0, 8).equals("merotasi")){
-
-        }else if(edit.length()>=24 && edit.substring(0,24).equals("memindahkan ke inventory")){
-
+        System.out.println("Anda dapat melakukan hal terhadap barang di ruangan");
+        System.out.println("1. memindahkan barang\n2. meletakkan barang\n3. merotasi barang");
+        int noCommand = Integer.parseInt(scan.nextLine());
+        listObject();
+        int noBarang = Integer.parseInt(scan.nextLine());
+        if (noBarang>currSim.getPosisi().getCurrRuangan().getBarangInRuangan().size()||noCommand>3){
+            System.out.println("Masukan tidak valid");
         }else{
-            System.out.println("Masukkan perintah yang sesuai");
+            Barang barang = currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1);
+            
+            
+            if (noCommand==1){
+                System.out.println("Masukkan titik pemindahan barang!");
+                System.out.print("X : ");
+                int x=Integer.parseInt(scan.nextLine());
+                System.out.print("Y : ");
+                int y=Integer.parseInt(scan.nextLine());
+                currSim.getPosisi().getCurrRuangan().moveBarang(barang, x, y);   
+            }else if(noCommand==2){
+                System.out.println("Masukkan titik pemindahan barang!");
+                System.out.print("X : ");
+                int x=Integer.parseInt(scan.nextLine());
+                System.out.print("Y : ");
+                int y=Integer.parseInt(scan.nextLine());
+                currSim.getPosisi().getCurrRuangan().locateBarang(barang, x,y);
+            }else if (noCommand==3){
+                System.out.print("Rotasi : ");
+                int y=Integer.parseInt(scan.nextLine());
+                currSim.getPosisi().getCurrRuangan().rotate(barang, y);
+            }
+            
         }
-        //belum
     }
+        
+        
+        
+        //belum
     
     
     //mungkin fix
@@ -494,7 +517,9 @@ public class MenuGame {
     public static void main(String[] args){
         
         MenuGame menu = new MenuGame();
-        System.out.println("Welcome to Simplycity");
+        Display display = new Display();
+        System.out.println("Welcome to");
+        display.home();
         while (true){
             System.out.println("silahkan memilih menu permainan");
             System.out.println("1. Start Game");
