@@ -16,3 +16,7 @@ Anggota Kelompok:
 Link Diagram : https://drive.google.com/file/d/1AsZoTWLJjsMkdA3ZzmDr7wVqbVxig2zU/view?usp=sharing
 
 Link Docs : https://docs.google.com/document/d/1PkcEniexV9nuVysGvIk2Vv9FtHDZua7oCQvvEYmxGGA/edit?usp=sharing
+
+How to Compile : open terminal then use command <gradle>
+
+How To Run : open terminal then use command <gradle run --console plain>
