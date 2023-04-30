@@ -618,9 +618,8 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         }
         for (String bahan : arrayOfBahanMakanan) {
             int jumlah = inventory.get(bahan);
-            int jumlahAkhir = jumlah - 1;
-            inventory.put(bahan, jumlahAkhir);
-            if (jumlahAkhir == 0){
+            inventory.put(bahan, jumlah-1);
+            if (jumlah - 1 == 0){
                 inventory.remove(bahan);
             }
         }
