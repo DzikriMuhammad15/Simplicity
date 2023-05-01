@@ -388,11 +388,15 @@ public class MenuGame {
     }
 
     public void checkSim(){
-        for (Sim i:world.getArrSim()){
-            if (i.getKesejahteraan().isDead()||i.getKesejahteraan().getKekenyangan()==0||i.getKesejahteraan().getKesehatan()==0||i.getKesejahteraan().getMood()==0){
-                world.getArrSim().remove(i);
+        for (int i=0;i<world.getArrSim().size();i++){
+            System.out.println(1);
+            if (world.getArrSim().get(i).getKesejahteraan().isDead()||world.getArrSim().get(i).getKesejahteraan().getKekenyangan()==0||world.getArrSim().get(i).getKesejahteraan().getKesehatan()==0||world.getArrSim().get(i).getKesejahteraan().getMood()==0){
+                world.getArrSim().remove(world.getArrSim().get(i));
+                System.out.println(2);
             }
+            System.out.println(3);
         }
+        System.out.println(4);
     }
 
     public void listObject(){
