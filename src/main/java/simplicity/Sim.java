@@ -539,7 +539,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
         if (inventory.containsKey(namaMakanan) || currentQuantity>0){
             try {
-                Thread.sleep(30000); // Tunggu selama 30 detik
+                Thread.sleep(3000); // Tunggu selama 30 detik
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -576,7 +576,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
             try {
-                Thread.sleep(30000); // Tunggu selama 30 detik
+                Thread.sleep(3000); // Tunggu selama 30 detik
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
