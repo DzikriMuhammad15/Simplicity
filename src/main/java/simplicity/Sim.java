@@ -522,6 +522,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
+        int kekenyanganMakanan = makanan.getKekenyangan();
 
         if (inventory.containsKey(namaMakanan) || currentQuantity>0){
             try {
@@ -529,7 +530,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
+            kesejahteraan.setKekenyangan(kekenyanganAwal+kekenyanganMakanan);
             inventory.put(namaMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
@@ -558,6 +559,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         String namaBahanMakanan = bahanMakanan.getNama();
         int currentQuantity = inventory.getOrDefault(namaBahanMakanan, 0);
+        int kekenyanganBahanMakanan = bahanMakanan.getKekenyangan();
 
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
             try {
@@ -565,7 +567,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            kesejahteraan.setKekenyangan(kekenyanganAwal+bahanMakanan.getKekenyangan());
+            kesejahteraan.setKekenyangan(kekenyanganAwal+kekenyanganBahanMakanan);
             inventory.put(namaBahanMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaBahanMakanan);
