@@ -534,6 +534,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         lock.lock();
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
+        System.out.println(kesejahteraan.getKekenyangan());
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
 
         if (inventory.containsKey(namaMakanan) || currentQuantity>0){
@@ -542,7 +543,9 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
+            kesejahteraan.setKekenyangan(kekenyanganAwal+(makanan.getKekenyangan()));
+            
+            System.out.println(kesejahteraan.getKekenyangan());
             inventory.put(namaMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
