@@ -90,6 +90,30 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         return posisi;
     }
 
+    public int getWaktuMakanAwal(){
+        return waktuMakanAwal;
+    }
+
+    public int getWaktuTidurAwal(){
+        return waktuTidurAwal;
+    }
+
+    public int getWaktuKerja(){
+        return waktuKerja;
+    }
+
+    public int getHariResign(){
+        return hariResign;
+    }
+
+    public boolean getSudahBuangAir(){
+        return sudahBuangAir;
+    }
+
+    public boolean getMakanPertama(){
+        return makanPertama;
+    }
+
     public void cekKesejahteraan(){
         if (kesejahteraan.getMood() > 100){
             kesejahteraan.setMood(100);
