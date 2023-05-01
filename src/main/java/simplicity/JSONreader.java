@@ -1,16 +1,17 @@
+package simplicity;
 import java.io.*;
 import java.util.*;
 import org.json.simple.*;
 import org.json.simple.parser.*;
 
-import netscape.javascript.JSObject;
 
 public class JSONreader {
 
     public void readWorld(World world, String namafile) {
         // JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader(namafile)) {
+        try (
+            FileReader reader = new FileReader(namafile)) {
             // Read JSON file
             Object obj = jsonParser.parse(reader);
             JSONObject jsonobj = (JSONObject) obj;
@@ -18,7 +19,6 @@ public class JSONreader {
             world.setHari(Integer.parseInt(hari));
             String waktu = jsonobj.get("waktu").toString();
             world.setWaktu(Integer.parseInt(waktu));
-
             JSONArray arrsim = (JSONArray) jsonobj.get("ArrSim");
             for (Object i : arrsim) {
                 world.getArrSim().add(readSim((JSONObject) i));
@@ -34,15 +34,21 @@ public class JSONreader {
     }
 
     public Sim readSim(JSONObject jsonobj) {
-        Sim sim1 = new Sim((String) jsonobj.get("nama"));
-        //sim1.setInventory(readInventory(jsonobj.get("inventory")));
+        Sim sim1 = new Sim(jsonobj.get("nama lengkap").toString());
+        sim1.setInventory(readInventory((JSONObject)jsonobj.get("inventory")));
         sim1.setKesejahteraan(readKesejahteraan((JSONObject)jsonobj.get("kesejahteraan")));
         sim1.setOnDelivery(readOnDelivery((JSONArray)jsonobj.get("on delivery")));
         sim1.setPekerjaan(readPekerjaan((JSONObject)jsonobj.get("pekerjaan")));
-        //sim1.setPosisi(readPosisi((JSONObject) jsonobj.get("posisi")));
+        sim1.setPosisi(readPosisi((JSONObject) jsonobj.get("posisi")));
         sim1.setRumah(readRumah((JSONObject) jsonobj.get("rumah")));
         sim1.setStatus((String)jsonobj.get("status"));
         sim1.setUang(Integer.parseInt(jsonobj.get("uang").toString()));
+        sim1.setWaktuMakanAwal(Integer.parseInt(jsonobj.get("waktu makan awal").toString()));
+        sim1.setWaktuTidurAwal(Integer.parseInt(jsonobj.get("waktu tidur awal").toString()));
+        sim1.setWaktuKerja(Integer.parseInt(jsonobj.get("waktu kerja").toString()));
+        sim1.setHariResign(Integer.parseInt(jsonobj.get("hari resign").toString()));
+        sim1.setSudahBuangAir((boolean)jsonobj.get("sudah buang air"));
+        sim1.setMakanPertama((boolean)jsonobj.get("makan pertama"));
         return sim1;
     }
 
@@ -62,51 +68,63 @@ public class JSONreader {
         return rumah;
     }
 
-    public Ruangan readRuangan(JSONObject jsonobj){
-        System.out.println(1);
-        if (jsonobj==null){
-            System.out.println(2);
-            return null;
-        }else{
-            System.out.println(3);
-            Ruangan ruangan = new Ruangan(jsonobj.get("nama").toString());
-            if (jsonobj.get("ruang atas")==null){
-                ruangan.setRuangAtas(null);
-            }else{
-                ruangan.setRuangAtas(readRuangan((JSONObject) jsonobj.get("ruang atas")));
-            }
-            if (jsonobj.get("ruang bawah")==null){
-                ruangan.setRuangBawah(null);
-            }else{
-                ruangan.setRuangBawah(readRuangan((JSONObject) jsonobj.get("ruang bawah")));
-            }
-            if (jsonobj.get("ruang kanan")==null){
-                ruangan.setRuangKanan(null);
-            }else{
-                ruangan.setRuangKanan(readRuangan((JSONObject) jsonobj.get("ruang kanan")));
-            }
-            if (jsonobj.get("ruang kiri")==null){
-                ruangan.setRuangKiri(null);
-            }else{
-                ruangan.setRuangKiri(readRuangan((JSONObject) jsonobj.get("ruang kiri")));
-            }
-            ruangan.getBarangInRuangan().clear();
-            JSONArray baranginruangan = (JSONArray) jsonobj.get("array of barang");
-            for (Object i : baranginruangan){
-                ruangan.getBarangInRuangan().add((Barang) i);
-            }
-            return ruangan;
-        }   
-    }
+    // public Ruangan readRuangan(JSONObject jsonobj){
+    //     System.out.println(1);
+    //     if (jsonobj==null){
+    //         System.out.println(2);
+    //         return null;
+    //     }else{
+    //         System.out.println(3);
+    //         Ruangan ruangan = new Ruangan(jsonobj.get("nama").toString());
+    //         if (jsonobj.get("ruang atas")==null){
+    //             ruangan.setRuangAtas(null);
+    //         }else{
+    //             ruangan.setRuangAtas(readRuangan((JSONObject) jsonobj.get("ruang atas")));
+    //         }
+    //         if (jsonobj.get("ruang bawah")==null){
+    //             ruangan.setRuangBawah(null);
+    //         }else{
+    //             ruangan.setRuangBawah(readRuangan((JSONObject) jsonobj.get("ruang bawah")));
+    //         }
+    //         if (jsonobj.get("ruang kanan")==null){
+    //             ruangan.setRuangKanan(null);
+    //         }else{
+    //             ruangan.setRuangKanan(readRuangan((JSONObject) jsonobj.get("ruang kanan")));
+    //         }
+    //         if (jsonobj.get("ruang kiri")==null){
+    //             ruangan.setRuangKiri(null);
+    //         }else{
+    //             ruangan.setRuangKiri(readRuangan((JSONObject) jsonobj.get("ruang kiri")));
+    //         }
+    //         ruangan.getBarangInRuangan().clear();
+    //         JSONArray baranginruangan = (JSONArray) jsonobj.get("array of barang");
+    //         for (Object i : baranginruangan){
+    //             ruangan.getBarangInRuangan().add((Barang) i);
+    //         }
+    //         return ruangan;
+    //     }   
+    // }
     public Point readPoint(JSONObject jsonPoint) {
         int x = Integer.parseInt(jsonPoint.get("x").toString());
         int y = Integer.parseInt(jsonPoint.get("y").toString());
         return new Point(x, y);
     }    
 
-    // public Inventory readInventory(Object object){
-    //     // gatau euy
-    // }
+    public HashMap<String,Integer> readInventory(JSONObject object){
+        JSONArray inven = (JSONArray) object.get("inventory");
+        HashMap<String,Integer> inventory = new HashMap<>();
+        // inventory.clear();
+        // Set<String> kset = inven.keySet();
+        String barang;
+        String[] spliter;
+        for (Object i: inven){
+            barang = i.toString();
+            barang= barang.substring(1, barang.length()-1);
+            spliter = barang.split(":");
+            inventory.put(spliter[0].substring(1, spliter[0].length()-1),Integer.parseInt(spliter[1]));
+        }
+        return inventory;
+    }
 
     public ArrayList<Barang> readOnDelivery(JSONArray jsonobj) {
         ArrayList<Barang> onDelivery = new ArrayList<>();
@@ -141,102 +159,97 @@ public class JSONreader {
         return new Kesejahteraan(dead, mood, kesehatan, kekenyangan);
     }
     
-    // public Posisi readPosisi(JSONObject jsonobj) {
-    //     JSONObject currRumahJSON = (JSONObject) jsonobj.get("currRumah");
-    //     Rumah currRumah = readRumah(currRumahJSON);
-    //     JSONObject currRuanganJSON = (JSONObject) jsonobj.get("currRuangan");
-    //     Ruangan currRuangan = readRuangan(currRuanganJSON);
-    //     JSONObject currBarangJSON = (JSONObject) jsonobj.get("currBarang");
-    //     NonMakanan currBarang = readNonMakanan(currBarangJSON);
-    //     return new Posisi(currRumah, currRuangan, currBarang);
-    // }
+    public Posisi readPosisi(JSONObject jsonobj) {
+        JSONObject currRumahJSON = (JSONObject) jsonobj.get("currRumah");
+        Rumah currRumah = readRumah(currRumahJSON);
+        JSONObject currRuanganJSON = (JSONObject) jsonobj.get("currRuangan");
+        Ruangan currRuangan = readRuangan(currRuanganJSON);
+        JSONObject currBarangJSON = (JSONObject) jsonobj.get("currBarang");
+        NonMakanan currBarang = readNonMakanan(currBarangJSON);
+        return new Posisi(currRumah, currRuangan, currBarang);
+    }
     
-    // public Ruangan readRuangan(JSONObject obj) {
-    //     String namaRuangan = obj.optString("nama");
-    //     if (namaRuangan == null) {
-    //         return null;
-    //     }
+    public Ruangan readRuangan(JSONObject obj) {
+        String namaRuangan = obj.get("nama").toString();
+        if (namaRuangan.equals("null")) {
+            return null;
+        }
     
-    //     Ruangan ruangan = new Ruangan(namaRuangan);
+        Ruangan ruangan = new Ruangan(namaRuangan);
     
-    //     JSONObject ruangAtasObj = obj.optJSONObject("ruang atas");
-    //     if (ruangAtasObj != null) {
-    //         Ruangan ruangAtas = readRuangan(ruangAtasObj);
-    //         ruangan.setRuangAtas(ruangAtas);
-    //     }
+        JSONObject ruangAtasObj = (JSONObject) obj.get("ruang atas");
+        if (!ruangAtasObj.equals(null)) {
+            Ruangan ruangAtas = readRuangan(ruangAtasObj);
+            ruangan.setRuangAtas(ruangAtas);
+        }
     
-    //     JSONObject ruangBawahObj = obj.optJSONObject("ruang bawah");
-    //     if (ruangBawahObj != null) {
-    //         Ruangan ruangBawah = readRuangan(ruangBawahObj);
-    //         ruangan.setRuangBawah(ruangBawah);
-    //     }
+        JSONObject ruangBawahObj = (JSONObject) obj.get("ruang bawah");
+        if (!ruangBawahObj.equals("null")) {
+            Ruangan ruangBawah = readRuangan(ruangBawahObj);
+            ruangan.setRuangBawah(ruangBawah);
+        }
     
-    //     JSONObject ruangKananObj = obj.optJSONObject("ruang kanan");
-    //     if (ruangKananObj != null) {
-    //         Ruangan ruangKanan = readRuangan(ruangKananObj);
-    //         ruangan.setRuangKanan(ruangKanan);
-    //     }
+        JSONObject ruangKananObj = (JSONObject) obj.get("ruang kanan");
+        if (!ruangKananObj.equals("null")) {
+            Ruangan ruangKanan = readRuangan(ruangKananObj);
+            ruangan.setRuangKanan(ruangKanan);
+        }
     
-    //     JSONObject ruangKiriObj = obj.optJSONObject("ruang kiri");
-    //     if (ruangKiriObj != null) {
-    //         Ruangan ruangKiri = readRuangan(ruangKiriObj);
-    //         ruangan.setRuangKiri(ruangKiri);
-    //     }
+        JSONObject ruangKiriObj = (JSONObject) obj.get("ruang kiri");
+        if (!ruangKiriObj.equals("null")) {
+            Ruangan ruangKiri = readRuangan(ruangKiriObj);
+            ruangan.setRuangKiri(ruangKiri);
+        }
     
-    //     JSONArray arrayOfBarang = obj.optJSONArray("array of barang");
-    //     if (arrayOfBarang != null) {
-    //         ArrayList<Barang> barangInRuangan = new ArrayList<>();
-    //         for (int i = 0; i < arrayOfBarang.length(); i++) {
-    //             JSONObject barangObj = arrayOfBarang.optJSONObject(i);
-    //             if (barangObj != null) {
-    //                 Barang barang = readBarang(barangObj);
-    //                 if (barang != null) {
-    //                     barangInRuangan.add(barang);
-    //                 }
-    //             }
-    //         }
-    //         ruangan.setBarangInRuangan(barangInRuangan);
-    //     }
+        JSONArray arrayOfBarang = (JSONArray) obj.get("array of barang");
+        ruangan.getBarangInRuangan().clear();
+        if (arrayOfBarang != null) {
+            for (Object i : arrayOfBarang) {
+                JSONObject barangObj = (JSONObject) i;
+                if (barangObj != null) {
+                    Barang barang = readBarang(barangObj);
+                    if (barang != null) {
+                        ruangan.addBarangInRuangan(barang);
+                }
+            }
+            }
+            
+        }
+        ruangan.setWaktuSelesai(Integer.parseInt(obj.get("waktu selesai").toString()));
     
-    //     JSONArray barangFix = obj.optJSONArray("daftar barang fix");
-    //     if (barangFix != null) {
-    //         String[] daftarBarangFix = new String[barangFix.length()];
-    //         for (int i = 0; i < barangFix.length(); i++) {
-    //             daftarBarangFix[i] = barangFix.optString(i);
-    //         }
-    //         ruangan.setDaftarBarangFix(daftarBarangFix);
-    //     }
-    
-    //     return ruangan;
-    // }
+        return ruangan;
+    }
 
-    // public NonMakanan readNonMakanan(JSONObject obj) {
-    //     NonMakanan nonMakanan = new NonMakanan();
-    //     nonMakanan.setNama(obj.getString("nama"));
-    //     nonMakanan.setHarga(obj.getInt("harga"));
-    //     nonMakanan.setPanjang(obj.getInt("panjang"));
-    //     nonMakanan.setLebar(obj.getInt("lebar"));
-    //     nonMakanan.setOrientasi(obj.getInt("orientasi"));
-    //     nonMakanan.setShippingTime(obj.getInt("shipping time"));
-    //     nonMakanan.setPosisi(readPoint(obj.getJSONObject("posisi")));
-    //     return nonMakanan;
-    // }
+    public NonMakanan readNonMakanan(JSONObject obj) {
+        String nama = obj.get("nama").toString();
+        if (!nama.equals("null")){
+            NonMakanan nonMakanan = new NonMakanan(nama);
+            nonMakanan.setOrientasi(Integer.parseInt(obj.get("orientasi").toString()));
+            nonMakanan.setShippingTime(Integer.parseInt(obj.get("shipping time").toString()));
+            nonMakanan.setPosisi(readPoint((JSONObject) obj.get("posisi")));
+            nonMakanan.setWaktuSelesai(Integer.parseInt(obj.get("waktu selesai").toString()));
+            return nonMakanan;
+        }else{
+            return null;
+        }
+    }
     
-    // public NonMakanakanan readBarang(JSONObject jsonObject) {
-    //     NonMakanan nonMakanan = new NonMakanan();
-    //     nonMakanan.setNama(obj.getString("nama"));
-    //     nonMakanan.setHarga(obj.getInt("harga"));
-    //     nonMakanan.setPanjang(obj.getInt("panjang"));
-    //     nonMakanan.setLebar(obj.getInt("lebar"));
-    //     nonMakanan.setOrientasi(obj.getInt("orientasi"));
-    //     nonMakanan.setShippingTime(obj.getInt("shipping time"));
-    //     nonMakanan.setPosisi(readPoint(obj.getJSONObject("posisi")));
-    //     return nonMakanan;
-    // }
+    public NonMakanan readBarang(JSONObject obj) {
+        String nama = obj.get("nama").toString();
+        if (!nama.equals("null")){
+            NonMakanan nonMakanan = new NonMakanan(nama);
+            nonMakanan.setOrientasi(Integer.parseInt(obj.get("orientasi").toString()));
+            nonMakanan.setShippingTime(Integer.parseInt(obj.get("shipping time").toString()));
+            nonMakanan.setPosisi(readPoint((JSONObject) obj.get("posisi")));
+            nonMakanan.setWaktuSelesai(Integer.parseInt(obj.get("waktu selesai").toString()));
+            return nonMakanan;
+        }else{
+            return null;
+        }
+    }
 
     public static void main(String[] args){
         JSONreader reader = new JSONreader();
         reader.readWorld(World.getInstance(),"saveit.json");
     }
-    
 }

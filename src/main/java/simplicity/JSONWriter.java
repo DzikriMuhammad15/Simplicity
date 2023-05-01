@@ -1,3 +1,4 @@
+package simplicity;
 import java.io.*;
 import java.util.*;
 import org.json.simple.*;
@@ -20,7 +21,7 @@ public class JSONWriter {
 
         world1.put("ArrSim",arrsim);
         try (
-            FileWriter file = new FileWriter(String.format(namafile+".json"))) {
+            FileWriter file = new FileWriter(String.format(namafile))) {
             //We can write any JSONArray or JSONObject instance to the file
             file.write(world1.toJSONString()); 
             file.flush();
@@ -38,14 +39,21 @@ public class JSONWriter {
         sim1.put("inventory",writeInventory(sim.getInventory()));
         JSONArray arrondev = new JSONArray();
         if (sim.getOnDelivery()!=null){
-            for (int i=0;i<sim.getOnDelivery().length;i++){
-                arrondev.add(writeBarang(sim.getOnDelivery()[i]));
+            for (int i=0;i<sim.getOnDelivery().size();i++){
+                arrondev.add(writeBarang(sim.getOnDelivery().get(i)));
             }
         }
         sim1.put("on delivery",arrondev);
         sim1.put("kesejahteraan",writeKesejahteraan(sim.getKesejahteraan()));
         sim1.put("status",(sim.getStatus()));
         sim1.put("posisi",writePosisi(sim.getPosisi()));
+        sim1.put("uang",sim.getUang());
+        sim1.put("waktu makan awal",sim.getWaktuMakanAwal());
+        sim1.put("waktu tidur awal",sim.getWaktuTidurAwal());
+        sim1.put("waktu kerja",sim.getWaktuKerja());
+        sim1.put("hari resign",sim.getHariResign());
+        sim1.put("sudah buang air",sim.getSudahBuangAir());
+        sim1.put("makan pertama",sim.getMakanPertama());
         return sim1;
     }
 
@@ -76,12 +84,15 @@ public class JSONWriter {
     }
 
     public JSONObject writeInventory(HashMap<String,Integer> inventory){
-        JSONObject inventory1 = new JSONObject();
-        HashMap<JSONObject,JSONObject> inventoryHashMap = new HashMap<>();
+        ArrayList<JSONObject> inventoryHashMap = new ArrayList<>();
+        JSONObject obj = new JSONObject();
+        JSONObject inventory2 = new JSONObject();
         for (Map.Entry i :inventory.entrySet()){
-            inventoryHashMap.put((JSONObject) i.getKey(),(JSONObject) i.getValue());
+            obj.put(i.getKey(),i.getValue());
+            inventoryHashMap.add(obj);
         }
-        return inventory1;
+        inventory2.put("inventory",inventoryHashMap);
+        return inventory2;
     }
 
     public JSONObject writeOnDelivery(ArrayList<Barang> ondelivery){
@@ -106,7 +117,7 @@ public class JSONWriter {
         kesejahteraan1.put("dead",kesejahteraan.isDead());
         kesejahteraan1.put("kesehatan",kesejahteraan.getKesehatan());
         kesejahteraan1.put("kekenyangan",kesejahteraan.getKekenyangan());
-        kesejahteraan1.put("modd",kesejahteraan.getMood());
+        kesejahteraan1.put("mood",kesejahteraan.getMood());
         return kesejahteraan1;
     }
 
@@ -129,15 +140,16 @@ public class JSONWriter {
             JSONArray arrayOfBarang = new JSONArray();
             JSONArray barangFix = new JSONArray();
             for (Barang i : ruangan.getBarangInRuangan()){
-                arrayOfBarang.add(writeBarang((NonMakanan) i));
+                arrayOfBarang.add(writeNonMakanan((NonMakanan) i));
             }
             for (int i=0;i<ruangan.getDaftarBarangFix().length-1;i++){
                 barangFix.add(ruangan.getDaftarBarangFix()[i]);
             }
             ruangan1.put("array of barang",arrayOfBarang);
             ruangan1.put("daftar barang fix",barangFix);
+            ruangan1.put("waktu selesai",ruangan.getWaktuSelesai());
         }else{
-            ruangan1.put("nama",null);
+            ruangan1.put("nama","null");
         }
         return ruangan1;
     }
@@ -152,23 +164,68 @@ public class JSONWriter {
             nonMakanan1.put("orientasi",nonMakanan.getOrientasi());
             nonMakanan1.put("shipping time",nonMakanan.getShippingTime());
             nonMakanan1.put("posisi",writePoint(nonMakanan.getPosisi()));
+            nonMakanan1.put("shipping time",nonMakanan.getWaktuSelesai()-World.getInstance().getHari()*720+World.getInstance().getWaktu());
+            nonMakanan1.put("waktu selesai",nonMakanan.getWaktuSelesai());
         }else{
-            nonMakanan1.put("nama",null);
-        }
-            
+            nonMakanan1.put("nama","null");
+        }     
         return nonMakanan1;
     }
 
     public JSONObject writeBarang(NonMakanan nonMakanan){
         JSONObject nonMakanan1 = new JSONObject();
-        nonMakanan1.put("nama",nonMakanan.getNama());
-        nonMakanan1.put("harga",nonMakanan.getHarga());
-        nonMakanan1.put("panjang",nonMakanan.getPanjang());
-        nonMakanan1.put("lebar",nonMakanan.getLebar());
-        nonMakanan1.put("orientasi",nonMakanan.getOrientasi());
-        nonMakanan1.put("shipping time",nonMakanan.getShippingTime());
-        nonMakanan1.put("posisi",writePoint(nonMakanan.getPosisi()));
+        if (nonMakanan!=null){
+            nonMakanan1.put("nama",nonMakanan.getNama());
+            nonMakanan1.put("harga",nonMakanan.getHarga());
+            nonMakanan1.put("panjang",nonMakanan.getPanjang());
+            nonMakanan1.put("lebar",nonMakanan.getLebar());
+            nonMakanan1.put("orientasi",nonMakanan.getOrientasi());
+            nonMakanan1.put("shipping time",nonMakanan.getShippingTime());
+            nonMakanan1.put("posisi",writePoint(nonMakanan.getPosisi()));
+            nonMakanan1.put("orientasi",nonMakanan.getOrientasi());
+            nonMakanan1.put("shipping time",nonMakanan.getWaktuSelesai()-World.getInstance().getHari()*720+World.getInstance().getWaktu());
+            nonMakanan1.put("waktu selesai",nonMakanan.getWaktuSelesai());
+        }else{
+            nonMakanan1.put("nama","null");
+        }     
         return nonMakanan1;
+    }
+
+    public JSONObject writeBarang(BahanMakanan bahanMakanan){
+        JSONObject bahanMakanan1 = new JSONObject();
+        if (bahanMakanan!=null){
+            bahanMakanan1.put("nama",bahanMakanan.getNama());
+            bahanMakanan1.put("harga",bahanMakanan.getHargaBahan());
+            bahanMakanan1.put("kekenyangan",bahanMakanan.getKekenyangan());
+            bahanMakanan1.put("shipping time",bahanMakanan.getWaktuSelesai()-World.getInstance().getHari()*720+World.getInstance().getWaktu());
+            bahanMakanan1.put("waktu selesai",bahanMakanan.getWaktuSelesai());
+        }else{
+            bahanMakanan1.put("nama","null");
+        }     
+        return bahanMakanan1;
+    }
+
+
+    public static void main(String[] args){
+        MenuGame menu = new MenuGame();
+        System.out.println("Welcome to Simplycity");
+        while (true){
+            System.out.println("silahkan memilih menu permainan");
+            System.out.println("1. Start Game");
+            System.out.println("2. Exit");
+            System.out.println("3. Help");
+            String command = menu.scan.nextLine();
+            if (command.equals("Start Game")){
+                menu.startGame();
+            }else if (command.equals("Exit")){
+                menu.exit();
+            }else if(command.equals("Help")){
+                menu.help();
+            }else{
+                System.out.println("Masukkan perintah command yang sesuai");
+            }
+            
+        }
     }
 }
 
