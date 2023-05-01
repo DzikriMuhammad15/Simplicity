@@ -1,9 +1,11 @@
+package simplicity;
 import java.util.*;
 
 public class MenuGame {
     private Sim currSim;
     private World world = World.getInstance();
     private JSONWriter writer = new JSONWriter();
+    private JSONreader reader = new JSONreader();
     private int simSpawn = -1;
     Display display = new Display();
 
@@ -12,10 +14,32 @@ public class MenuGame {
     //belum fix
     public void startGame(){
         
-        addSim();
-        currSim = world.getArrSim().get(0);
-        currSim.getRumah().setLokasi(new Point(random.nextInt()%64, random.nextInt()%64));
+        
         boolean gameover = false;
+        System.out.println("Silakan memilih menu");
+        System.out.println("1. New Game");
+        System.out.println("2. Load");
+        int menu = Integer.parseInt(scan.nextLine());
+        if (menu==1){
+            addSim();
+            currSim = world.getArrSim().get(0);
+            currSim.getRumah().setLokasi(new Point(random.nextInt()%64, random.nextInt()%64));
+        }else if(menu==2){
+            System.out.println("Masukkan namafile!");
+            String namafile = scan.nextLine();
+            String file = "src/main/resources"+namafile+".json";
+            reader.readWorld(world,file);
+            currSim = world.getArrSim().get(0);
+            for (Sim i : world.getArrSim()){
+                    for (Ruangan k : i.getRumah().getArrayOfRuangan()){
+                        for (Barang l: k.getBarangInRuangan()){
+                            NonMakanan nonMakanan = (NonMakanan) l;
+                            k.locateBarang(nonMakanan,nonMakanan.getPosisi().getX(),nonMakanan.getPosisi().getY());
+                        }
+                    }
+            
+            }
+        }
         //pilihan load game atau new game
         while (!gameover){
             currSim.getPosisi().getCurrRuangan().display();
@@ -175,7 +199,8 @@ public class MenuGame {
                 if (no==1){
                     System.out.println("Masukkan nama file!");
                     String namafile = scan.nextLine();
-                    writer.writeWorld(world, namafile);
+                    String file  = "src/main/resources"+namafile+".json";
+                    writer.writeWorld(world, file);
                 }
                 gameover=true;
             }else{
@@ -308,8 +333,6 @@ public class MenuGame {
             System.out.println("Masukan tidak valid");
         }else{
             Barang barang = currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1);
-            
-            
             if (noCommand==1){
                 System.out.println("Masukkan titik pemindahan barang!");
                 System.out.print("X : ");
@@ -529,13 +552,12 @@ public class MenuGame {
             if (command.equals("Start Game")){
                 menu.startGame();
             }else if (command.equals("Exit")){
-                menu.exit();
+                System.exit(0);
             }else if(command.equals("Help")){
                 menu.help();
             }else{
                 System.out.println("Masukkan perintah command yang sesuai");
-            }
-            
+            }     
         }
     }
 }

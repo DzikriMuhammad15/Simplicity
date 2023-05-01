@@ -1,3 +1,4 @@
+package simplicity;
 import java.util.*;
 import java.util.concurrent.locks.ReentrantLock;
 import java.lang.Math;
@@ -197,6 +198,18 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
 
     public void setWaktuKerja(int waktuKerja){
         this.waktuKerja = waktuKerja;
+    }
+
+    public void setHariResign(int hariResign){
+        this.hariResign=hariResign;
+    }
+
+    public void setSudahBuangAir(boolean sudahBuangAir){
+        this.sudahBuangAir=sudahBuangAir;
+    }
+
+    public void setMakanPertama(boolean sudahMakanPertama){
+        this.makanPertama = sudahMakanPertama;
     }
     
 /* ----------------------GO TO OBJECT---------------------------- */
