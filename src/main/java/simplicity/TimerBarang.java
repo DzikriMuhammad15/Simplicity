@@ -65,19 +65,25 @@ public class TimerBarang extends Thread {
 
         // hapus dari onDelivery
 
-        sim.getOnDelivery().remove(b);
+        synchronized (sim.getOnDelivery()) {
+            sim.getOnDelivery().remove(b);
+        }
+
         // ...
 
-        // masukkin ke inventory
-        int jumlahSebelumnya;
-        String namaBarang = b.getNama();
-        if (sim.getInventory().containsKey(namaBarang)) {
-            jumlahSebelumnya = sim.getInventory().get(namaBarang);
-        } else {
-            jumlahSebelumnya = 0;
+        synchronized (sim.getInventory()) {
+            // masukkin ke inventory
+            int jumlahSebelumnya;
+            String namaBarang = b.getNama();
+
+            if (sim.getInventory().containsKey(namaBarang)) {
+                jumlahSebelumnya = sim.getInventory().get(namaBarang);
+            } else {
+                jumlahSebelumnya = 0;
+            }
+            sim.getInventory().put(namaBarang, jumlahSebelumnya + 1);
+            // ...
         }
-        sim.getInventory().put(namaBarang, jumlahSebelumnya + 1);
-        // ...
 
     }
 }
