@@ -11,10 +11,7 @@ public class MenuGame {
 
     Scanner scan = new Scanner(System.in);
     Random random = new Random();
-    //belum fix
     public void startGame(){
-        
-        
         boolean gameover = false;
         System.out.println("Silakan memilih menu");
         System.out.println("1. New Game");
@@ -64,7 +61,7 @@ public class MenuGame {
                 //belum
             }else if(aksi.equals("Add Sim")){
                 addSim();
-                //belum handle satu sim perhari
+                
             }else if(aksi.equals("Change Sim")){
                 System.out.println("Masukkan no sim dari sim-sim yang ada di bawah");
                 for (int i=0;i<world.getArrSim().size();i++){
@@ -243,7 +240,6 @@ public class MenuGame {
     }
 
     public void bercanda(){
-        //untuk semua Sim di ruangan yang sama mendapat effect bercanda
         boolean check=false;
         for (Sim i: world.getArrSim()){
             if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
@@ -318,11 +314,6 @@ public class MenuGame {
         
     }
     
-    // Menunggu class Sim
-    public void upgradeHouse(){
-
-    }
-    
     public void editRoom(){
         System.out.println("Anda dapat melakukan hal terhadap barang di ruangan");
         System.out.println("1. memindahkan barang\n2. meletakkan barang\n3. merotasi barang");
@@ -351,19 +342,8 @@ public class MenuGame {
                 System.out.print("Rotasi : ");
                 int y=Integer.parseInt(scan.nextLine());
                 currSim.getPosisi().getCurrRuangan().rotate(barang, y);
-            }
-            
+            }    
         }
-    }
-        
-        
-        
-        //belum
-    
-    
-    //mungkin fix
-    public void exit(){
-        //break;
     }
 
     public void viewSimInfo(){
@@ -388,7 +368,7 @@ public class MenuGame {
 
     public void addSim(){
         if (simSpawn<world.getHari()){
-            System.out.println("Silakan masukkan nama lengkap Sim mu");
+            System.out.print("Silakan masukkan nama lengkap Sim mu : ");
             String nama = scan.nextLine();
             Sim sim1 = new Sim(nama);
             world.getArrSim().add(sim1);
@@ -396,7 +376,6 @@ public class MenuGame {
         }else{
             System.out.println("Belum dapat menspawn sim baru");
         }
-        //belum handle satu hari satu sim
     }
     
     public void changeSim(Integer simBaru){
@@ -457,11 +436,9 @@ public class MenuGame {
             }
             if (daftarmakanan.contains(makanan)){
                 currSim.masak(new Makanan(makanan));
-                //di sim perlu menghandle ketersediaan bahan di inventory
             }else{
                 System.out.println("Barang tidak termasuk makanan yang dapat dimasak");
             } 
-            //belum dicocokin dengan sim
         }else{
             System.out.println("Sim tidak berada di kompor");
         }
@@ -478,15 +455,14 @@ public class MenuGame {
     public void lihatWaktu(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 3).equals("Jam")){
             currSim.lihatWaktu();
-            //kurang hari dan meintnya belum diatur. 
         }else{
             System.out.println("Sim tidak berada di Jam");
         }
     }
 
     public void makan(){
-            System.out.printf("|%-1s| %-10s | %-8s |%n","no", "makanan", "Jumlah");
-            System.out.println("|------------|----------|");
+            System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
+            System.out.println("|---|------------|----------|");
             ArrayList<String> daftarMakanan = new ArrayList<>();
             daftarMakanan.add("Nasi Ayam");
             daftarMakanan.add("Nasi Kari");
@@ -501,7 +477,6 @@ public class MenuGame {
             daftarMakanan.add("Bayam");
             daftarMakanan.add("Kacang");
             daftarMakanan.add("Susu");
-            // Loop over entries in the HashMap and print them in table format
             int i=1;
             for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
                 if (daftarMakanan.contains(entry.getKey())){
@@ -541,7 +516,7 @@ public class MenuGame {
         
         MenuGame menu = new MenuGame();
         Display display = new Display();
-        System.out.println("Welcome to");
+        System.out.println("\t\t     Welcome To");
         display.home();
         while (true){
             System.out.println("silahkan memilih menu permainan");
