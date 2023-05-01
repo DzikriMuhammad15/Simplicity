@@ -1,3 +1,4 @@
+package simplicity;
 public class TimerRumah extends Thread {
     private Sim sim;
     private String namaRuangan;

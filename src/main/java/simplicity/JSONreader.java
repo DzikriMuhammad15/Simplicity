@@ -247,9 +247,4 @@ public class JSONreader {
             return null;
         }
     }
-
-    public static void main(String[] args){
-        JSONreader reader = new JSONreader();
-        reader.readWorld(World.getInstance(),"saveit.json");
-    }
 }

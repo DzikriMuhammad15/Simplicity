@@ -318,27 +318,74 @@ public class MenuGame {
         System.out.println("Anda dapat melakukan hal terhadap barang di ruangan");
         System.out.println("1. memindahkan barang\n2. meletakkan barang\n3. merotasi barang");
         int noCommand = Integer.parseInt(scan.nextLine());
-        listObject();
-        int noBarang = Integer.parseInt(scan.nextLine());
-        if (noBarang>currSim.getPosisi().getCurrRuangan().getBarangInRuangan().size()||noCommand>3){
+        if (noCommand>3){
             System.out.println("Masukan tidak valid");
         }else{
-            Barang barang = currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1);
+            
+            
             if (noCommand==1){
+                listObject();
+                System.out.println("masukkan nomor barang");
+                int noBarang = Integer.parseInt(scan.nextLine());
+                Barang barang = new NonMakanan(currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1).getNama());
                 System.out.println("Masukkan titik pemindahan barang!");
                 System.out.print("X : ");
                 int x=Integer.parseInt(scan.nextLine());
                 System.out.print("Y : ");
                 int y=Integer.parseInt(scan.nextLine());
-                currSim.getPosisi().getCurrRuangan().moveBarang(barang, x, y);   
+                currSim.getPosisi().getCurrRuangan().moveBarang((Barang)barang, x, y);   
             }else if(noCommand==2){
-                System.out.println("Masukkan titik pemindahan barang!");
+                System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
+                System.out.println("|---|------------|----------|");
+                ArrayList<String> daftarMakanan = new ArrayList<>();
+                daftarMakanan.add("Kasur King Size");
+                daftarMakanan.add("Kasur Single");
+                daftarMakanan.add("Kasur Queen Size");
+                daftarMakanan.add("Toilet");
+                daftarMakanan.add("Laptop");
+                daftarMakanan.add("TV");
+                daftarMakanan.add("Meja dan Kursi");
+                daftarMakanan.add("Jam");
+                daftarMakanan.add("Kompor Gas");
+                daftarMakanan.add("Kompor Listrik");
+                int i=1;
+                for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
+                    if (daftarMakanan.contains(entry.getKey())){
+                        System.out.printf("| %-1d | %-10s | %-8d |%n", i,entry.getKey(),entry.getValue());
+                        i++;
+                    }    
+                }
+                System.out.println("Masukkan nomor barang");
+                Integer nobarang = Integer.parseInt(scan.nextLine());
+                int j=1;
+                String namabarang = "";
+                int k=0;
+                for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
+                    if (j==nobarang){
+                        for (k=0;k<daftarMakanan.size();k++){
+                            if (daftarMakanan.get(k).equals(entry.getKey())){
+                                namabarang = entry.getKey();
+                                break;
+                            }
+                        } 
+                        break;
+                    }else if (daftarMakanan.contains(entry.getKey())){
+                        j++;
+                    }    
+                }
+                Barang barang = new NonMakanan(namabarang);
+                
+                System.out.println("Masukkan titik peletakan barang!");
                 System.out.print("X : ");
                 int x=Integer.parseInt(scan.nextLine());
                 System.out.print("Y : ");
                 int y=Integer.parseInt(scan.nextLine());
                 currSim.getPosisi().getCurrRuangan().locateBarang(barang, x,y);
             }else if (noCommand==3){
+                listObject();
+                System.out.println("masukkan nomor barang");
+                int noBarang = Integer.parseInt(scan.nextLine());
+                Barang barang = new NonMakanan(currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1).getNama());
                 System.out.print("Rotasi : ");
                 int y=Integer.parseInt(scan.nextLine());
                 currSim.getPosisi().getCurrRuangan().rotate(barang, y);
@@ -465,7 +512,10 @@ public class MenuGame {
     }
 
     public void makan(){
-            System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
+            if (currSim.getInventory().isEmpty()){
+                System.out.println("Inventorymu kosng");
+            }else{
+                System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
             System.out.println("|---|------------|----------|");
             ArrayList<String> daftarMakanan = new ArrayList<>();
             daftarMakanan.add("Nasi Ayam");
@@ -506,10 +556,11 @@ public class MenuGame {
                     j++;
                 }    
             }
-            if (k>=5){
+            if (k<5){
                 currSim.makan(new Makanan(namaMakanan));
             }else{
                 currSim.makan(new BahanMakanan(namaMakanan));
+            }
             }
             
     }

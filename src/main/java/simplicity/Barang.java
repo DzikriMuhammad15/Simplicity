@@ -1,3 +1,4 @@
+package simplicity;
 public abstract class Barang {
     private String nama;
 

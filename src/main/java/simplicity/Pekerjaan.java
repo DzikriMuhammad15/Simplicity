@@ -1,3 +1,4 @@
+package simplicity;
 public class Pekerjaan {
     private String namaPekerjaan;
     private int GajiHarian;

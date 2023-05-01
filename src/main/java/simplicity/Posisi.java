@@ -1,3 +1,4 @@
+package simplicity;
 public class Posisi {
     private Rumah currRumah;
     private Ruangan currRuangan;

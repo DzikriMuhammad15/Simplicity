@@ -29,7 +29,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         // Menginisiasi kesejahteraan dan uang
         Kesejahteraan kesejahteraan = new Kesejahteraan(false,80,80,80);
         this.kesejahteraan = kesejahteraan;
-        this.uang = 100;
+        this.uang = 10000;
 
         // Menginisiasi pekerjaan secara random
         Pekerjaan[] daftarPekerjaan = {
@@ -442,7 +442,12 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
         world.addWaktu(waktu);
+        System.out.println(currentTime);
+        System.out.println(waktuMakanAwal);
+        System.out.println(sudahBuangAir);
+        System.out.println(makanPertama);
         if (currentTime-waktuMakanAwal >= 240 && sudahBuangAir==false && makanPertama==true){
+            
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
             setWaktuMakanAwal(waktuMakanAwal+240);
@@ -470,7 +475,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
                 for (int i = 0; i < waktu; i+=30){
                     try {
-                        Thread.sleep(3000); // Tunggu selama 4 menit
+                        Thread.sleep(300); // Tunggu selama 4 menit
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -545,6 +550,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 e.printStackTrace();
             }
             kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
+            System.out.println(makanan.getKekenyangan());
             inventory.put(namaMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
@@ -563,7 +569,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         synchronized(l){
             l.notifyAll();
         World world = World.getInstance();
-        int currentTime = world.getHari()*720 + world.getWaktu() + 30;
+        int currentTime = world.getHari()*720 + world.getWaktu();
         setWaktuMakanAwal(currentTime);
         }
     }
@@ -574,7 +580,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         String namaBahanMakanan = bahanMakanan.getNama();
         int currentQuantity = inventory.getOrDefault(namaBahanMakanan, 0);
         int kekenyanganBahanMakanan = bahanMakanan.getKekenyangan();
-
+        System.out.println(currentQuantity);
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
             try {
                 Thread.sleep(3000); // Tunggu selama 30 detik
@@ -601,7 +607,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         makanPertama = true;
         sudahBuangAir = false;
         World world = World.getInstance();
-        int currentTime = world.getHari()*720 + world.getWaktu() + 30;
+        int currentTime = world.getHari()*720 + world.getWaktu();
         setWaktuMakanAwal(currentTime);
     }
     
@@ -785,7 +791,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         lock.lock();
         int moodAwal = kesejahteraan.getMood();
         try {
-            Thread.sleep(waktu*100);
+            Thread.sleep(100);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -823,7 +829,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int max = 1;
         int result = rand.nextInt((max - min) + 1) + min; // menghasilkan angka 0 atau 1 secara acak
         try {
-            Thread.sleep(waktu*100);
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

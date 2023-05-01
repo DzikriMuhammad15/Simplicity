@@ -204,28 +204,5 @@ public class JSONWriter {
         }     
         return bahanMakanan1;
     }
-
-
-    public static void main(String[] args){
-        MenuGame menu = new MenuGame();
-        System.out.println("Welcome to Simplycity");
-        while (true){
-            System.out.println("silahkan memilih menu permainan");
-            System.out.println("1. Start Game");
-            System.out.println("2. Exit");
-            System.out.println("3. Help");
-            String command = menu.scan.nextLine();
-            if (command.equals("Start Game")){
-                menu.startGame();
-            }else if (command.equals("Exit")){
-                menu.exit();
-            }else if(command.equals("Help")){
-                menu.help();
-            }else{
-                System.out.println("Masukkan perintah command yang sesuai");
-            }
-            
-        }
-    }
 }
 

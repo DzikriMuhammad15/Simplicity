@@ -1,3 +1,4 @@
+package simplicity;
 import java.util.*;
 
 public class Rumah {

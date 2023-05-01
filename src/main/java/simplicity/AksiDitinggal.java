@@ -1,3 +1,4 @@
+package simplicity;
 public interface AksiDitinggal{
     public void bunuhDiri();
 

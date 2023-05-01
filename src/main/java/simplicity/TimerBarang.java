@@ -1,3 +1,4 @@
+package simplicity;
 import java.lang.*;
 
 public class TimerBarang extends Thread {
@@ -69,15 +70,17 @@ public class TimerBarang extends Thread {
         // ...
 
         // masukkin ke inventory
-        int jumlahSebelumnya;
-        String namaBarang = b.getNama();
-        if (sim.getInventory().containsKey(namaBarang)) {
-            jumlahSebelumnya = sim.getInventory().get(namaBarang);
-        } else {
-            jumlahSebelumnya = 0;
+        synchronized(lock){
+            int jumlahSebelumnya;
+            String namaBarang = b.getNama();
+            if (sim.getInventory().containsKey(namaBarang)) {
+                jumlahSebelumnya = sim.getInventory().get(namaBarang);
+            } else {
+                jumlahSebelumnya = 0;
+            }
+            sim.getInventory().put(namaBarang, jumlahSebelumnya + 1);
+            // ...
         }
-        sim.getInventory().put(namaBarang, jumlahSebelumnya + 1);
-        // ...
 
     }
 }

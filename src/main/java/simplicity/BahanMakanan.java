@@ -1,3 +1,4 @@
+package simplicity;
 import java.util.Random;
 
 public class BahanMakanan extends Barang {

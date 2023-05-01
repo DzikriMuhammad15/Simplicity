@@ -1,3 +1,4 @@
+package simplicity;
 public interface AksiPasif{
     public void moveToRoom(Ruangan ruangTujuan);
 

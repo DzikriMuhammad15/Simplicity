@@ -1,3 +1,4 @@
+package simplicity;
 public class Kesejahteraan {
     private boolean Dead;
     private int Mood;

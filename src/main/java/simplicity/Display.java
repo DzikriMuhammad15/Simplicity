@@ -1,12 +1,13 @@
+package simplicity;
 public class Display {
     
     public Display(){}
 
     public void home(){
-        System.out.println("   __________  ______  ____  ___________________  __");
-        System.out.println("  / __/  _/  |/  / _ \\/ /\\ \\/ / ___/  _/_  __/\\ \\/ /");
-        System.out.println(" _\\ \\_/ // /|_/ / ___/ /__\\  / /___/ /  / /    \\  /");
-        System.out.println("/___/___/_/  /_/_/  /____//_/\\___/___/ /_/     /_/");
+        System.out.println("   __________  ______  __  ______________________  __");
+        System.out.println("  / __/  _/  |/  / _ \\/ / /_  _/ ___/  _/_  __/\\ \\/ /");
+        System.out.println(" _\\ \\_/ // /|_/ / ___/ /___/ // /___/ /  / /    \\  /");
+        System.out.println("/___/___/_/  /_/_/  /____/___/\\___/___/ /_/     /_/");
     }
 
     public void gameover(){
