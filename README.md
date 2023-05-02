@@ -17,6 +17,8 @@ Link Diagram : https://drive.google.com/file/d/1AsZoTWLJjsMkdA3ZzmDr7wVqbVxig2zU
 
 Link Docs : https://docs.google.com/document/d/1PkcEniexV9nuVysGvIk2Vv9FtHDZua7oCQvvEYmxGGA/edit?usp=sharing
 
-How to Compile : open terminal then use command <gradle>
+Requirement : installed gradle
 
-How To Run : open terminal then use command <gradle run --console plain>
+How to Compile : open terminal go to directory Tugas-Besar-OOP then use command <gradle>
+
+How To Run :open terminal go to directory Tugas-Besar-OOP then use command <gradle run --console=plain>
