@@ -143,7 +143,6 @@ public class JSONreader {
         // inventory.clear();
         // Set<String> kset = inven.keySet();
         String inventor = object.get("inventory").toString().substring(2,object.get("inventory").toString().length()-2); 
-        System.out.println(inventor);
         String[] inven = inventor.split(",");
         String[] spliter;
         for (String i: inven){

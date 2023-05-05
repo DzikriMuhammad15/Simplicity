@@ -386,7 +386,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 this.uang = uang - 2;
             }
         }
-        System.out.println(2);
     }
 
 
@@ -443,10 +442,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
         world.addWaktu(waktu);
-        System.out.println(currentTime);
-        System.out.println(waktuMakanAwal);
-        System.out.println(sudahBuangAir);
-        System.out.println(makanPertama);
         if (currentTime-waktuMakanAwal >= 240 && sudahBuangAir==false && makanPertama==true){
             
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
@@ -541,7 +536,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         lock.lock();
         String namaMakanan = makanan.getNama();
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
-        System.out.println(kesejahteraan.getKekenyangan());
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
         int kekenyanganMakanan = makanan.getKekenyangan();
 
@@ -552,7 +546,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 e.printStackTrace();
             }
             kesejahteraan.setKekenyangan(kekenyanganAwal+makanan.getKekenyangan());
-            System.out.println(makanan.getKekenyangan());
             inventory.put(namaMakanan, currentQuantity - 1);
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
@@ -582,7 +575,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         String namaBahanMakanan = bahanMakanan.getNama();
         int currentQuantity = inventory.getOrDefault(namaBahanMakanan, 0);
         int kekenyanganBahanMakanan = bahanMakanan.getKekenyangan();
-        System.out.println(currentQuantity);
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
             try {
                 Thread.sleep(3000); // Tunggu selama 30 detik
