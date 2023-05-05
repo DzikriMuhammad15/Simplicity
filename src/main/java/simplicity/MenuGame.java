@@ -47,7 +47,7 @@ public class MenuGame {
             }else if(aksi.equals("Go To Object")){
                 goToObject();    
             }else if(aksi.equals("Kerja")){
-                System.out.println("Masukkan waktu dalam satuan detik (kelipatam 120)");
+                System.out.println("Masukkan waktu dalam satuan detik (kelipatan 120)");
                 int kerja = Integer.parseInt(scan.nextLine());
                 if (kerja%120==0){
                     currSim.kerja(kerja);
@@ -91,10 +91,11 @@ public class MenuGame {
             }else if(aksi.equals("Beli Barang")){
                 beliBarang();
             }else if(aksi.equals("Move Room")){
-                System.out.println("Silakan masukkan angka untuk ruangan yang dipilih");
+               
                 for (int  i=0;i<currSim.getPosisi().getCurrRumah().getArrayOfRuangan().size();i++){
                     System.out.println(i+1+". "+currSim.getPosisi().getCurrRumah().getArrayOfRuangan().get(i).getNamaRuangan());
                 }
+                System.out.println("Silakan masukkan angka untuk ruangan yang dipilih");
                 int noruangan = Integer.parseInt(scan.nextLine());
                 currSim.moveToRoom(currSim.getPosisi().getCurrRumah().getArrayOfRuangan().get(noruangan-1));
             }else if (aksi.equals("Change Job")){
@@ -136,18 +137,26 @@ public class MenuGame {
     }
     
     public void pukul(){
-        System.out.println("Siapa yang ingin anda pukul?");
-        String otherSim = scan.nextLine();
-        boolean check = false;
-        for (Sim i: world.getArrSim()){
-            if (i.getName().equals(otherSim)){
-                currSim.pukulSim(i);
-                check=true;
+        System.out.println("Masukkan No Sim siapa yang ingin anda pukul?");
+        int j=0;
+        int n=0;
+        for (Sim i : world.getArrSim()){
+            if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
+                System.out.println(j+1+". "+i.getName());
+                j++;
             }
         }
-        if (check){
-            System.out.println(otherSim+" terpukul hingga babak belur");
-        }else{
+        Integer otherSim = Integer.parseInt(scan.nextLine());
+        for (Sim i : world.getArrSim()){
+            if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
+                if (n==otherSim-1){
+                    currSim.pukulSim(i);
+                    System.out.println(i.getName()+" terpukul hingga babak belur");
+                }
+                n++;
+            }
+        }
+        if (otherSim>j){
             System.out.println("Gagal memukul");
         }
     }
@@ -282,7 +291,7 @@ public class MenuGame {
             for (int i=0;i<currSim.getPosisi().getCurrRuangan().getBarangInRuangan().size();i++){
                 if (i==obj-1){
                     currSim.getPosisi().setCurrBarang(currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(i));
-                    System.out.println("Berhasil berpindaj ke "+currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(i).getNama());
+                    System.out.println("Berhasil berpindah ke "+currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(i).getNama());
                 }
             }
             if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Single")){
@@ -507,11 +516,6 @@ public class MenuGame {
     public void viewCurrentLocation(){
         System.out.println("Lokasi sim saat ini : ");
         System.out.println("Sim berada pada rumah "+world.getSimOwnRumah(currSim.getPosisi().getCurrRumah()).getName()+" pada ruangan "+currSim.getPosisi().getCurrRuangan().getNamaRuangan());
-        try{
-            System.out.println("Sim berada pada "+currSim.getPosisi().getCurrBarang().getNama());
-        }catch(Exception e){
-            System.out.println("Sim tidak menghadapi barang apapun");
-        }
     }
 
     public void addSim(){
@@ -542,14 +546,10 @@ public class MenuGame {
 
     public void checkSim(){
         for (int i=0;i<world.getArrSim().size();i++){
-            System.out.println(1);
             if (world.getArrSim().get(i).getKesejahteraan().isDead()||world.getArrSim().get(i).getKesejahteraan().getKekenyangan()==0||world.getArrSim().get(i).getKesejahteraan().getKesehatan()==0||world.getArrSim().get(i).getKesejahteraan().getMood()==0){
                 world.getArrSim().remove(world.getArrSim().get(i));
-                System.out.println(2);
             }
-            System.out.println(3);
         }
-        System.out.println(4);
     }
 
     public void listObject(){
@@ -563,7 +563,7 @@ public class MenuGame {
 
     public void tidur(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 5).equals("Kasur")){
-            System.out.println("Berapa lama? (masukkan dalam satuan menit)");
+            System.out.println("Berapa lama? (masukkan dalam satuan detik)");
             int waktu = Integer.parseInt(scan.nextLine());
             currSim.tidur(waktu);
             world.setWaktu(waktu);
@@ -629,12 +629,12 @@ public class MenuGame {
 
     public void upgradeHouse(){
         int j=0;
-        for (Ruangan i : currSim.getRumah().getArrayOfRuangan()){
-            System.out.println(j+1+". "+i.getNamaRuangan());
-            j++;
-        }
         Ruangan ruangan;
         if (currSim.getRumah().getArrayOfRuangan().size()>1){
+            for (Ruangan i : currSim.getRumah().getArrayOfRuangan()){
+                System.out.println(j+1+". "+i.getNamaRuangan());
+                j++;
+            }
             System.out.println("Masukkan no ruangan acuan");
             int no = Integer.parseInt(scan.nextLine());
             int k=0;
@@ -657,6 +657,19 @@ public class MenuGame {
     public void lihatWaktu(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 3).equals("Jam")){
             currSim.lihatWaktu();
+            System.out.println("Sisa waktu dalam progress :");
+            // for (Ruangan i:currSim.getRumah().get)
+            System.out.println();
+            for (Barang i : currSim.getOnDelivery()){
+                if (i instanceof NonMakanan){
+                    NonMakanan nonmakanan = (NonMakanan)i; 
+                    System.out.println(i.getNama()+": "+(nonmakanan.getWaktuSelesai()-world.getHari()*720-world.getWaktu()));
+                }else{
+                    BahanMakanan nonmakanan = (BahanMakanan)i; 
+                    System.out.println(i.getNama()+": "+(nonmakanan.getWaktuSelesai()-world.getHari()*720-world.getWaktu()));
+                }
+                
+            }
         }else{
             System.out.println("Sim tidak berada di Jam");
         }
@@ -751,7 +764,7 @@ public class MenuGame {
             }else if (command.equals("Exit")){
                 System.exit(0);
             }else if(command.equals("Help")){
-                System.out.println("");
+                System.out.println("Berikut adalah panduan bermain game");
             }else{
                 System.out.println("Masukkan perintah command yang sesuai");
             }     
