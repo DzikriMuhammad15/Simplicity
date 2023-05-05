@@ -138,16 +138,16 @@ public class JSONreader {
     }    
 
     public HashMap<String,Integer> readInventory(JSONObject object){
-        JSONArray inven = (JSONArray) object.get("inventory");
+        // JSONArray inven = (JSONArray) object.get("inventory");
         HashMap<String,Integer> inventory = new HashMap<>();
         // inventory.clear();
         // Set<String> kset = inven.keySet();
-        String barang;
+        String inventor = object.get("inventory").toString().substring(2,object.get("inventory").toString().length()-2); 
+        System.out.println(inventor);
+        String[] inven = inventor.split(",");
         String[] spliter;
-        for (Object i: inven){
-            barang = i.toString();
-            barang= barang.substring(1, barang.length()-1);
-            spliter = barang.split(":");
+        for (String i: inven){
+            spliter = i.split(":");
             inventory.put(spliter[0].substring(1, spliter[0].length()-1),Integer.parseInt(spliter[1]));
         }
         return inventory;
@@ -166,7 +166,7 @@ public class JSONreader {
         bahanmakanan.add("Susu");
         JSONArray jsonArray = jsonobj;
         for (Object i: jsonArray) {
-            String nama = i.toString();
+            String nama = ((JSONObject)i).get("nama").toString();
             if (bahanmakanan.contains(nama)){
                 BahanMakanan barang = new BahanMakanan(nama);
                 onDelivery.add(barang);

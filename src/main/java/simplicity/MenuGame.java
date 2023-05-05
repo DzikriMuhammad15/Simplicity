@@ -20,7 +20,6 @@ public class MenuGame {
         if (menu==1){
             addSim();
             currSim = world.getArrSim().get(0);
-            currSim.getRumah().setLokasi(new Point(random.nextInt()%64, random.nextInt()%64));
         }else if(menu==2){
             load();
         }
@@ -129,9 +128,15 @@ public class MenuGame {
                 world.getArrSim().clear();
                 world.setHari(0);
                 world.setWaktu(0);
+                simSpawn=-1;
                 gameover=true;
             }else{
                 System.out.println("Masukkan aksi yang sesuai");
+            }
+            checkSim();
+            if (world.getArrSim().isEmpty()){
+                gameover=true;
+                display.gameover();
             }
         }
     }
@@ -273,9 +278,10 @@ public class MenuGame {
             }
             System.out.println("|");
         }
+        System.out.println("+---+----------------+");
         System.out.println("Masukkan nomor barang");
         int no = Integer.parseInt(scan.nextLine());
-        if (no<daftarBarang.size()){
+        if (no<=daftarBarang.size()){
             currSim.beliBarang(daftarBarang.get(no-1));
         }else{
             System.out.println("Pembelian gagal");
@@ -444,8 +450,10 @@ public class MenuGame {
         if (!world.getArrSim().isEmpty()){
             System.out.println("Pilih Sim lain untuk tetap bermain");
             changeSim();
-        }
-        
+        }else{
+            System.exit(0);
+            display.gameover();
+        }     
     }
 
     public void help(){
@@ -521,8 +529,35 @@ public class MenuGame {
     public void addSim(){
         if (simSpawn<world.getHari()){
             System.out.print("Silakan masukkan nama lengkap Sim mu : ");
+            Integer[][] map = new Integer[64][64];
+            for (int i=0;i<64;i++){
+                for (int j=0;j<64;j++){
+                    map[i][j]=0;
+                }
+            }
             String nama = scan.nextLine();
             Sim sim1 = new Sim(nama);
+            boolean valid=false;
+            int x=0;
+            int y=0;
+            while (!valid) {
+                System.out.println("Masukkan lokasi rumah!");
+                System.out.print("X: ");
+                x= Integer.parseInt(scan.nextLine());
+                System.out.print("Y: ");
+                y= Integer.parseInt(scan.nextLine());
+                if (x>=0 && y>=0){
+                    if (map[x][y]==0){
+                        valid=true;
+                        map[x][y]=1;
+                    }else{
+                        System.out.println("Tidak dapat membangun rumah di titik tersebut");
+                    }
+                }else{
+                    System.out.println("Masukan tidak valid");
+                }
+            }
+            sim1.getRumah().setLokasi(new Point(x, y));
             world.getArrSim().add(sim1);
             simSpawn=world.getHari();
         }else{
@@ -722,21 +757,30 @@ public class MenuGame {
             }
             System.out.println("Masukkan nomor makanan");
             Integer noMakanan = Integer.parseInt(scan.nextLine());
-            int j=1;
-            String namaMakanan = "Ayam";
-            int k=0;
+            String namaMakanan = "";
+            int k=1;
+            // for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
+            //     if (j==noMakanan){
+            //         for (k=0;k<daftarMakanan.size();k++){
+            //             if (daftarMakanan.get(k).equals(entry.getKey())){
+            //                 namaMakanan = entry.getKey();
+            //                 break;
+            //             }
+            //         } 
+            //         break;
+            //     }else if (daftarMakanan.contains(entry.getKey())){
+            //         j++;
+            //     }    
+            // }
             for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
-                if (j==noMakanan){
-                    for (k=0;k<daftarMakanan.size();k++){
-                        if (daftarMakanan.get(k).equals(entry.getKey())){
-                            namaMakanan = entry.getKey();
-                            break;
-                        }
-                    } 
-                    break;
-                }else if (daftarMakanan.contains(entry.getKey())){
-                    j++;
-                }    
+                if (daftarMakanan.contains(entry.getKey())){
+                if  (k<noMakanan){
+                    k++;
+                }else if(k==noMakanan){
+                    namaMakanan=entry.getKey();
+                }
+            }    
+                    
             }
             if (k<5){
                 currSim.makan(new Makanan(namaMakanan));

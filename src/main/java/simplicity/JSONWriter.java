@@ -84,14 +84,13 @@ public class JSONWriter {
     }
 
     public JSONObject writeInventory(HashMap<String,Integer> inventory){
-        ArrayList<JSONObject> inventoryHashMap = new ArrayList<>();
+        // ArrayList<JSONObject> inventoryHashMap = new ArrayList<>();
         JSONObject obj = new JSONObject();
         JSONObject inventory2 = new JSONObject();
         for (Map.Entry i :inventory.entrySet()){
             obj.put(i.getKey(),i.getValue());
-            inventoryHashMap.add(obj);
         }
-        inventory2.put("inventory",inventoryHashMap);
+        inventory2.put("inventory",obj);
         return inventory2;
     }
 
@@ -99,7 +98,7 @@ public class JSONWriter {
         JSONObject ondelivery1 = new JSONObject();
         JSONArray arrOfBarang = new JSONArray();
         for (int i=0;i<ondelivery.size();i++){
-            arrOfBarang.add(writeBarang(ondelivery.get(i)));
+            arrOfBarang.add(writeBarang((BahanMakanan) ondelivery.get(i)));
         }
         ondelivery1.put("on delivery",arrOfBarang);
         return ondelivery1;
