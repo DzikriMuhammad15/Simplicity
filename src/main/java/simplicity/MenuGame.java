@@ -428,7 +428,7 @@ public class MenuGame {
                 j++;
             }    
         }
-        Barang barang = new NonMakanan(namabarang);
+        NonMakanan barang = new NonMakanan(namabarang);
         
         System.out.println("Masukkan titik peletakan barang!");
         System.out.print("X : ");
@@ -482,7 +482,7 @@ public class MenuGame {
                 listObject();
                 System.out.println("masukkan nomor barang");
                 int noBarang = Integer.parseInt(scan.nextLine());
-                Barang barang = new NonMakanan(currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1).getNama());
+                Barang barang = (currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1));
                 System.out.println("Masukkan titik pemindahan barang!");
                 System.out.print("X : ");
                 int x=Integer.parseInt(scan.nextLine());
