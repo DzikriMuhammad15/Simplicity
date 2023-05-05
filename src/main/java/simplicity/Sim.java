@@ -386,6 +386,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 this.uang = uang - 2;
             }
         }
+        System.out.println(2);
     }
 
 

@@ -78,11 +78,11 @@ public class TimerRumah extends Thread {
                 }
             }
             // mengecek jam
-            if (instance.getHari() * 12 + instance.getWaktu() >= waktuSelesai) {
+            if (instance.getHari() * 720 + instance.getWaktu() >= waktuSelesai) {
                 muter = false;
             }
         }
-
+        
         // baru tambahin ruangan ke dalam rumah
         this.sim.getRumah().addRuangan(ruangBaru);
     }

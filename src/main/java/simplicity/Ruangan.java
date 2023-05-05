@@ -1,4 +1,5 @@
 package simplicity;
+
 import java.util.*;
 
 public class Ruangan {
@@ -90,7 +91,7 @@ public class Ruangan {
         return this.ruangBawah;
     }
 
-    public void locateBarang(Barang barang, int x, int y) {
+    public void locateBarangLoad(Barang barang, int x, int y) {
         int ukuranHorizontalBarang;
         int ukuranVertikalBarang;
 
@@ -101,7 +102,67 @@ public class Ruangan {
             ukuranVertikalBarang = nonMakanan.getLebar();
 
             // cek apakah tempat kosong
+            System.out.println(2);
+            if (x + ukuranHorizontalBarang <= 6 && y + ukuranVertikalBarang <= 6) {
+                int i;
+                int j;
+                boolean valid = true;
+                System.out.println(3);
+                for (i = y; i < y + ukuranVertikalBarang; i++) {
+                    for (j = x; j < x + ukuranHorizontalBarang; j++) {
+                        if (denahRuangan[i][j] != -1) {
+                            valid = false;
+                        }
+                    }
+                }
 
+                // setelah mengecek
+
+                if (valid) {
+                    // cek dulu barangnya apa
+                    int angka = 0;
+                    for (String s : daftarBarangFix) {
+                        if (barang.getNama().equals(s)) {
+                            break;
+                        }
+                        angka++;
+                    }
+
+                    // baru masukin ke denah
+
+                    int m;
+                    int n;
+                    for (m = y; m < y + ukuranVertikalBarang; m++) {
+                        for (n = x; n < x + ukuranHorizontalBarang; n++) {
+                            denahRuangan[m][n] = angka;
+                        }
+                    }
+
+                    // tambah titik ke dalam atribut NonMakanan
+
+                    nonMakanan.setPosisi(new Point(x, y));
+
+                } else {
+                    System.out.println("Sudah ada barang lain di posisi tersebut");
+                }
+            } else {
+                System.out.println("Melebihi ukuran ruangan");
+            }
+        }
+
+    }
+
+    public void locateBarang(Barang barang, int x, int y,HashMap<String,Integer> inventory) {
+        int ukuranHorizontalBarang;
+        int ukuranVertikalBarang;
+
+        // cast dulu barang menjadi nonMakanan
+        if (barang instanceof NonMakanan) {
+            NonMakanan nonMakanan = (NonMakanan) barang;
+            ukuranHorizontalBarang = nonMakanan.getPanjang();
+            ukuranVertikalBarang = nonMakanan.getLebar();
+
+            // cek apakah tempat kosong
             if (x + ukuranHorizontalBarang <= 6 && y + ukuranVertikalBarang <= 6) {
                 int i;
                 int j;
@@ -139,7 +200,9 @@ public class Ruangan {
                     // tambah titik ke dalam atribut NonMakanan
 
                     nonMakanan.setPosisi(new Point(x, y));
-
+                    this.getBarangInRuangan().add(barang);
+                    int jumlahSebelumnya = inventory.get(barang.getNama());
+                    inventory.put(barang.getNama(),jumlahSebelumnya-1);
                 } else {
                     System.out.println("Sudah ada barang lain di posisi tersebut");
                 }

@@ -59,12 +59,11 @@ public class JSONreader {
 
     public Rumah readRumah(JSONObject jsonobj) {
         Rumah rumah = new Rumah(readPoint((JSONObject) jsonobj.get("lokasi")));
-        ArrayList<Ruangan> arrayOfRuangan = new ArrayList<>();
-        rumah.getArrayOfRuangan().clear();
         JSONArray array = (JSONArray) jsonobj.get("array of ruangan");
         for (Object i : array){
             rumah.getArrayOfRuangan().add(readRuangan((JSONObject)i));
         }
+        System.out.printf("%d,%d",rumah.getLokasi().getX(),rumah.getLokasi().getY());
         return rumah;
     }
 
