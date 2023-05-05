@@ -667,8 +667,10 @@ public class MenuGame {
                 }else{
                     BahanMakanan nonmakanan = (BahanMakanan)i; 
                     System.out.println(i.getNama()+": "+(nonmakanan.getWaktuSelesai()-world.getHari()*720-world.getWaktu()));
-                }
-                
+                }  
+            }
+            for (Ruangan i : currSim.getRumah().getRuanganBlomJadi()){
+                System.out.println(i.getNamaRuangan()+": "+(i.getWaktuSelesai()-world.getHari()*720-world.getWaktu()));
             }
         }else{
             System.out.println("Sim tidak berada di Jam");

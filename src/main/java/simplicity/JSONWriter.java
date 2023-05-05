@@ -123,9 +123,9 @@ public class JSONWriter {
 
     public JSONObject writePosisi(Posisi posisi){
         JSONObject posisi1 = new JSONObject();
-        posisi1.put("currRumah",writeRumah(posisi.getCurrRumah()));
-        posisi1.put("currRuangan",writeRuangan(posisi.getCurrRuangan()));
-        posisi1.put("currBarang",writeNonMakanan((NonMakanan)posisi.getCurrBarang()));
+        World world = World.getInstance();
+        posisi1.put("currRumah",world.getSimOwnRumah(posisi.getCurrRumah()).getName());
+        posisi1.put("currRuangan",(posisi.getCurrRuangan().getNamaRuangan()));
         return posisi1;
     }
 

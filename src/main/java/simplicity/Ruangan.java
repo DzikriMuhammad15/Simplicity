@@ -152,67 +152,6 @@ public class Ruangan {
 
     }
 
-    public void locateBarang(Barang barang, int x, int y,HashMap<String,Integer> inventory) {
-        int ukuranHorizontalBarang;
-        int ukuranVertikalBarang;
-
-        // cast dulu barang menjadi nonMakanan
-        if (barang instanceof NonMakanan) {
-            NonMakanan nonMakanan = (NonMakanan) barang;
-            ukuranHorizontalBarang = nonMakanan.getPanjang();
-            ukuranVertikalBarang = nonMakanan.getLebar();
-
-            // cek apakah tempat kosong
-            if (x + ukuranHorizontalBarang <= 6 && y + ukuranVertikalBarang <= 6) {
-                int i;
-                int j;
-                boolean valid = true;
-                for (i = y; i < y + ukuranVertikalBarang; i++) {
-                    for (j = x; j < x + ukuranHorizontalBarang; j++) {
-                        if (denahRuangan[i][j] != -1) {
-                            valid = false;
-                        }
-                    }
-                }
-
-                // setelah mengecek
-
-                if (valid) {
-                    // cek dulu barangnya apa
-                    int angka = 0;
-                    for (String s : daftarBarangFix) {
-                        if (barang.getNama().equals(s)) {
-                            break;
-                        }
-                        angka++;
-                    }
-
-                    // baru masukin ke denah
-
-                    int m;
-                    int n;
-                    for (m = y; m < y + ukuranVertikalBarang; m++) {
-                        for (n = x; n < x + ukuranHorizontalBarang; n++) {
-                            denahRuangan[m][n] = angka;
-                        }
-                    }
-
-                    // tambah titik ke dalam atribut NonMakanan
-
-                    nonMakanan.setPosisi(new Point(x, y));
-                    this.getBarangInRuangan().add(barang);
-                    int jumlahSebelumnya = inventory.get(barang.getNama());
-                    inventory.put(barang.getNama(),jumlahSebelumnya-1);
-                } else {
-                    System.out.println("Sudah ada barang lain di posisi tersebut");
-                }
-            } else {
-                System.out.println("Melebihi ukuran ruangan");
-            }
-        }
-
-    }
-
     public void moveBarang(Barang barang, int x, int y) {
         int ukuranHorizontalBarang;
         int ukuranVertikalBarang;

@@ -1,4 +1,7 @@
 package simplicity;
+
+import java.util.ArrayList;
+
 public class TimerRumah extends Thread {
     private Sim sim;
     private String namaRuangan;
@@ -38,6 +41,8 @@ public class TimerRumah extends Thread {
                 if (ruanganSekarang.getRuangKanan() == null) {
                     ruanganSekarang.setRuangKanan(ruangBaru);
                     ruangBaru.setRuangKiri(ruanganSekarang);
+                    // menambahkan ruangan di ruangan blom jadi
+                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
                 } else {
                     System.out.println("Di sebelah kanan sudah ada ruangan");
                     return;
@@ -47,6 +52,8 @@ public class TimerRumah extends Thread {
                 if (ruanganSekarang.getRuangKiri() == null) {
                     ruanganSekarang.setRuangKiri(ruangBaru);
                     ruangBaru.setRuangKanan(ruanganSekarang);
+                    // menambahkan ruangan di ruangan blom jadi
+                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
                 } else {
                     System.out.println("Di sebelah kiri sudah ada ruangan");
                     return;
@@ -55,6 +62,8 @@ public class TimerRumah extends Thread {
                 if (ruanganSekarang.getRuangAtas() == null) {
                     ruanganSekarang.setRuangAtas(ruangBaru);
                     ruangBaru.setRuangBawah(ruanganSekarang);
+                    // menambahkan ruangan di ruangan blom jadi
+                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
                 } else {
                     System.out.println("Di atas sudah ada ruangan");
                     return;
@@ -63,6 +72,8 @@ public class TimerRumah extends Thread {
                 if (ruanganSekarang.getRuangBawah() == null) {
                     ruanganSekarang.setRuangBawah(ruangBaru);
                     ruangBaru.setRuangAtas(ruanganSekarang);
+                    // menambahkan ruangan di ruangan blom jadi
+                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
                 } else {
                     System.out.println("Di bawah sudah ada ruangan");
                     return;
@@ -82,7 +93,10 @@ public class TimerRumah extends Thread {
                 muter = false;
             }
         }
-        
+
+        // ilangin dari array Ruangan Blom jadi
+        this.sim.getRumah().deleteRuanganBlomJadi(ruangBaru);
+
         // baru tambahin ruangan ke dalam rumah
         this.sim.getRumah().addRuangan(ruangBaru);
     }

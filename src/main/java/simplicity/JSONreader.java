@@ -15,13 +15,38 @@ public class JSONreader {
             // Read JSON file
             Object obj = jsonParser.parse(reader);
             JSONObject jsonobj = (JSONObject) obj;
+            ArrayList<Object> daftarPosisi = new ArrayList<>();
             String hari = jsonobj.get("Hari").toString();
             world.setHari(Integer.parseInt(hari));
             String waktu = jsonobj.get("waktu").toString();
             world.setWaktu(Integer.parseInt(waktu));
             JSONArray arrsim = (JSONArray) jsonobj.get("ArrSim");
             for (Object i : arrsim) {
-                world.getArrSim().add(readSim((JSONObject) i));
+                world.getArrSim().add(readSim((JSONObject) i,daftarPosisi));
+            }
+            for (Sim i: world.getArrSim()){
+                String rumah="";
+                String ruangan="";
+                for (Object m: daftarPosisi){
+                    JSONObject n = (JSONObject)m;
+                    if (i.getName().equals(n.get("nama").toString())){
+                        JSONObject posisi = (JSONObject)n.get("posisi");
+                        rumah = posisi.get("currRumah").toString();
+                        ruangan = posisi.get("currRuangan").toString();
+                    }
+                }
+                
+                
+                for (Sim j:world.getArrSim()){
+                    if (j.getName().equals(rumah)){
+                        i.getPosisi().setCurrRumah(j.getRumah());
+                        for (Ruangan k: i.getPosisi().getCurrRumah().getArrayOfRuangan()){
+                            if (k.getNamaRuangan().equals(ruangan)){
+                                i.getPosisi().setCurrRuangan(k);
+                            }
+                        }
+                    }
+                }
             }
 
         } catch (FileNotFoundException e) {
@@ -33,13 +58,17 @@ public class JSONreader {
         }
     }
 
-    public Sim readSim(JSONObject jsonobj) {
+    public Sim readSim(JSONObject jsonobj,ArrayList<Object> daftarPosisi) {
         Sim sim1 = new Sim(jsonobj.get("nama lengkap").toString());
         sim1.setInventory(readInventory((JSONObject)jsonobj.get("inventory")));
         sim1.setKesejahteraan(readKesejahteraan((JSONObject)jsonobj.get("kesejahteraan")));
         sim1.setOnDelivery(readOnDelivery((JSONArray)jsonobj.get("on delivery")));
         sim1.setPekerjaan(readPekerjaan((JSONObject)jsonobj.get("pekerjaan")));
-        sim1.setPosisi(readPosisi((JSONObject) jsonobj.get("posisi")));
+        JSONObject posisi = new JSONObject();
+        posisi.put("nama",jsonobj.get("nama lengkap").toString());
+        posisi.put("posisi",jsonobj.get("posisi"));
+        daftarPosisi.add((Object) posisi);
+        // sim1.setPosisi(new Posisi(jsonobj.get("posisi"),null,null));
         sim1.setRumah(readRumah((JSONObject) jsonobj.get("rumah")));
         sim1.setStatus((String)jsonobj.get("status"));
         sim1.setUang(Integer.parseInt(jsonobj.get("uang").toString()));
@@ -63,7 +92,6 @@ public class JSONreader {
         for (Object i : array){
             rumah.getArrayOfRuangan().add(readRuangan((JSONObject)i));
         }
-        System.out.printf("%d,%d",rumah.getLokasi().getX(),rumah.getLokasi().getY());
         return rumah;
     }
 
@@ -158,14 +186,22 @@ public class JSONreader {
         return new Kesejahteraan(dead, mood, kesehatan, kekenyangan);
     }
     
-    public Posisi readPosisi(JSONObject jsonobj) {
-        JSONObject currRumahJSON = (JSONObject) jsonobj.get("currRumah");
-        Rumah currRumah = readRumah(currRumahJSON);
-        JSONObject currRuanganJSON = (JSONObject) jsonobj.get("currRuangan");
-        Ruangan currRuangan = readRuangan(currRuanganJSON);
-        JSONObject currBarangJSON = (JSONObject) jsonobj.get("currBarang");
-        NonMakanan currBarang = readNonMakanan(currBarangJSON);
-        return new Posisi(currRumah, currRuangan, currBarang);
+    // public Posisi readPosisi(JSONObject jsonobj) {
+    //     JSONObject currRumahJSON = (JSONObject) jsonobj.get("currRumah");
+    //     Rumah currRumah = readRumah(currRumahJSON);
+    //     JSONObject currRuanganJSON = (JSONObject) jsonobj.get("currRuangan");
+    //     Ruangan currRuangan = readRuangan(currRuanganJSON);
+    //     JSONObject currBarangJSON = (JSONObject) jsonobj.get("currBarang");
+    //     NonMakanan currBarang = readNonMakanan(currBarangJSON);
+    //     return new Posisi(currRumah, currRuangan, currBarang);
+    // }
+
+    public Object readPosisi(Sim sim,JSONObject jsonobj) {
+        JSONObject posisi = new JSONObject();
+        posisi.put("nama",sim.getName());
+        posisi.put("posisi",jsonobj);
+        // posisi.put("")
+        return (Object) posisi;
     }
     
     public Ruangan readRuangan(JSONObject obj) {
