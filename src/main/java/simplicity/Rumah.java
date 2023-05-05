@@ -1,10 +1,13 @@
 package simplicity;
+
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Rumah {
     // atribut
     private Point lokasi;
     private ArrayList<Ruangan> arrOfRuangan = new ArrayList<Ruangan>();
+    private ArrayList<Ruangan> ruanganBlomJadi = new ArrayList<Ruangan>();
 
     // konstruktor
     public Rumah(Point lokasi) {
@@ -19,26 +22,30 @@ public class Rumah {
         NonMakanan kompor = new NonMakanan("Kompor Gas");
         NonMakanan toilet = new NonMakanan("Toilet");
         NonMakanan kasur = new NonMakanan("Kasur Single");
-
+        HashMap<String, Integer> inventory = new HashMap<>();
+        inventory.put("Meja dan Kursi", 1);
+        inventory.put("Jam", 1);
+        inventory.put("Kompor Gas", 1);
+        inventory.put("Toilet", 1);
+        inventory.put("Kasur Single", 1);
         // masukkin ke dalam ruanganUtama
-        r.addBarangInRuangan(kasur);
-        r.addBarangInRuangan(toilet);
-        r.addBarangInRuangan(kompor);
-        r.addBarangInRuangan(jam);
-        r.addBarangInRuangan(meja);
 
         // locate barang
-        r.locateBarang(kasur, 0, 0);
-        r.locateBarang(toilet, 5, 5);
-        r.locateBarang(kompor, 4, 0);
-        r.locateBarang(jam, 5, 3);
-        r.locateBarang(meja, 0, 3);
+        r.locateBarang(kasur, 0, 0, inventory);
+        r.locateBarang(toilet, 5, 5, inventory);
+        r.locateBarang(kompor, 4, 0, inventory);
+        r.locateBarang(jam, 5, 3, inventory);
+        r.locateBarang(meja, 0, 3, inventory);
 
     }
 
     // method-method
 
     // getter
+    public ArrayList<Ruangan> getRuanganBlomJadi() {
+        return this.ruanganBlomJadi;
+    }
+
     public Point getLokasi() {
         return this.lokasi;
     }
@@ -48,6 +55,15 @@ public class Rumah {
     }
 
     // setter
+
+    public void addRuanganBlomJadi(Ruangan ruangan) {
+        this.ruanganBlomJadi.add(ruangan);
+    }
+
+    public void deleteRuanganBlomJadi(Ruangan ruangan) {
+        this.ruanganBlomJadi.remove(ruangan);
+    }
+
     public void setLokasi(Point newLoc) {
         this.lokasi = newLoc;
     }

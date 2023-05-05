@@ -1,4 +1,5 @@
 package simplicity;
+
 import java.lang.*;
 
 public class TimerBarang extends Thread {
@@ -58,7 +59,7 @@ public class TimerBarang extends Thread {
                 }
             }
             // mengecek jam
-            if (instance.getHari() * 12 + instance.getWaktu() >= waktuSelesai) {
+            if (instance.getHari() * 720 + instance.getWaktu() >= waktuSelesai) {
                 muter = false;
             }
         }
@@ -73,17 +74,7 @@ public class TimerBarang extends Thread {
         // ...
 
         // masukkin ke inventory
-        synchronized(lock){
-            int jumlahSebelumnya;
-            String namaBarang = b.getNama();
-            if (sim.getInventory().containsKey(namaBarang)) {
-                jumlahSebelumnya = sim.getInventory().get(namaBarang);
-            } else {
-                jumlahSebelumnya = 0;
-            }
-            sim.getInventory().put(namaBarang, jumlahSebelumnya + 1);
-            // ...
-        }
+
         synchronized (sim.getInventory()) {
             // masukkin ke inventory
             int jumlahSebelumnya;
