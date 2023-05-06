@@ -447,12 +447,14 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
             setWaktuMakanAwal(waktuMakanAwal+240);
+            System.out.println("Kesejahteraan telah berkurang karena belum buang air.");
             // setWaktuMakanAwal(currentTime-(currentTime-waktuMakanAwal-240));
         }
         if (currentTime-waktuTidurAwal >= 600){
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
             setWaktuTidurAwal(waktuTidurAwal+600);
+            System.out.println("Kesejahteraan telah berkurang karena belum tidur.");
             // setWaktuTidurAwal(currentTime-(currentTime-waktuTidurAwal-600));
         }
     }
