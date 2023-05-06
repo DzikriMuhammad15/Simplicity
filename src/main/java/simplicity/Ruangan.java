@@ -102,12 +102,11 @@ public class Ruangan {
             ukuranVertikalBarang = nonMakanan.getLebar();
 
             // cek apakah tempat kosong
-            System.out.println(2);
             if (x + ukuranHorizontalBarang <= 6 && y + ukuranVertikalBarang <= 6) {
                 int i;
                 int j;
                 boolean valid = true;
-                System.out.println(3);
+
                 for (i = y; i < y + ukuranVertikalBarang; i++) {
                     for (j = x; j < x + ukuranHorizontalBarang; j++) {
                         if (denahRuangan[i][j] != -1) {
