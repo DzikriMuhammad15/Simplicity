@@ -7,6 +7,7 @@ import org.json.simple.parser.*;
 import netscape.javascript.JSObject;
 
 public class JSONWriter {
+    int i=0;
 
     public void writeWorld(World world, String namafile){
         JSONObject world1 = new JSONObject();
@@ -69,10 +70,15 @@ public class JSONWriter {
         JSONObject rumah1 = new JSONObject();
         rumah1.put("lokasi",writePoint(rumah.getLokasi()));
         JSONArray arrOfRuangan = new JSONArray();
+        JSONArray arrOfRuangan2 = new JSONArray();
         for (int i=0;i<rumah.getArrayOfRuangan().size();i++){
             arrOfRuangan.add(writeRuangan(rumah.getArrayOfRuangan().get(i)));
         }
         rumah1.put("array of ruangan",arrOfRuangan);
+        for (int i=0;i<rumah.getRuanganBlomJadi().size();i++){
+            arrOfRuangan2.add(writeRuangan(rumah.getRuanganBlomJadi().get(i)));
+        }
+        rumah1.put("ruang belum jadi",arrOfRuangan2);
         return rumah1;
     }
 
@@ -132,10 +138,18 @@ public class JSONWriter {
         JSONObject ruangan1 = new JSONObject();
         if (ruangan!=null){
             ruangan1.put("nama",(ruangan.getNamaRuangan()));
-            ruangan1.put("ruang atas",writeRuangan(ruangan.getRuangAtas()));
-            ruangan1.put("ruang bawah",writeRuangan(ruangan.getRuangBawah()));
-            ruangan1.put("ruang kanan",writeRuangan(ruangan.getRuangKanan()));
-            ruangan1.put("ruang kiri",writeRuangan(ruangan.getRuangKiri()));
+            if (ruangan1.get("ruang atas")==null && ruangan.getRuangAtas()!=null){
+                ruangan1.put("ruang atas",(ruangan.getRuangAtas().getNamaRuangan()));
+            }
+            if (ruangan1.get("ruang bawah")==null && ruangan.getRuangBawah()!=null){
+                ruangan1.put("ruang bawah",(ruangan.getRuangBawah().getNamaRuangan()));
+            }
+            if (ruangan1.get("ruang kanan")==null && ruangan.getRuangKanan()!=null){
+                ruangan1.put("ruang kanan",(ruangan.getRuangKanan().getNamaRuangan()));
+            }
+            if (ruangan1.get("ruang kiri")==null && ruangan.getRuangKiri()!=null){
+                ruangan1.put("ruang kiri",(ruangan.getRuangKiri().getNamaRuangan()));
+            }
             JSONArray arrayOfBarang = new JSONArray();
             JSONArray barangFix = new JSONArray();
             for (Barang i : ruangan.getBarangInRuangan()){
@@ -147,9 +161,12 @@ public class JSONWriter {
             ruangan1.put("array of barang",arrayOfBarang);
             ruangan1.put("daftar barang fix",barangFix);
             ruangan1.put("waktu selesai",ruangan.getWaktuSelesai());
+            
         }else{
             ruangan1.put("nama","null");
         }
+        i++;
+        System.out.println(i);
         return ruangan1;
     }
     
