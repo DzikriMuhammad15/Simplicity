@@ -468,8 +468,6 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         if (waktu%120 == 0){
             if ((currentDay-hariResign) >= 1){
                 lock.lock();
-                
-                int count = waktu / 240; // Hitung jumlah iterasi yang diperlukan
                 for (int i = 0; i < waktu; i+=30){
                     int kekenyanganAwal = kesejahteraan.getKekenyangan();
                     int moodAwal = kesejahteraan.getMood();
