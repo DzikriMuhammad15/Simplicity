@@ -1,0 +1,322 @@
+{
+  "ArrSim": [
+    {
+      "nama lengkap": "LSPP",
+      "makan pertama": true,
+      "kesejahteraan": {
+        "kesehatan": 90,
+        "mood": 70,
+        "dead": false,
+        "kekenyangan": 35
+      },
+      "waktu makan awal": 177,
+      "hari resign": -9999,
+      "rumah": {
+        "lokasi": { "x": -57, "y": -39 },
+        "array of ruangan": [
+          {
+            "ruang atas": { "nama": "null" },
+            "ruang bawah": { "nama": "null" },
+            "array of barang": [
+              {
+                "panjang": 4,
+                "nama": "Kasur Single",
+                "harga": 50,
+                "shipping time": 397,
+                "lebar": 1,
+                "posisi": { "x": 0, "y": 0 },
+                "waktu selesai": 200,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Toilet",
+                "harga": 50,
+                "shipping time": 404,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 5 },
+                "waktu selesai": 207,
+                "orientasi": 0
+              },
+              {
+                "panjang": 2,
+                "nama": "Kompor Gas",
+                "harga": 100,
+                "shipping time": 398,
+                "lebar": 1,
+                "posisi": { "x": 4, "y": 0 },
+                "waktu selesai": 201,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Jam",
+                "harga": 10,
+                "shipping time": 396,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 3 },
+                "waktu selesai": 199,
+                "orientasi": 0
+              },
+              {
+                "panjang": 3,
+                "nama": "Meja dan Kursi",
+                "harga": 50,
+                "shipping time": 400,
+                "lebar": 3,
+                "posisi": { "x": 0, "y": 3 },
+                "waktu selesai": 203,
+                "orientasi": 0
+              }
+            ],
+            "daftar barang fix": [
+              "Kasur Single",
+              "Kasur Queen Size",
+              "Kasur King Size",
+              "Toilet",
+              "Kompor Gas",
+              "Kompor Listrik",
+              "Meja dan Kursi",
+              "Jam",
+              "Televisi"
+            ],
+            "nama": "ruangUtama",
+            "ruang kanan": { "nama": "null" },
+            "waktu selesai": 0,
+            "ruang kiri": { "nama": "null" }
+          },
+          {
+            "ruang atas": { "nama": "null" },
+            "ruang bawah": { "nama": "null" },
+            "array of barang": [
+              {
+                "panjang": 4,
+                "nama": "Kasur Single",
+                "harga": 50,
+                "shipping time": 381,
+                "lebar": 1,
+                "posisi": { "x": 0, "y": 0 },
+                "waktu selesai": 184,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Toilet",
+                "harga": 50,
+                "shipping time": 380,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 5 },
+                "waktu selesai": 183,
+                "orientasi": 0
+              },
+              {
+                "panjang": 2,
+                "nama": "Kompor Gas",
+                "harga": 100,
+                "shipping time": 381,
+                "lebar": 1,
+                "posisi": { "x": 4, "y": 0 },
+                "waktu selesai": 184,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Jam",
+                "harga": 10,
+                "shipping time": 376,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 3 },
+                "waktu selesai": 179,
+                "orientasi": 0
+              },
+              {
+                "panjang": 3,
+                "nama": "Meja dan Kursi",
+                "harga": 50,
+                "shipping time": 377,
+                "lebar": 3,
+                "posisi": { "x": 0, "y": 3 },
+                "waktu selesai": 180,
+                "orientasi": 0
+              }
+            ],
+            "daftar barang fix": [
+              "Kasur Single",
+              "Kasur Queen Size",
+              "Kasur King Size",
+              "Toilet",
+              "Kompor Gas",
+              "Kompor Listrik",
+              "Meja dan Kursi",
+              "Jam",
+              "Televisi"
+            ],
+            "nama": "ruangUtama",
+            "ruang kanan": { "nama": "null" },
+            "waktu selesai": 0,
+            "ruang kiri": { "nama": "null" }
+          },
+          {
+            "ruang atas": { "nama": "null" },
+            "ruang bawah": { "nama": "null" },
+            "array of barang": [
+              {
+                "panjang": 4,
+                "nama": "Kasur Single",
+                "harga": 50,
+                "shipping time": 225,
+                "lebar": 1,
+                "posisi": { "x": 0, "y": 0 },
+                "waktu selesai": 28,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Toilet",
+                "harga": 50,
+                "shipping time": 218,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 5 },
+                "waktu selesai": 21,
+                "orientasi": 0
+              },
+              {
+                "panjang": 2,
+                "nama": "Kompor Gas",
+                "harga": 100,
+                "shipping time": 226,
+                "lebar": 1,
+                "posisi": { "x": 4, "y": 0 },
+                "waktu selesai": 29,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Jam",
+                "harga": 10,
+                "shipping time": 225,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 3 },
+                "waktu selesai": 28,
+                "orientasi": 0
+              },
+              {
+                "panjang": 3,
+                "nama": "Meja dan Kursi",
+                "harga": 50,
+                "shipping time": 219,
+                "lebar": 3,
+                "posisi": { "x": 0, "y": 3 },
+                "waktu selesai": 22,
+                "orientasi": 0
+              }
+            ],
+            "daftar barang fix": [
+              "Kasur Single",
+              "Kasur Queen Size",
+              "Kasur King Size",
+              "Toilet",
+              "Kompor Gas",
+              "Kompor Listrik",
+              "Meja dan Kursi",
+              "Jam",
+              "Televisi"
+            ],
+            "nama": "ruangUtama",
+            "ruang kanan": { "nama": "null" },
+            "waktu selesai": 0,
+            "ruang kiri": { "nama": "null" }
+          },
+          {
+            "ruang atas": { "nama": "null" },
+            "ruang bawah": { "nama": "null" },
+            "array of barang": [
+              {
+                "panjang": 4,
+                "nama": "Kasur Single",
+                "harga": 50,
+                "shipping time": 201,
+                "lebar": 1,
+                "posisi": { "x": 0, "y": 0 },
+                "waktu selesai": 4,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Toilet",
+                "harga": 50,
+                "shipping time": 202,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 5 },
+                "waktu selesai": 5,
+                "orientasi": 0
+              },
+              {
+                "panjang": 2,
+                "nama": "Kompor Gas",
+                "harga": 100,
+                "shipping time": 203,
+                "lebar": 1,
+                "posisi": { "x": 4, "y": 0 },
+                "waktu selesai": 6,
+                "orientasi": 0
+              },
+              {
+                "panjang": 1,
+                "nama": "Jam",
+                "harga": 10,
+                "shipping time": 204,
+                "lebar": 1,
+                "posisi": { "x": 5, "y": 3 },
+                "waktu selesai": 7,
+                "orientasi": 0
+              },
+              {
+                "panjang": 3,
+                "nama": "Meja dan Kursi",
+                "harga": 50,
+                "shipping time": 201,
+                "lebar": 3,
+                "posisi": { "x": 0, "y": 3 },
+                "waktu selesai": 4,
+                "orientasi": 0
+              }
+            ],
+            "daftar barang fix": [
+              "Kasur Single",
+              "Kasur Queen Size",
+              "Kasur King Size",
+              "Toilet",
+              "Kompor Gas",
+              "Kompor Listrik",
+              "Meja dan Kursi",
+              "Jam",
+              "Televisi"
+            ],
+            "nama": "ruangUtama",
+            "ruang kanan": { "nama": "null" },
+            "waktu selesai": 0,
+            "ruang kiri": { "nama": "null" }
+          }
+        ]
+      },
+      "inventory": {
+        "inventory": [
+          { "TV": 1, "Bayam": 1, "Nasi": 1 }
+        ]
+      },
+      "on delivery": [{ "nama": "Laptop" }],
+      "sudah buang air": false,
+      "uang": 9739,
+      "pekerjaan": { "gaji harian": 50, "nama": "Dokter" },
+      "waktu tidur awal": 0,
+      "posisi": { "currRuangan": "ruangUtama", "currRumah": "LSPP" },
+      "waktu kerja": 120,
+      "status": null
+    }
+  ],
+  "panjang": 64,
+  "Hari": 0,
+  "waktu": 197,
+  "lebar": 64
+}
