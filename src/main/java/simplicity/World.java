@@ -6,6 +6,7 @@ public class World {
     private int lebar = 64;
     private int hari = 0;
     private int waktu = 0;
+    //menggunakan design pattern one single object
     private ArrayList<Sim> ArrSim = new ArrayList<>(0);
     private static World instance = new World();
     private Object lock = new Object();
