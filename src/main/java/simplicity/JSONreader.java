@@ -35,8 +35,6 @@ public class JSONreader {
                         ruangan = posisi.get("currRuangan").toString();
                     }
                 }
-                
-                
                 for (Sim j:world.getArrSim()){
                     if (j.getName().equals(rumah)){
                         i.getPosisi().setCurrRumah(j.getRumah());
@@ -47,7 +45,52 @@ public class JSONreader {
                         }
                     }
                 }
+        }
+        for (Sim i : world.getArrSim()){
+            for (Ruangan j : i.getRumah().getArrayOfRuangan()){
+                Ruangan ruangan = j;
+                for (Ruangan k: i.getRumah().getArrayOfRuangan()){
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangAtas()!=null && ruangan.getNamaRuangan().equals(k.getRuangAtas().getNamaRuangan())){
+                        k.setRuangAtas(ruangan);
+                        ruangan.setRuangBawah(k);
+                    }
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangBawah()!=null && ruangan.getNamaRuangan().equals(k.getRuangBawah().getNamaRuangan())){
+                        k.setRuangBawah(ruangan);
+                        ruangan.setRuangAtas(k);
+                    }
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangKanan()!=null && ruangan.getNamaRuangan().equals(k.getRuangKanan().getNamaRuangan())){
+                        k.setRuangKanan(ruangan);
+                        ruangan.setRuangKiri(k);
+                    }
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangKiri()!=null && ruangan.getNamaRuangan().equals(k.getRuangKiri().getNamaRuangan())){
+                        k.setRuangKiri(ruangan);
+                        ruangan.setRuangKanan(k);
+                    }
+                }
             }
+            for (Ruangan j : i.getRumah().getRuanganBlomJadi()){
+                Ruangan ruangan = j;
+                
+                for (Ruangan k: i.getRumah().getArrayOfRuangan()){
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangAtas()!=null && ruangan.getNamaRuangan().equals(k.getRuangAtas().getNamaRuangan())){
+                        TimerRumah timerRumah = new TimerRumah(i, j.getNamaRuangan(), k, "bawah", j.getWaktuSelesai());
+                        timerRumah.start();
+                    }
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangBawah()!=null && ruangan.getNamaRuangan().equals(k.getRuangBawah().getNamaRuangan())){
+                        TimerRumah timerRumah = new TimerRumah(i, j.getNamaRuangan(), k, "atas", j.getWaktuSelesai());
+                        timerRumah.start();
+                    }
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangKanan()!=null && ruangan.getNamaRuangan().equals(k.getRuangKanan().getNamaRuangan())){
+                        TimerRumah timerRumah = new TimerRumah(i, j.getNamaRuangan(), k, "kiri", j.getWaktuSelesai());
+                        timerRumah.start();
+                    }
+                    if (ruangan.getNamaRuangan()!=null && k.getRuangKiri()!=null && ruangan.getNamaRuangan().equals(k.getRuangKiri().getNamaRuangan())){
+                        TimerRumah timerRumah = new TimerRumah(i, j.getNamaRuangan(), k, "kana", j.getWaktuSelesai());
+                        timerRumah.start();
+                    }
+                }
+            }
+        }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -89,8 +132,12 @@ public class JSONreader {
     public Rumah readRumah(JSONObject jsonobj) {
         Rumah rumah = new Rumah(readPoint((JSONObject) jsonobj.get("lokasi")));
         JSONArray array = (JSONArray) jsonobj.get("array of ruangan");
+        JSONArray array2 = (JSONArray) jsonobj.get("ruang belum jadi");
         for (Object i : array){
             rumah.getArrayOfRuangan().add(readRuangan((JSONObject)i));
+        }
+        for (Object i : array2){
+            rumah.getRuanganBlomJadi().add(readRuangan((JSONObject)i));
         }
         return rumah;
     }
@@ -216,31 +263,25 @@ public class JSONreader {
         if (namaRuangan.equals("null")) {
             return null;
         }
-    
         Ruangan ruangan = new Ruangan(namaRuangan);
-    
-        JSONObject ruangAtasObj = (JSONObject) obj.get("ruang atas");
-        if (!ruangAtasObj.equals(null)) {
-            Ruangan ruangAtas = readRuangan(ruangAtasObj);
-            ruangan.setRuangAtas(ruangAtas);
+        if (obj.get("ruang atas")!=null){
+                Ruangan ruangAtas = new Ruangan(obj.get("ruang atas").toString());
+                ruangan.setRuangAtas(ruangAtas);
         }
-    
-        JSONObject ruangBawahObj = (JSONObject) obj.get("ruang bawah");
-        if (!ruangBawahObj.equals("null")) {
-            Ruangan ruangBawah = readRuangan(ruangBawahObj);
-            ruangan.setRuangBawah(ruangBawah);
+        
+        if (obj.get("ruang bawah")!=null){
+                Ruangan ruangBawah = new Ruangan(obj.get("ruang bawah").toString());
+                ruangan.setRuangBawah(ruangBawah);
+            
         }
-    
-        JSONObject ruangKananObj = (JSONObject) obj.get("ruang kanan");
-        if (!ruangKananObj.equals("null")) {
-            Ruangan ruangKanan = readRuangan(ruangKananObj);
-            ruangan.setRuangKanan(ruangKanan);
+        if (obj.get("ruang kanan")!=null){
+                Ruangan ruangKanan = new Ruangan(obj.get("ruang kanan").toString());
+                ruangan.setRuangKanan(ruangKanan);
+        
         }
-    
-        JSONObject ruangKiriObj = (JSONObject) obj.get("ruang kiri");
-        if (!ruangKiriObj.equals("null")) {
-            Ruangan ruangKiri = readRuangan(ruangKiriObj);
-            ruangan.setRuangKiri(ruangKiri);
+        if (obj.get("ruang kiri")!=null){
+                Ruangan ruangKiri = new Ruangan(obj.get("ruang kiri").toString());
+                ruangan.setRuangKiri(ruangKiri);
         }
     
         JSONArray arrayOfBarang = (JSONArray) obj.get("array of barang");
