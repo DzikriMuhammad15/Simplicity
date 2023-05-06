@@ -131,6 +131,8 @@ public class MenuGame {
                 help();
             }else if(aksi.equals("Pukul")){
                 pukul();
+            }else if(aksi.equals("Action")){
+                action();
             }else if(aksi.equals("Bercanda")){
                 bercanda();
             }else if(aksi.equals("Bunuh Diri")){
@@ -550,6 +552,8 @@ public class MenuGame {
         System.out.println("15. Memasang Barang");
         System.out.println("16. Bercanda");
         System.out.println("17. Bunuh Diri");
+        System.out.println("18. Change Sim");
+        System.out.println("20. Change Job");
         
     }
     
@@ -831,6 +835,48 @@ public class MenuGame {
         }
     }
 
+    public void action(){
+        if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Single")){
+                tidur();
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Queen Size")){
+                tidur();
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur King Size")){
+                tidur();
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Toilet")){
+                buangAir();
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kompor Gas")){
+            memasak();
+            
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kompor Listrik")){
+            memasak(); 
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Meja dan Kursi")){
+            makan(); 
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Jam")){
+                lihatWaktu();
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("TV")){
+                nontonTV();
+        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Laptop")){
+            System.out.println("Berikut aksi yang dapat dilakukan");
+            System.out.println("1. Ngoding");
+            System.out.println("2. Dengar Musik");
+            System.out.println("3. Main Game");
+            System.out.println("4. Tidak Melakukan apa-apa");
+            System.out.println("Masukkan angka!");
+            try{
+                int no = Integer.parseInt(scan.nextLine());
+                if (no==1){
+                    ngoding();
+                }else if(no==2){
+                    dengarMusik();
+                }else if(no==3){
+                    mainGame();
+                }
+            }catch(NumberFormatException e){
+                System.out.println("Masukan tidak valid");
+            }
+        }
+    }
+
     public void makan(){
             if (currSim.getInventory().isEmpty()){
                 System.out.println("Inventorymu kosng");
@@ -920,6 +966,10 @@ public class MenuGame {
                 System.exit(0);
             }else if(command.equals("Help")){
                 System.out.println("Berikut adalah panduan bermain game");
+                System.out.println("Player akan memainkan satu orang sim di awal dan memilih titik lokasi rumah");
+                System.out.pritln("Atribut-atribut yang dimiliki sim akan digenerate secara otomatis");
+                System.out.println("Terdapat beberapa command yang dapat dijalankan oleh sim di dalam game");
+                System.out.println("Game akan berakhir ketika semua sim yang ada mati");
             }else{
                 System.out.println("Masukkan perintah command yang sesuai");
             }     
