@@ -7,7 +7,7 @@ public class Ruangan {
     private String namaRuangan;
     private ArrayList<Barang> barangInRuangan = new ArrayList<Barang>();
     private String[] daftarBarangFix = { "Kasur Single", "Kasur Queen Size", "Kasur King Size", "Toilet", "Kompor Gas",
-            "Kompor Listrik", "Meja dan Kursi", "Jam", "Televisi", "Laptop" };
+            "Kompor Listrik", "Meja dan Kursi", "Jam", "TV", "Laptop" };
     private int[][] denahRuangan = new int[6][6];
     private Ruangan ruangAtas = null;
     private Ruangan ruangBawah = null;
@@ -345,6 +345,7 @@ public class Ruangan {
         }
         System.out.println("");
         System.out.println("Keterangan : ");
+        System.out.println("-1 : Tidak Ada Barang");
         System.out.println("0 : Kasur Single");
         System.out.println("1 : Kasur Queen Size");
         System.out.println("2 : Kasur King Size");

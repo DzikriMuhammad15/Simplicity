@@ -86,6 +86,8 @@ public class TimerBarang extends Thread {
             }
             sim.getInventory().put(namaBarang, jumlahSebelumnya + 1);
             // ...
+            // barang sudah masuk inventory
+            System.out.println("Selamat!, barang " + namaBarang + " yang Anda pesan sudah datang, silakan cek inventory");
         }
 
     }

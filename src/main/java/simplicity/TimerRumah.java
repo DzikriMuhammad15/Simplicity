@@ -27,78 +27,85 @@ public class TimerRumah extends Thread {
     }
 
     public void run() {
-        World instance = World.getInstance();
-        int waktuSelesai = instance.getHari() * 720 + instance.getWaktu() + 1080;
-        boolean muter = true;
-        Ruangan ruangBaru = new Ruangan(namaRuangan);
-        ruangBaru.setWaktuSelesai(waktuSelesai);
-        if (waktuBeres != -1) {
-            // load
-            waktuSelesai = this.waktuBeres;
-        } else {
-            // masukin dulu ke denah sehingga saat proses tidak dapat ditimpa
-            if (lokasi.equals("kanan")) {
-                if (ruanganSekarang.getRuangKanan() == null) {
-                    ruanganSekarang.setRuangKanan(ruangBaru);
-                    ruangBaru.setRuangKiri(ruanganSekarang);
-                    // menambahkan ruangan di ruangan blom jadi
-                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
-                } else {
-                    System.out.println("Di sebelah kanan sudah ada ruangan");
-                    return;
-                }
-
-            } else if (lokasi.equals("kiri")) {
-                if (ruanganSekarang.getRuangKiri() == null) {
-                    ruanganSekarang.setRuangKiri(ruangBaru);
-                    ruangBaru.setRuangKanan(ruanganSekarang);
-                    // menambahkan ruangan di ruangan blom jadi
-                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
-                } else {
-                    System.out.println("Di sebelah kiri sudah ada ruangan");
-                    return;
-                }
-            } else if (lokasi.equals("atas")) {
-                if (ruanganSekarang.getRuangAtas() == null) {
-                    ruanganSekarang.setRuangAtas(ruangBaru);
-                    ruangBaru.setRuangBawah(ruanganSekarang);
-                    // menambahkan ruangan di ruangan blom jadi
-                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
-                } else {
-                    System.out.println("Di atas sudah ada ruangan");
-                    return;
-                }
-            } else if (lokasi.equals("bawah")) {
-                if (ruanganSekarang.getRuangBawah() == null) {
-                    ruanganSekarang.setRuangBawah(ruangBaru);
-                    ruangBaru.setRuangAtas(ruanganSekarang);
-                    // menambahkan ruangan di ruangan blom jadi
-                    this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
-                } else {
-                    System.out.println("Di bawah sudah ada ruangan");
-                    return;
+        if(lokasi.equals("kanan") || lokasi.equals("kiri") || lokasi.equals("atas")|| lokasi.equals("bawah")){
+            // lokasinya valid    
+            World instance = World.getInstance();
+            int waktuSelesai = instance.getHari() * 720 + instance.getWaktu() + 1080;
+            boolean muter = true;
+            Ruangan ruangBaru = new Ruangan(namaRuangan);
+            ruangBaru.setWaktuSelesai(waktuSelesai);
+            if (waktuBeres != -1) {
+                // load
+                waktuSelesai = this.waktuBeres;
+            } else {
+                // masukin dulu ke denah sehingga saat proses tidak dapat ditimpa
+                if (lokasi.equals("kanan")) {
+                    if (ruanganSekarang.getRuangKanan() == null) {
+                        ruanganSekarang.setRuangKanan(ruangBaru);
+                        ruangBaru.setRuangKiri(ruanganSekarang);
+                        // menambahkan ruangan di ruangan blom jadi
+                        this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
+                    } else {
+                        System.out.println("Di sebelah kanan sudah ada ruangan");
+                        return;
+                    }
+    
+                } else if (lokasi.equals("kiri")) {
+                    if (ruanganSekarang.getRuangKiri() == null) {
+                        ruanganSekarang.setRuangKiri(ruangBaru);
+                        ruangBaru.setRuangKanan(ruanganSekarang);
+                        // menambahkan ruangan di ruangan blom jadi
+                        this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
+                    } else {
+                        System.out.println("Di sebelah kiri sudah ada ruangan");
+                        return;
+                    }
+                } else if (lokasi.equals("atas")) {
+                    if (ruanganSekarang.getRuangAtas() == null) {
+                        ruanganSekarang.setRuangAtas(ruangBaru);
+                        ruangBaru.setRuangBawah(ruanganSekarang);
+                        // menambahkan ruangan di ruangan blom jadi
+                        this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
+                    } else {
+                        System.out.println("Di atas sudah ada ruangan");
+                        return;
+                    }
+                } else if (lokasi.equals("bawah")) {
+                    if (ruanganSekarang.getRuangBawah() == null) {
+                        ruanganSekarang.setRuangBawah(ruangBaru);
+                        ruangBaru.setRuangAtas(ruanganSekarang);
+                        // menambahkan ruangan di ruangan blom jadi
+                        this.sim.getRumah().addRuanganBlomJadi(ruangBaru);
+                    } else {
+                        System.out.println("Di bawah sudah ada ruangan");
+                        return;
+                    }
                 }
             }
+            while (muter) {
+                synchronized (lock) {
+                    try {
+                        lock.wait();
+                    } catch (InterruptedException e) {
+                        System.err.println(e);
+                    }
+                }
+                // mengecek jam
+                if (instance.getHari() * 720 + instance.getWaktu() >= waktuSelesai) {
+                    muter = false;
+                }
+            }
+    
+            // ilangin dari array Ruangan Blom jadi
+            this.sim.getRumah().deleteRuanganBlomJadi(ruangBaru);
+    
+            // baru tambahin ruangan ke dalam rumah
+            this.sim.getRumah().addRuangan(ruangBaru);
         }
-        while (muter) {
-            synchronized (lock) {
-                try {
-                    lock.wait();
-                } catch (InterruptedException e) {
-                    System.err.println(e);
-                }
-            }
-            // mengecek jam
-            if (instance.getHari() * 720 + instance.getWaktu() >= waktuSelesai) {
-                muter = false;
-            }
+        else{
+            // lokasi tidak valid
+            System.out.println("Letak ruangan tidak valid!");
         }
-
-        // ilangin dari array Ruangan Blom jadi
-        this.sim.getRumah().deleteRuanganBlomJadi(ruangBaru);
-
-        // baru tambahin ruangan ke dalam rumah
-        this.sim.getRumah().addRuangan(ruangBaru);
     }
 
 }
