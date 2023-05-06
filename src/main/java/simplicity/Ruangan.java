@@ -142,11 +142,7 @@ public class Ruangan {
 
                     nonMakanan.setPosisi(new Point(x, y));
 
-                } else {
-                    System.out.println("Sudah ada barang lain di posisi tersebut");
                 }
-            } else {
-                System.out.println("Melebihi ukuran ruangan");
             }
         }
 
@@ -200,7 +196,7 @@ public class Ruangan {
                     // tambah titik ke dalam atribut NonMakanan
 
                     nonMakanan.setPosisi(new Point(x, y));
-                    this.getBarangInRuangan().add(barang);
+                    this.getBarangInRuangan().add(nonMakanan);
                     int jumlahSebelumnya = inventory.get(barang.getNama());
                     inventory.put(barang.getNama(), jumlahSebelumnya - 1);
                     if(inventory.get(barang.getNama()) <= 0){
@@ -216,6 +212,7 @@ public class Ruangan {
         }
 
     }
+
 
     public void moveBarang(Barang barang, int x, int y) {
         int ukuranHorizontalBarang;
@@ -263,7 +260,7 @@ public class Ruangan {
                     int n;
 
                     NonMakanan non = (NonMakanan) barang;
-                    Point p = non.getPosisi();
+                    Point p = nonMakanan.getPosisi();
 
                     // cek setiap xLama dan yLama
 

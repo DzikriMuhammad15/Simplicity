@@ -116,6 +116,7 @@ public class NonMakanan extends Barang {
     public void setPosisi(Point posisi) {
         this.posisi = posisi;
     }
+    
 
     @Override
     public boolean equals(Object o) {

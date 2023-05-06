@@ -74,7 +74,6 @@ public class TimerBarang extends Thread {
         // ...
 
         // masukkin ke inventory
-
         synchronized (sim.getInventory()) {
             // masukkin ke inventory
             int jumlahSebelumnya;

@@ -22,6 +22,12 @@ public class Rumah {
         NonMakanan kompor = new NonMakanan("Kompor Gas");
         NonMakanan toilet = new NonMakanan("Toilet");
         NonMakanan kasur = new NonMakanan("Kasur Single");
+        HashMap<String,Integer> inventory = new HashMap<>();
+        inventory.put("Meja dan Kursi",1);
+        inventory.put("Jam",1);
+        inventory.put("Kompor Gas",1);
+        inventory.put("Toilet",1);
+        inventory.put("Kasur Single",1);
         HashMap<String, Integer> inventory = new HashMap<>();
         inventory.put("Meja dan Kursi", 1);
         inventory.put("Jam", 1);
@@ -31,11 +37,11 @@ public class Rumah {
         // masukkin ke dalam ruanganUtama
 
         // locate barang
-        r.locateBarang(kasur, 0, 0, inventory);
-        r.locateBarang(toilet, 5, 5, inventory);
-        r.locateBarang(kompor, 4, 0, inventory);
-        r.locateBarang(jam, 5, 3, inventory);
-        r.locateBarang(meja, 0, 3, inventory);
+        r.locateBarang(kasur, 0, 0,inventory);
+        r.locateBarang(toilet, 5, 5,inventory);
+        r.locateBarang(kompor, 4, 0,inventory);
+        r.locateBarang(jam, 5, 3,inventory);
+        r.locateBarang(meja, 0, 3,inventory);
 
     }
 
