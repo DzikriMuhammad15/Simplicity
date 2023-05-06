@@ -623,7 +623,7 @@ public class MenuGame {
             daftarmakanan.add("Nasi Ayam");
             daftarmakanan.add("Nasi Kari");
             daftarmakanan.add("Susu Kacang");
-            daftarmakanan.add("Tumis sayur");
+            daftarmakanan.add("Tumis Sayur");
             daftarmakanan.add("Bistik");
             resep.add("Nasi,Ayam");
             resep.add("Nasi,Kentang,Wortel,Sapi");
