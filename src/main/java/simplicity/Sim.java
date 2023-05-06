@@ -29,7 +29,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         // Menginisiasi kesejahteraan dan uang
         Kesejahteraan kesejahteraan = new Kesejahteraan(false,80,80,80);
         this.kesejahteraan = kesejahteraan;
-        this.uang = 10000;
+        this.uang = 100;
 
         // Menginisiasi pekerjaan secara random
         Pekerjaan[] daftarPekerjaan = {
@@ -420,7 +420,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void lihatWaktu(){
-        if (posisi.getCurrBarang().getNama()=="Jam"){
+        if (posisi.getCurrBarang().getNama().equals("Jam")){
             World world = World.getInstance();
             int waktu = world.getWaktu();
             System.out.println("Ini adalah hari ke-"+world.getHari());
@@ -743,7 +743,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     public void ngoding(int waktu, String bahasaProgram){
         //thread
         lock.lock();
-        if ((bahasaProgram == "Java") || (bahasaProgram == "C") || (bahasaProgram == "C++") || (bahasaProgram == "Python")){
+        if ((bahasaProgram.equals("Java")) || (bahasaProgram.equals("C")) || (bahasaProgram.equals("C++")) || (bahasaProgram.equals("Python"))){
             int kekenyanganAwal = kesejahteraan.getKekenyangan();
             int moodAwal = kesejahteraan.getMood();
             try {
