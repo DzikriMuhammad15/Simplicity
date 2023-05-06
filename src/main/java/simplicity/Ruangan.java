@@ -198,6 +198,10 @@ public class Ruangan {
                     this.getBarangInRuangan().add(nonMakanan);
                     int jumlahSebelumnya = inventory.get(barang.getNama());
                     inventory.put(barang.getNama(), jumlahSebelumnya - 1);
+                    if(inventory.get(barang.getNama()) <= 0){
+                        // hapus dari inventory
+                        inventory.remove(barang.getNama());
+                    }
                 } else {
                     System.out.println("Sudah ada barang lain di posisi tersebut");
                 }

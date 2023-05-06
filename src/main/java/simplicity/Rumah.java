@@ -28,6 +28,7 @@ public class Rumah {
         inventory.put("Kompor Gas",1);
         inventory.put("Toilet",1);
         inventory.put("Kasur Single",1);
+       
         // masukkin ke dalam ruanganUtama
 
         // locate barang
