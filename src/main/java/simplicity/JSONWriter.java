@@ -6,9 +6,10 @@ import org.json.simple.parser.*;
 
 import netscape.javascript.JSObject;
 
+
 public class JSONWriter {
     int i=0;
-
+    //fungsi untuk menambahkan atribut di dalam world ke dalam file json
     public void writeWorld(World world, String namafile){
         JSONObject world1 = new JSONObject();
         world1.put("panjang",world.getPanjang());
@@ -32,6 +33,7 @@ public class JSONWriter {
         }        
     }
 
+    //fungsi untuk membuat objek sim menjadi JSONObject
     public JSONObject writeSim(Sim sim){
         JSONObject sim1 = new JSONObject();
         sim1.put("nama lengkap",sim.getName());
@@ -58,7 +60,7 @@ public class JSONWriter {
         return sim1;
     }
 
-
+    //fungsi untuk membuat objek pekerjaan menjadi tipe JSONObject
     public JSONObject writePekerjaan(Pekerjaan pekerjaan){
         JSONObject pekerjaan1 = new JSONObject();
         pekerjaan1.put("nama",pekerjaan.getNamaPekerjaan());
@@ -66,6 +68,7 @@ public class JSONWriter {
         return pekerjaan1;
     }
     
+    //fungsi untuk membuat objek rumah menjadi tipe JSONObject
     public JSONObject writeRumah(Rumah rumah){
         JSONObject rumah1 = new JSONObject();
         rumah1.put("lokasi",writePoint(rumah.getLokasi()));
@@ -82,6 +85,7 @@ public class JSONWriter {
         return rumah1;
     }
 
+    //fungsi untuk membuat objek point menjadi tipe JSONObject
     public JSONObject writePoint(Point point){
         JSONObject point1 = new JSONObject();
         point1.put("x",point.getX());
@@ -89,6 +93,7 @@ public class JSONWriter {
         return point1;
     }
 
+    //fungsi untuk membuat inventory bertipe HashMap menjadi JOSNObject
     public JSONObject writeInventory(HashMap<String,Integer> inventory){
         // ArrayList<JSONObject> inventoryHashMap = new ArrayList<>();
         JSONObject obj = new JSONObject();
@@ -100,6 +105,7 @@ public class JSONWriter {
         return inventory2;
     }
 
+    //fungsi untuk membuat Arraylist On delivery menjadi tipe JSONObject
     public JSONObject writeOnDelivery(ArrayList<Barang> ondelivery){
         JSONObject ondelivery1 = new JSONObject();
         JSONArray arrOfBarang = new JSONArray();
@@ -110,13 +116,14 @@ public class JSONWriter {
         return ondelivery1;
     }
 
+    //fungsi untuk membuat objek barang menjadi tipe JSONObject
     public JSONObject writeBarang(Barang barang){
         JSONObject barang1 = new JSONObject();
         barang1.put("nama",barang.getNama());
         return barang1;
     }
 
-
+    //fungsi untuk membuat objek kesejahteraan menjadi JSONObject
     public JSONObject writeKesejahteraan(Kesejahteraan kesejahteraan){
         JSONObject kesejahteraan1 = new JSONObject();
         kesejahteraan1.put("dead",kesejahteraan.isDead());
@@ -126,6 +133,7 @@ public class JSONWriter {
         return kesejahteraan1;
     }
 
+    //fungsi untuk membuat objek posisi menjadi JSONObject
     public JSONObject writePosisi(Posisi posisi){
         JSONObject posisi1 = new JSONObject();
         World world = World.getInstance();
@@ -134,6 +142,7 @@ public class JSONWriter {
         return posisi1;
     }
 
+    //fungsi untuk membuat objek ruangan menjadi JSONObjec
     public JSONObject writeRuangan(Ruangan ruangan){
         JSONObject ruangan1 = new JSONObject();
         if (ruangan!=null){
@@ -170,6 +179,7 @@ public class JSONWriter {
         return ruangan1;
     }
     
+    //fungsi untuk membuat objek NonMakanan menjadi JSONObject
     public JSONObject writeNonMakanan(NonMakanan nonMakanan){
         JSONObject nonMakanan1 = new JSONObject();
         if (nonMakanan!=null){
@@ -188,6 +198,7 @@ public class JSONWriter {
         return nonMakanan1;
     }
 
+    //fungsi untuk membuat objek barang menjadi JSONObject
     public JSONObject writeBarang(NonMakanan nonMakanan){
         JSONObject nonMakanan1 = new JSONObject();
         if (nonMakanan!=null){
@@ -207,6 +218,7 @@ public class JSONWriter {
         return nonMakanan1;
     }
 
+    //fungsi untuk membuat objek barang menjadi JSONObject
     public JSONObject writeBarang(BahanMakanan bahanMakanan){
         JSONObject bahanMakanan1 = new JSONObject();
         if (bahanMakanan!=null){

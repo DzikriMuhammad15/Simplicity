@@ -7,6 +7,7 @@ import org.json.simple.parser.*;
 
 public class JSONreader {
 
+    //method untuk melakukan set ulang world sesuai kondisi di dalam file load
     public void readWorld(World world, String namafile) {
         // JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
@@ -17,6 +18,7 @@ public class JSONreader {
             Object obj = jsonParser.parse(reader);
             jsonobj = (JSONObject) obj;
             ArrayList<Object> daftarPosisi = new ArrayList<>();
+            //mengatur atribut world
             String hari = jsonobj.get("Hari").toString();
             world.setHari(Integer.parseInt(hari));
             String waktu = jsonobj.get("waktu").toString();
@@ -25,6 +27,7 @@ public class JSONreader {
             for (Object i : arrsim) {
                 world.getArrSim().add(readSim((JSONObject) i,daftarPosisi));
             }
+            //mengatur pemosisian ruangan di dalam rumah
             for (Sim i: world.getArrSim()){
                 String rumah="";
                 String ruangan="";
@@ -47,6 +50,7 @@ public class JSONreader {
                     }
                 }
         }
+        //mengatur ulang ruangan yang sedang dibangun dengan menjalankan ulang thread
         for (Sim i : world.getArrSim()){
             for (Ruangan j : i.getRumah().getArrayOfRuangan()){
                 Ruangan ruangan = j;
@@ -86,7 +90,7 @@ public class JSONreader {
                         timerRumah.start();
                     }
                     if (ruangan.getNamaRuangan()!=null && k.getRuangKiri()!=null && ruangan.getNamaRuangan().equals(k.getRuangKiri().getNamaRuangan())){
-                        TimerRumah timerRumah = new TimerRumah(i, j.getNamaRuangan(), k, "kana", j.getWaktuSelesai());
+                        TimerRumah timerRumah = new TimerRumah(i, j.getNamaRuangan(), k, "kanan", j.getWaktuSelesai());
                         timerRumah.start();
                     }
                 }
@@ -107,6 +111,7 @@ public class JSONreader {
             
     }
 
+    //fungsi untuk membaca objek sim
     public Sim readSim(JSONObject jsonobj,ArrayList<Object> daftarPosisi) {
         Sim sim1 = new Sim(jsonobj.get("nama lengkap").toString());
         sim1.setInventory(readInventory((JSONObject)jsonobj.get("inventory")));
@@ -130,11 +135,13 @@ public class JSONreader {
         return sim1;
     }
 
+    //fungsi untuk membaca objek pekerjaan
     public Pekerjaan readPekerjaan(JSONObject jsonobj){
          Pekerjaan pekerjaan1 = new Pekerjaan(jsonobj.get("nama").toString(),Integer.parseInt(jsonobj.get("gaji harian").toString()));
          return pekerjaan1;
     }
 
+    //fungsi untuk membaca objek rumah
     public Rumah readRumah(JSONObject jsonobj) {
         Rumah rumah = new Rumah(readPoint((JSONObject) jsonobj.get("lokasi")));
         JSONArray array = (JSONArray) jsonobj.get("array of ruangan");
@@ -148,48 +155,14 @@ public class JSONreader {
         return rumah;
     }
 
-    // public Ruangan readRuangan(JSONObject jsonobj){
-    //     System.out.println(1);
-    //     if (jsonobj==null){
-    //         System.out.println(2);
-    //         return null;
-    //     }else{
-    //         System.out.println(3);
-    //         Ruangan ruangan = new Ruangan(jsonobj.get("nama").toString());
-    //         if (jsonobj.get("ruang atas")==null){
-    //             ruangan.setRuangAtas(null);
-    //         }else{
-    //             ruangan.setRuangAtas(readRuangan((JSONObject) jsonobj.get("ruang atas")));
-    //         }
-    //         if (jsonobj.get("ruang bawah")==null){
-    //             ruangan.setRuangBawah(null);
-    //         }else{
-    //             ruangan.setRuangBawah(readRuangan((JSONObject) jsonobj.get("ruang bawah")));
-    //         }
-    //         if (jsonobj.get("ruang kanan")==null){
-    //             ruangan.setRuangKanan(null);
-    //         }else{
-    //             ruangan.setRuangKanan(readRuangan((JSONObject) jsonobj.get("ruang kanan")));
-    //         }
-    //         if (jsonobj.get("ruang kiri")==null){
-    //             ruangan.setRuangKiri(null);
-    //         }else{
-    //             ruangan.setRuangKiri(readRuangan((JSONObject) jsonobj.get("ruang kiri")));
-    //         }
-    //         ruangan.getBarangInRuangan().clear();
-    //         JSONArray baranginruangan = (JSONArray) jsonobj.get("array of barang");
-    //         for (Object i : baranginruangan){
-    //             ruangan.getBarangInRuangan().add((Barang) i);
-    //         }
-    //         return ruangan;
-    //     }   
-    // }
+    //fungsi untuk membaca objek point
     public Point readPoint(JSONObject jsonPoint) {
         int x = Integer.parseInt(jsonPoint.get("x").toString());
         int y = Integer.parseInt(jsonPoint.get("y").toString());
         return new Point(x, y);
     }    
 
+    //fungsi untuk inventory dengan tipe HashMap
     public HashMap<String,Integer> readInventory(JSONObject object){
         // JSONArray inven = (JSONArray) object.get("inventory");
         HashMap<String,Integer> inventory = new HashMap<>();
@@ -213,6 +186,7 @@ public class JSONreader {
         return inventory;
     }
 
+    //fungsi untuk membaca on delivery dengan tipe arraylist
     public ArrayList<Barang> readOnDelivery(JSONArray jsonobj) {
         ArrayList<Barang> onDelivery = new ArrayList<>();
         ArrayList<String> bahanmakanan = new ArrayList<>();
@@ -238,6 +212,7 @@ public class JSONreader {
         return onDelivery;
     }
     
+    //fungsi untuk membaca objek kesejahteraan
     public Kesejahteraan readKesejahteraan(JSONObject jsonobj) {
         boolean dead = (boolean) jsonobj.get("dead");
         int kesehatan =  Integer.parseInt(jsonobj.get("kesehatan").toString());
@@ -246,16 +221,7 @@ public class JSONreader {
         return new Kesejahteraan(dead, mood, kesehatan, kekenyangan);
     }
     
-    // public Posisi readPosisi(JSONObject jsonobj) {
-    //     JSONObject currRumahJSON = (JSONObject) jsonobj.get("currRumah");
-    //     Rumah currRumah = readRumah(currRumahJSON);
-    //     JSONObject currRuanganJSON = (JSONObject) jsonobj.get("currRuangan");
-    //     Ruangan currRuangan = readRuangan(currRuanganJSON);
-    //     JSONObject currBarangJSON = (JSONObject) jsonobj.get("currBarang");
-    //     NonMakanan currBarang = readNonMakanan(currBarangJSON);
-    //     return new Posisi(currRumah, currRuangan, currBarang);
-    // }
-
+    //fungsi untuk membaca objek posisi
     public Object readPosisi(Sim sim,JSONObject jsonobj) {
         JSONObject posisi = new JSONObject();
         posisi.put("nama",sim.getName());
@@ -264,6 +230,7 @@ public class JSONreader {
         return (Object) posisi;
     }
     
+    //fungsi untuk membaca objek ruangan
     public Ruangan readRuangan(JSONObject obj) {
         String namaRuangan = obj.get("nama").toString();
         if (namaRuangan.equals("null")) {
@@ -309,6 +276,7 @@ public class JSONreader {
         return ruangan;
     }
 
+    //fungsi untuk membaca objek NonMakanan
     public NonMakanan readNonMakanan(JSONObject obj) {
         String nama = obj.get("nama").toString();
         if (!nama.equals("null")){
@@ -323,6 +291,7 @@ public class JSONreader {
         }
     }
     
+    //fungsi untuk membaca objek barang
     public NonMakanan readBarang(JSONObject obj) {
         String nama = obj.get("nama").toString();
         if (!nama.equals("null")){

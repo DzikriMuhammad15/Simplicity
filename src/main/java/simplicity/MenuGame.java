@@ -3,15 +3,18 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 public class MenuGame {
+
+    //Atribut di dalam game
     private Sim currSim;
     private World world = World.getInstance();
     private JSONWriter writer = new JSONWriter();
     private JSONreader reader = new JSONreader();
     private int simSpawn = -1;
     Display display = new Display();
-
     Scanner scan = new Scanner(System.in);
     Random random = new Random();
+
+    //Method utama
     public void startGame(){
         boolean masuk = false;
         boolean gameover = false;
@@ -24,15 +27,16 @@ public class MenuGame {
                 if (menu==1){
                     addSim();
                     currSim = world.getArrSim().get(0);
+                    masuk=true;
                 }else if(menu==2){
                     try {
                         load();
-
+                        masuk=true;
                     }catch(FileNotFoundException e){
                         System.out.println("File tidak ditemukan");
                     }
                 }
-                masuk=true;
+                
                 if (currSim==null){
                     masuk=false;
                 }
@@ -188,10 +192,12 @@ public class MenuGame {
         }
     }
     
+    //Method melakukan aksi memukul
     public void pukul(){
         System.out.println("Masukkan No Sim siapa yang ingin anda pukul?");
         int j=0;
         int n=0;
+        //display sim yang akan dipilih untuk dipukul
         for (Sim i : world.getArrSim()){
             if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
                 System.out.println(j+1+". "+i.getName());
@@ -199,6 +205,7 @@ public class MenuGame {
             }
         }
         try {
+            //memukul
             Integer otherSim = Integer.parseInt(scan.nextLine());
             for (Sim i : world.getArrSim()){
                 if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
@@ -217,6 +224,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk changejob
     public void changeJOb(){
         Pekerjaan[] daftarPekerjaan = {
             new Pekerjaan("Badut Sulap", 15),
@@ -225,9 +233,13 @@ public class MenuGame {
             new Pekerjaan("Programmer", 45),
             new Pekerjaan("Dokter", 50),
         };
+
+        //display daftar pekerjaan pilihan
         for (int i=0;i<daftarPekerjaan.length;i++){
             System.out.println(i+1+". "+daftarPekerjaan[i].getNamaPekerjaan());
         }
+
+        //memilih pekerjaan
         try{
             System.out.println("Masukkan nomor pekerjaan baru");
             int no = Integer.parseInt(scan.nextLine());
@@ -241,6 +253,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi nontonTV
     public void nontonTV(){
         try{
             System.out.println("Berapa lama?");
@@ -252,6 +265,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi ngoding
     public void ngoding(){
         System.out.println("Pilih dari beberapa bahasa pemrograman yang dikuasai berikut");
         System.out.println("Python,C,C++,Java");    
@@ -265,8 +279,10 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi bercanda
     public void bercanda(){
         boolean check=false;
+        //looping memberikan efek bercanda kepada sim yang berada pada ruangan yang sama
         for (Sim i: world.getArrSim()){
             if (i.getPosisi().getCurrRuangan().equals(currSim.getPosisi().getCurrRuangan())){
                 currSim.bercanda(i);
@@ -280,6 +296,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi mendengar musik
     public void dengarMusik(){
         System.out.println("Beberapa genre lagu yang dapat diputar");
         ArrayList<String> daftarGenre = new ArrayList<>();
@@ -289,6 +306,7 @@ public class MenuGame {
         daftarGenre.add("K-Pop");
         daftarGenre.add("Reggae");
         daftarGenre.add("WOTA");
+        //display daftar pilihan genre musik
         for (int i=0;i<daftarGenre.size();i++){
             System.out.println(i+1+". "+daftarGenre.get(i));
         }
@@ -307,6 +325,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi bermain game
     public void mainGame(){
         try{
             System.out.println("Berapa lama?");
@@ -317,6 +336,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi membeli barang
     public void beliBarang(){
         ArrayList <String> daftarBarang = new ArrayList<>();
         daftarBarang.add("Kasur King Size");
@@ -341,6 +361,7 @@ public class MenuGame {
         System.out.println("|No |Nama Barang     |");
         System.out.println("+---+----------------+");
 
+        //display barang yang dapat dibeli
         for (int i=0;i<daftarBarang.size();i++){
             if (i<9){
                 System.out.print("|"+(i+1)+" |");
@@ -355,6 +376,7 @@ public class MenuGame {
         }
         System.out.println("+---+----------------+");
         System.out.println("Masukkan nomor barang");
+        //Memasukkan nomor barang 
         try{
             int no = Integer.parseInt(scan.nextLine());
             if (no<=daftarBarang.size()){
@@ -368,8 +390,10 @@ public class MenuGame {
 
     }
 
+    //method untuk menuju objek
     public void goToObject(){
         if (!currSim.getPosisi().getCurrRuangan().getBarangInRuangan().isEmpty()){
+            //display barang di dalam ruangan
             listObject();
             System.out.println("masukkan no object yang dituju");
             try{
@@ -381,6 +405,7 @@ public class MenuGame {
                     }
                 }
                 try{
+                    //memberikan opsi aksi setelah berhasil berpindah ke objek tertentu dan dapat menjalankan aksi tersebut
                     if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Single")){
                         System.out.println("Berikut aksi yang dapat dilakukan");
                         System.out.println("1. Tidur");
@@ -482,6 +507,7 @@ public class MenuGame {
     
     }
 
+    //method untuk melakukan pemasangan barang
     public void pasangBarang(){
         System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
         System.out.println("|---|------------|----------|");
@@ -497,43 +523,34 @@ public class MenuGame {
         daftarMakanan.add("Kompor Gas");
         daftarMakanan.add("Kompor Listrik");
         int i=1;
+        //display barang yang dapat dipasang
         for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
             if (daftarMakanan.contains(entry.getKey())){
                 System.out.printf("| %-1d | %-10s | %-8d |%n", i,entry.getKey(),entry.getValue());
                 i++;
             }    
         }
+        //pemilihan nomor barang
         try{
             System.out.println("Masukkan nomor barang");
             Integer nobarang = Integer.parseInt(scan.nextLine());
             int j=1;
             String namabarang = "";
             int k=1;
-            // for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
-            //     if (j==nobarang){
-            //         for (k=0;k<daftarMakanan.size();k++){
-            //             if (daftarMakanan.get(k).equals(entry.getKey())){
-            //                 namabarang = entry.getKey();
-            //                 break;
-            //             }
-            //         } 
-            //         break;
-            //     }else if (daftarMakanan.contains(entry.getKey())){
-            //         j++;
-            //     }    
-            // }
+        
+        //Searching barang yang akan di pasang
             for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
                 if (daftarMakanan.contains(entry.getKey())){
-                if  (k<nobarang){
-                    k++;
-                }else if(k==nobarang){
-                    namabarang=entry.getKey();
-                    break;
+                    if  (k<nobarang){
+                        k++;
+                    }else if(k==nobarang){
+                        namabarang=entry.getKey();
+                        break;
+                    }
                 }
             }
-        }
             NonMakanan barang = new NonMakanan(namabarang);
-            
+            //pemilihan posisi peletakan barang
             System.out.println("Masukkan titik peletakan barang!");
             System.out.print("X : ");
             int x=Integer.parseInt(scan.nextLine());
@@ -547,6 +564,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi bunuh diri
     public void bunuhDiri(){
         currSim.bunuhDiri();
         checkSim();
@@ -559,6 +577,7 @@ public class MenuGame {
         }     
     }
 
+    //method untuk menampilkan aksi di dalam game
     public void help(){
         System.out.println("Berikut adalah command-command di dalam game yang dapat digunakan");
         System.out.println("1. View Sim Info");
@@ -583,6 +602,7 @@ public class MenuGame {
         
     }
     
+    //method untuk melakukan aksi edit room
     public void editRoom(){
         currSim.getPosisi().getCurrRuangan().display();
         try{
@@ -593,6 +613,7 @@ public class MenuGame {
             if (noCommand>3){
                 System.out.println("Masukan tidak valid");
             }else{
+                //Menjalankan aksi memindahkan barang
                 if (noCommand==1){
                     listObject();
                     try{
@@ -610,8 +631,10 @@ public class MenuGame {
                     }catch(NumberFormatException e){
                         System.out.println("Masukan tidak valid");
                     }
+                //menjalankan aksi memasang barang ke ruangan
                 }else if(noCommand==2){
                     pasangBarang();
+                //menjalankan aksi merotasi barang
                 }else if (noCommand==3){
                     listObject();
                     try{
@@ -633,6 +656,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk memberikan info terkait kesejahteraan dan uang sim dll.
     public void viewSimInfo(){
         System.out.println("Sim Info");
         System.out.println("1. Nama: "+currSim.getName());
@@ -643,11 +667,13 @@ public class MenuGame {
         System.out.println("6. Uang: "+currSim.getUang());
     }
 
+    //method untuk menjelaskan posisi sim saat ini
     public void viewCurrentLocation(){
         System.out.println("Lokasi sim saat ini : ");
         System.out.println("Sim berada pada rumah "+world.getSimOwnRumah(currSim.getPosisi().getCurrRumah()).getName()+" pada ruangan "+currSim.getPosisi().getCurrRuangan().getNamaRuangan());
     }
 
+    //method untuk menambah sim
     public void addSim(){
         if (simSpawn<world.getHari()){
             System.out.print("Silakan masukkan nama lengkap Sim mu : ");
@@ -657,6 +683,7 @@ public class MenuGame {
                     map[i][j]=0;
                 }
             }
+            //mengisi informasi sim (nama, lokasi rumah)
             String nama = scan.nextLine();
             Sim sim1 = new Sim(nama);
             boolean valid=false;
@@ -692,6 +719,7 @@ public class MenuGame {
         }
     }
     
+    //method untuk mengganti sim yang dimainkan user
     public void changeSim(){
         System.out.println("Masukkan no sim dari sim-sim yang ada di bawah");
         for (int i=0;i<world.getArrSim().size();i++){
@@ -710,6 +738,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk menghapus sim dari world jika sudah mati
     public void checkSim(){
         for (int i=0;i<world.getArrSim().size();i++){
             if (world.getArrSim().get(i).getKesejahteraan().isDead()||world.getArrSim().get(i).getKesejahteraan().getKekenyangan()==0||world.getArrSim().get(i).getKesejahteraan().getKesehatan()==0||world.getArrSim().get(i).getKesejahteraan().getMood()==0){
@@ -718,6 +747,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk menuliskan daftar objek di dalam ruangan
     public void listObject(){
         System.out.println("Objek yang berada di dalam ruangan");
         for (int i=0;i<currSim.getPosisi().getCurrRuangan().getBarangInRuangan().size();i++){
@@ -725,6 +755,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi tidur
     public void tidur(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 5).equals("Kasur")){
             System.out.println("Berapa lama? (masukkan dalam satuan detik)");
@@ -740,6 +771,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi memasak
     public void memasak(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 6).equals("Kompor")){
             ArrayList<String> daftarmakanan = new ArrayList<>();
@@ -754,6 +786,8 @@ public class MenuGame {
             resep.add("Susu,Kacang");
             resep.add("Wortel,Bayam");
             resep.add("Kentang,Sapi");
+
+            //display makaanan yang dapat dimasak dan resepnya
             System.out.println("+---+------------+------------------------+");
             System.out.println("|No | Masakan    | Resep                  |");
             System.out.println("+---+------------+------------------------+");
@@ -770,10 +804,10 @@ public class MenuGame {
             }
             System.out.println("+---+------------+------------------------+");
             try{
-
+                //memilih no makanan yang akan dimasak
                 System.out.println("masukkan no makanan?");
                 int noMakanan = Integer.parseInt(scan.nextLine());
-                String makanan = "Nasi Ayam";
+                String makanan = "";
                 for (int i=0;i<daftarmakanan.size();i++){
                     if (i==noMakanan-1){
                         makanan = daftarmakanan.get(i);
@@ -792,6 +826,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi buang air
     public void buangAir(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 6).equals("Toilet")){
             currSim.buangAir();
@@ -800,6 +835,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi upgrade rumah
     public void upgradeHouse(){
         int j=0;
         Ruangan ruangan = currSim.getPosisi().getCurrRuangan();
@@ -808,6 +844,7 @@ public class MenuGame {
                 System.out.println(j+1+". "+i.getNamaRuangan());
                 j++;
             }
+            //mengisi informasi terkait ruangan baru
             try{
                 System.out.println("Masukkan no ruangan acuan");
                 int no = Integer.parseInt(scan.nextLine());
@@ -832,11 +869,14 @@ public class MenuGame {
         currSim.upgradeRumah(nama,orientasi);
     }
 
+    //method untuk menampilkan waktu saat ini
     public void lihatWaktu(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 3).equals("Jam")){
             currSim.lihatWaktu();
             System.out.println("Sisa waktu dalam progress :");
             // for (Ruangan i:currSim.getRumah().get)
+
+            //menampilkan semua barang yang dibeli dan sedang diantar serta sisa waktu membangun rumah
             System.out.println();
             for (Barang i : currSim.getOnDelivery()){
                 if (i instanceof NonMakanan){
@@ -855,6 +895,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan load game yang sebelumnya pernah disimpan
     public void load() throws FileNotFoundException{
         System.out.println("Masukkan namafile!");
         String namafile = scan.nextLine();
@@ -863,12 +904,14 @@ public class MenuGame {
             reader.readWorld(world,file);
             currSim = world.getArrSim().get(0);
             for (Sim i : world.getArrSim()){
+                //mengatur pemosisian barang untuk semua ruangan
                 for (Ruangan k : i.getRumah().getArrayOfRuangan()){
                     for (Barang l: k.getBarangInRuangan()){
                         NonMakanan nonMakanan = (NonMakanan) l;
                         k.locateBarangLoad(nonMakanan,nonMakanan.getPosisi().getX(),nonMakanan.getPosisi().getY());
                     }
                 }
+                //mengatur ulang thread yang sebelumnya telah mati untuk barang yang sedang diantar dan ruangan yang sedang dibangun
                 for (Barang j : i.getOnDelivery()){
                     try {
                         NonMakanan k = (NonMakanan) j;
@@ -886,6 +929,7 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi terhadap benda yang dihadapi sim
     public void action(){
         try{
             if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Single")){
@@ -932,10 +976,12 @@ public class MenuGame {
         }
     }
 
+    //method untuk melakukan aksi makan
     public void makan(){
             if (currSim.getInventory().isEmpty()){
-                System.out.println("Inventorymu kosng");
+                System.out.println("Inventorymu kosong");
             }else{
+                
                 System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
             System.out.println("|---|------------|----------|");
             ArrayList<String> daftarMakanan = new ArrayList<>();
@@ -954,6 +1000,7 @@ public class MenuGame {
             daftarMakanan.add("Kacang");
             daftarMakanan.add("Susu");
             int i=1;
+            //display daftar makanan yang ada
             for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
                 if (daftarMakanan.contains(entry.getKey())){
                     System.out.printf("| %-1d | %-10s | %-8d |%n", i,entry.getKey(),entry.getValue());
@@ -961,11 +1008,14 @@ public class MenuGame {
                 }    
             }
             try{
+                //pemilihan nomor makanan
                 System.out.println("Masukkan nomor makanan");
                 Integer noMakanan = Integer.parseInt(scan.nextLine());
                 String namaMakanan = "";
                 int k=0;
                 int j=1;
+
+                //searching makanan yang dipilih
                 for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
                     if (j==noMakanan){
                         for (k=0;k<daftarMakanan.size();k++){
@@ -993,7 +1043,7 @@ public class MenuGame {
     }
 
     
-
+    //main program yang dijalankan
     public static void main(String[] args){
         
         MenuGame menu = new MenuGame();
