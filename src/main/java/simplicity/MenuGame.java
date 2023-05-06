@@ -585,25 +585,37 @@ public class MenuGame {
             }else{
                 if (noCommand==1){
                     listObject();
-                    System.out.println("masukkan nomor barang");
-                    int noBarang = Integer.parseInt(scan.nextLine());
-                    Barang barang = (currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1));
-                    System.out.println("Masukkan titik pemindahan barang!");
-                    System.out.print("X : ");
-                    int x=Integer.parseInt(scan.nextLine());
-                    System.out.print("Y : ");
-                    int y=Integer.parseInt(scan.nextLine());
-                    currSim.getPosisi().getCurrRuangan().moveBarang((Barang)barang, x, y);   
+                    try{
+                        System.out.println("masukkan nomor barang");
+                        int noBarang = Integer.parseInt(scan.nextLine());
+                        Barang barang = (currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1));
+                        System.out.println("Masukkan titik pemindahan barang!");
+                        System.out.print("X : ");
+                        int x=Integer.parseInt(scan.nextLine());
+                        System.out.print("Y : ");
+                        int y=Integer.parseInt(scan.nextLine());
+                        currSim.getPosisi().getCurrRuangan().moveBarang((Barang)barang, x, y);   
+                    }catch(IndexOutOfBoundsException e){
+                        System.out.println("Masukan tidak valid");
+                    }catch(NumberFormatException e){
+                        System.out.println("Masukan tidak valid");
+                    }
                 }else if(noCommand==2){
                     pasangBarang();
                 }else if (noCommand==3){
                     listObject();
-                    System.out.println("masukkan nomor barang");
-                    int noBarang = Integer.parseInt(scan.nextLine());
-                    Barang barang = (currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1));
-                    System.out.print("Rotasi : ");
-                    int y=Integer.parseInt(scan.nextLine());
-                    currSim.getPosisi().getCurrRuangan().rotate(barang, y);
+                    try{
+                        System.out.println("masukkan nomor barang");
+                        int noBarang = Integer.parseInt(scan.nextLine());
+                        Barang barang = (currSim.getPosisi().getCurrRuangan().getBarangInRuangan().get(noBarang-1));
+                        System.out.print("Rotasi : ");
+                        int y=Integer.parseInt(scan.nextLine());
+                        currSim.getPosisi().getCurrRuangan().rotate(barang, y);
+                    }catch(IndexOutOfBoundsException e){
+                        System.out.println("Masukan tidak valid");
+                    }catch(NumberFormatException e){
+                        System.out.println("Masukan tidak valid");
+                    }
                 }    
             }
         }catch(NumberFormatException e){
@@ -848,48 +860,63 @@ public class MenuGame {
                     k.locateBarangLoad(nonMakanan,nonMakanan.getPosisi().getX(),nonMakanan.getPosisi().getY());
                 }
             }
+            for (Barang j : i.getOnDelivery()){
+                try {
+                    NonMakanan k = (NonMakanan) j;
+                    TimerBarang timerbarang = new TimerBarang(k, i, k.getWaktuSelesai());
+                    timerbarang.start();
+                }catch(ClassCastException e){
+                    BahanMakanan k = (BahanMakanan) j;
+                    TimerBarang timerbarang = new TimerBarang(k, i, k.getWaktuSelesai());
+                    timerbarang.start();
+                }
+            }
         }
     }
 
     public void action(){
-        if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Single")){
-                tidur();
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Queen Size")){
-                tidur();
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur King Size")){
-                tidur();
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Toilet")){
-                buangAir();
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kompor Gas")){
-            memasak();
-            
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kompor Listrik")){
-            memasak(); 
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Meja dan Kursi")){
-            makan(); 
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Jam")){
-                lihatWaktu();
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("TV")){
-                nontonTV();
-        }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Laptop")){
-            System.out.println("Berikut aksi yang dapat dilakukan");
-            System.out.println("1. Ngoding");
-            System.out.println("2. Dengar Musik");
-            System.out.println("3. Main Game");
-            System.out.println("4. Tidak Melakukan apa-apa");
-            System.out.println("Masukkan angka!");
-            try{
-                int no = Integer.parseInt(scan.nextLine());
-                if (no==1){
-                    ngoding();
-                }else if(no==2){
-                    dengarMusik();
-                }else if(no==3){
-                    mainGame();
+        try{
+            if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Single")){
+                    tidur();
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur Queen Size")){
+                    tidur();
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kasur King Size")){
+                    tidur();
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Toilet")){
+                    buangAir();
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kompor Gas")){
+                memasak();
+                
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Kompor Listrik")){
+                memasak(); 
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Meja dan Kursi")){
+                makan(); 
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Jam")){
+                    lihatWaktu();
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("TV")){
+                    nontonTV();
+            }else if (currSim.getPosisi().getCurrBarang().getNama().equals("Laptop")){
+                System.out.println("Berikut aksi yang dapat dilakukan");
+                System.out.println("1. Ngoding");
+                System.out.println("2. Dengar Musik");
+                System.out.println("3. Main Game");
+                System.out.println("4. Tidak Melakukan apa-apa");
+                System.out.println("Masukkan angka!");
+                try{
+                    int no = Integer.parseInt(scan.nextLine());
+                    if (no==1){
+                        ngoding();
+                    }else if(no==2){
+                        dengarMusik();
+                    }else if(no==3){
+                        mainGame();
+                    }
+                }catch(NumberFormatException e){
+                    System.out.println("Masukan tidak valid");
                 }
-            }catch(NumberFormatException e){
-                System.out.println("Masukan tidak valid");
             }
+        }catch(NullPointerException e){
+            System.out.println("Tidak ada aksi yang dapat dilakukan");
         }
     }
 
