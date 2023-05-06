@@ -31,6 +31,7 @@ Simplicity adalah permainan berbasis Command Line Interface (CLI). Sim-Plicity d
 ### __Pre-requisite__
 ```
 installed gradle
+pastikan target java yang digunakan gradle sesuai dengan java yang terinstall di perangkat
 ```
 
 ### __How to Compile__ 
