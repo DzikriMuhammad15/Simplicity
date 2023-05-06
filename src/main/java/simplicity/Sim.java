@@ -547,7 +547,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaMakanan);
             }
-            cekTidurdanBuangAir(30);
+            cekTidurdanBuangAir(30);   // cek apakah SIM sudah buang air setelah makan sebelumnya, set waktu di world (waktu awal + 30)
             cekKesejahteraan();
             sudahBuangAir = false;
             makanPertama = true;
