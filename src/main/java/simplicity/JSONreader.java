@@ -142,12 +142,20 @@ public class JSONreader {
         HashMap<String,Integer> inventory = new HashMap<>();
         // inventory.clear();
         // Set<String> kset = inven.keySet();
-        String inventor = object.get("inventory").toString().substring(2,object.get("inventory").toString().length()-2); 
-        String[] inven = inventor.split(",");
-        String[] spliter;
-        for (String i: inven){
-            spliter = i.split(":");
-            inventory.put(spliter[0].substring(1, spliter[0].length()-1),Integer.parseInt(spliter[1]));
+        if (object.get("inventory").toString().length()>4){
+            String[] spliter;
+            String inventor = object.get("inventory").toString().substring(1,object.get("inventory").toString().length()-1); 
+            if (inventor.contains(",")){
+                String[] inven = inventor.split(",");
+                for (String i: inven){
+                    spliter = i.split(":");
+                    inventory.put(spliter[0].substring(1, spliter[0].length()-1),Integer.parseInt(spliter[1]));
+                }
+            }else{
+                spliter = inventor.split(":");
+                inventory.put(spliter[0].substring(1, spliter[0].length()-1),Integer.parseInt(spliter[1]));
+                
+            }
         }
         return inventory;
     }
