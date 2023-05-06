@@ -420,20 +420,29 @@ public class MenuGame {
         Integer nobarang = Integer.parseInt(scan.nextLine());
         int j=1;
         String namabarang = "";
-        int k=0;
+        int k=1;
+        // for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
+        //     if (j==nobarang){
+        //         for (k=0;k<daftarMakanan.size();k++){
+        //             if (daftarMakanan.get(k).equals(entry.getKey())){
+        //                 namabarang = entry.getKey();
+        //                 break;
+        //             }
+        //         } 
+        //         break;
+        //     }else if (daftarMakanan.contains(entry.getKey())){
+        //         j++;
+        //     }    
+        // }
         for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
-            if (j==nobarang){
-                for (k=0;k<daftarMakanan.size();k++){
-                    if (daftarMakanan.get(k).equals(entry.getKey())){
-                        namabarang = entry.getKey();
-                        break;
-                    }
-                } 
-                break;
-            }else if (daftarMakanan.contains(entry.getKey())){
-                j++;
-            }    
+            if (daftarMakanan.contains(entry.getKey())){
+            if  (k<nobarang){
+                k++;
+            }else if(k==nobarang){
+                namabarang=entry.getKey();
+            }
         }
+    }
         NonMakanan barang = new NonMakanan(namabarang);
         
         System.out.println("Masukkan titik peletakan barang!");
