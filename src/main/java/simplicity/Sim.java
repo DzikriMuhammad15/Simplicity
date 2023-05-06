@@ -472,12 +472,12 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                     int kekenyanganAwal = kesejahteraan.getKekenyangan();
                     int moodAwal = kesejahteraan.getMood();
                     try {
-                        Thread.sleep(30000); // Tunggu selama 30 detik
+                        Thread.sleep(3); // Tunggu selama 30 detik
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    kesejahteraan.setKekenyangan(kekenyanganAwal-10);
-                    kesejahteraan.setMood(moodAwal-10);
+                    kesejahteraan.setKekenyangan(kekenyanganAwal);
+                    kesejahteraan.setMood(moodAwal);
                     if (i%240 == 0){
                         this.uang = uang + pekerjaan.getGajiHarian();
                     }
@@ -510,7 +510,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                     int kekenyanganAwal = kesejahteraan.getKekenyangan();
                     int moodAwal = kesejahteraan.getMood();
                     try {
-                        Thread.sleep(20000); // Tunggu selama 20 detik
+                        Thread.sleep(2); // Tunggu selama 20 detik
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -577,7 +577,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int kekenyanganBahanMakanan = bahanMakanan.getKekenyangan();
         if (inventory.containsKey(namaBahanMakanan) || currentQuantity>0){
             try {
-                Thread.sleep(30000); // Tunggu selama 30 detik
+                Thread.sleep(3); // Tunggu selama 30 detik
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -614,7 +614,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             int count = waktu/240;
             for (int i=0; i<count; i++){
                 try {
-                    Thread.sleep(waktu*1000);
+                    Thread.sleep(waktu*1);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     kesejahteraan.setMood(moodAwal+30);
@@ -622,7 +622,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                 }
             }
             World world = World.getInstance();
-            int currentTime = world.getHari()*720 + world.getWaktu();   
+            int currentTime = world.getHari()*720 + world.getWaktu() + waktu;   
             setWaktuTidurAwal(currentTime);
             cekTidurdanBuangAir(waktu);
             cekKesejahteraan();
@@ -785,7 +785,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         lock.lock();
         int moodAwal = kesejahteraan.getMood();
         try {
-            Thread.sleep(1000*waktu);
+            Thread.sleep(1*waktu);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
