@@ -1,4 +1,5 @@
 package simplicity;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 public class MenuGame {
@@ -24,7 +25,12 @@ public class MenuGame {
                     addSim();
                     currSim = world.getArrSim().get(0);
                 }else if(menu==2){
-                    load();
+                    try {
+                        load();
+
+                    }catch(FileNotFoundException e){
+                        System.out.println("File tidak ditemukan");
+                    }
                 }
                 masuk=true;
                 if (currSim==null){
@@ -290,8 +296,12 @@ public class MenuGame {
             System.out.println("Masukkan nomor genre");
             int genre = Integer.parseInt(scan.nextLine());
             System.out.println("Berapa lama");
-            int waktu = Integer.parseInt(scan.nextLine());
-            currSim.dengerMusik(waktu, daftarGenre.get(genre-1));
+            if (genre>6){
+                int waktu = Integer.parseInt(scan.nextLine());
+                currSim.dengerMusik(waktu, daftarGenre.get(genre-1));
+            }else{
+                System.out.println("Masukan tidak valid");
+            }
         }catch(NumberFormatException e){
             System.out.println("Masukan tidak valid");
         }
@@ -715,8 +725,6 @@ public class MenuGame {
         }
     }
 
-    
-
     public void tidur(){
         if (currSim.getPosisi().getCurrBarang().getNama().substring(0, 5).equals("Kasur")){
             System.out.println("Berapa lama? (masukkan dalam satuan detik)");
@@ -847,30 +855,34 @@ public class MenuGame {
         }
     }
 
-    public void load(){
+    public void load() throws FileNotFoundException{
         System.out.println("Masukkan namafile!");
         String namafile = scan.nextLine();
         String file = "src/main/resources/"+namafile+".json";
-        reader.readWorld(world,file);
-        currSim = world.getArrSim().get(0);
-        for (Sim i : world.getArrSim()){
-            for (Ruangan k : i.getRumah().getArrayOfRuangan()){
-                for (Barang l: k.getBarangInRuangan()){
-                    NonMakanan nonMakanan = (NonMakanan) l;
-                    k.locateBarangLoad(nonMakanan,nonMakanan.getPosisi().getX(),nonMakanan.getPosisi().getY());
+        try {
+            reader.readWorld(world,file);
+            currSim = world.getArrSim().get(0);
+            for (Sim i : world.getArrSim()){
+                for (Ruangan k : i.getRumah().getArrayOfRuangan()){
+                    for (Barang l: k.getBarangInRuangan()){
+                        NonMakanan nonMakanan = (NonMakanan) l;
+                        k.locateBarangLoad(nonMakanan,nonMakanan.getPosisi().getX(),nonMakanan.getPosisi().getY());
+                    }
+                }
+                for (Barang j : i.getOnDelivery()){
+                    try {
+                        NonMakanan k = (NonMakanan) j;
+                        TimerBarang timerbarang = new TimerBarang(k, i, k.getWaktuSelesai());
+                        timerbarang.start();
+                    }catch(ClassCastException e){
+                        BahanMakanan k = (BahanMakanan) j;
+                        TimerBarang timerbarang = new TimerBarang(k, i, k.getWaktuSelesai());
+                        timerbarang.start();
+                    }
                 }
             }
-            for (Barang j : i.getOnDelivery()){
-                try {
-                    NonMakanan k = (NonMakanan) j;
-                    TimerBarang timerbarang = new TimerBarang(k, i, k.getWaktuSelesai());
-                    timerbarang.start();
-                }catch(ClassCastException e){
-                    BahanMakanan k = (BahanMakanan) j;
-                    TimerBarang timerbarang = new TimerBarang(k, i, k.getWaktuSelesai());
-                    timerbarang.start();
-                }
-            }
+        }catch (Exception e){
+
         }
     }
 
@@ -927,6 +939,7 @@ public class MenuGame {
                 System.out.printf("|%-1s | %-10s | %-8s |%n","no", "makanan", "Jumlah");
             System.out.println("|---|------------|----------|");
             ArrayList<String> daftarMakanan = new ArrayList<>();
+            ArrayList<String> daftarBahanMakanan = new ArrayList<>();
             daftarMakanan.add("Nasi Ayam");
             daftarMakanan.add("Nasi Kari");
             daftarMakanan.add("Susu Kacang");
@@ -951,30 +964,20 @@ public class MenuGame {
                 System.out.println("Masukkan nomor makanan");
                 Integer noMakanan = Integer.parseInt(scan.nextLine());
                 String namaMakanan = "";
-                int k=1;
-                // for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
-                //     if (j==noMakanan){
-                //         for (k=0;k<daftarMakanan.size();k++){
-                //             if (daftarMakanan.get(k).equals(entry.getKey())){
-                //                 namaMakanan = entry.getKey();
-                //                 break;
-                //             }
-                //         } 
-                //         break;
-                //     }else if (daftarMakanan.contains(entry.getKey())){
-                //         j++;
-                //     }    
-                // }
+                int k=0;
+                int j=1;
                 for (Map.Entry<String, Integer> entry : currSim.getInventory().entrySet()) {
-                    if (daftarMakanan.contains(entry.getKey())){
-                    if  (k<noMakanan){
-                        k++;
-                    }else if(k==noMakanan){
-                        namaMakanan=entry.getKey();
+                    if (j==noMakanan){
+                        for (k=0;k<daftarMakanan.size();k++){
+                            if (daftarMakanan.get(k).equals(entry.getKey())){
+                                namaMakanan = entry.getKey();
+                                break;
+                            }
+                        } 
                         break;
-                    }
-                }    
-                        
+                    }else if (daftarMakanan.contains(entry.getKey())){
+                        j++;
+                    }    
                 }
                 if (k<5){
                     currSim.makan(new Makanan(namaMakanan));

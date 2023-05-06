@@ -10,11 +10,12 @@ public class JSONreader {
     public void readWorld(World world, String namafile) {
         // JSON parser object to parse read file
         JSONParser jsonParser = new JSONParser();
+        JSONObject jsonobj = new JSONObject();
         try (
             FileReader reader = new FileReader(namafile)) {
             // Read JSON file
             Object obj = jsonParser.parse(reader);
-            JSONObject jsonobj = (JSONObject) obj;
+            jsonobj = (JSONObject) obj;
             ArrayList<Object> daftarPosisi = new ArrayList<>();
             String hari = jsonobj.get("Hari").toString();
             world.setHari(Integer.parseInt(hari));
@@ -91,14 +92,19 @@ public class JSONreader {
                 }
             }
         }
-
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.out.println("File tidak ditemukan");
+            // System.exit(0);
+            // throw new FileNotFoundException();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (Exception e){
+            
         }
+        
+            
     }
 
     public Sim readSim(JSONObject jsonobj,ArrayList<Object> daftarPosisi) {
