@@ -359,6 +359,9 @@ public class Ruangan {
     }
 
     public void rotate(Barang barang, int derajat) {
+        // Asumsi : 
+        // 1. hanya barang yang sudah dirotate kembali ke orientasi semula yang bisa dipindahkan (dilakukan moveBarang)
+        // 2. save dilakukan jika seluruh benda kembali ke orientasi semula
         int degree;
         degree = derajat % 360;
         // konstanta

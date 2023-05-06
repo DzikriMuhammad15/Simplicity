@@ -19,6 +19,10 @@ Anggota Kelompok:
 ## __Deskripsi Program__
 Simplicity adalah permainan berbasis Command Line Interface (CLI). Sim-Plicity dapat dimainkan oleh pemain sebanyak jumlah sim yang dibuat dalam permainan. Tujuan dari permainan ini adalah menjaga kesejahteraan sim yang telah dibuat agar tidak depresi dan mati. Untuk mewujudkan hal tersebut, ada beberapa aksi yang perlu dilakukan. Selain itu, untuk mendukung kegiatan dalam dunia Sim-Plicity, disediakan juga beberapa Pekerjaan serta Objek.
 
+## __Asumsi__ : 
+        1. hanya barang yang sudah dirotate kembali ke orientasi semula yang bisa dipindahkan (dilakukan moveBarang)
+        2. save dilakukan jika seluruh benda kembali ke orientasi semula
+
 
 ### __Link Diagram__ 
 
