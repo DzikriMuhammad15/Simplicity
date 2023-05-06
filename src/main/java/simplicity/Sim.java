@@ -115,7 +115,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         return makanPertama;
     }
 
-    public void cekKesejahteraan(){
+    public void cekKesejahteraan(){    // Cek agar kesejahteraan maksimal bernilai 100 dan jika salah satu mencapai 0 maka sim akan mati
         if (kesejahteraan.getMood() > 100){
             kesejahteraan.setMood(100);
         }
@@ -178,7 +178,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
     }
 
     public void changePekerjaan(Pekerjaan kerjaBaru){
-        if (waktuKerja >= 720){
+        if (waktuKerja >= 720){   // jika sim bekerja kurang dari 12 menit maka belum bisa berganti pekerjaan
             this.uang = uang - ((kerjaBaru.getGajiHarian())/2);
             this.pekerjaan = kerjaBaru;
             setWaktuKerja(0); // reset waktu kerja
@@ -415,11 +415,11 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             if (currentQuantity - 1 == 0) {
                 inventory.remove(namaBarang);
             }
-        // ngurangin barang dari inventory, kalo 0 dihapus dr invnt
+        // ngurangin barang dari inventory, kalo 0 dihapus dr inventory
         }
     }
 
-    public void lihatWaktu(){
+    public void lihatWaktu(){  // sesuai deskripsi yeah
         if (posisi.getCurrBarang().getNama().equals("Jam")){
             World world = World.getInstance();
             int waktu = world.getWaktu();
@@ -443,19 +443,16 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int currentTime = world.getHari()*720 + world.getWaktu() + waktu;
         world.addWaktu(waktu);
         if (currentTime-waktuMakanAwal >= 240 && sudahBuangAir==false && makanPertama==true){
-            
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
-            setWaktuMakanAwal(waktuMakanAwal+240);
+            setWaktuMakanAwal(waktuMakanAwal+240);   // supaya berkurang tiap 4 menit sekali jika tetap belum buang air
             System.out.println("Kesejahteraan telah berkurang karena belum buang air.");
-            // setWaktuMakanAwal(currentTime-(currentTime-waktuMakanAwal-240));
         }
         if (currentTime-waktuTidurAwal >= 600){
             kesejahteraan.setKesehatan(kesejahteraan.getKesehatan()-5);
             kesejahteraan.setMood(kesejahteraan.getMood()-5);
-            setWaktuTidurAwal(waktuTidurAwal+600);
+            setWaktuTidurAwal(waktuTidurAwal+600);   // supaya berkurang tiap 10 menit sekali jika tetap belum tidur
             System.out.println("Kesejahteraan telah berkurang karena belum tidur.");
-            // setWaktuTidurAwal(currentTime-(currentTime-waktuTidurAwal-600));
         }
     }
 
@@ -466,19 +463,19 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentDay = world.getHari();
         if (waktu%120 == 0){
-            if ((currentDay-hariResign) >= 1){
+            if ((currentDay-hariResign) >= 1){   // jika habis ganti pekerjaan, maka baru bisa kerja di hari selanjutnya
                 lock.lock();
-                for (int i = 0; i < waktu; i+=30){
+                for (int i = 0; i < waktu; i+=30){   // iterasi tiap 30 detik untuk mengurangi kekenyangan dan mood
                     int kekenyanganAwal = kesejahteraan.getKekenyangan();
                     int moodAwal = kesejahteraan.getMood();
                     try {
-                        Thread.sleep(3); // Tunggu selama 30 detik
+                        Thread.sleep(30000); // Tunggu selama 30 detik
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    kesejahteraan.setKekenyangan(kekenyanganAwal);
-                    kesejahteraan.setMood(moodAwal);
-                    if (i%240 == 0){
+                    kesejahteraan.setKekenyangan(kekenyanganAwal-10);
+                    kesejahteraan.setMood(moodAwal-10);
+                    if (i%240 == 0){   // apabila i mencapai kelipatan 240 maka uang bertambah
                         this.uang = uang + pekerjaan.getGajiHarian();
                     }
                 }
@@ -510,7 +507,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
                     int kekenyanganAwal = kesejahteraan.getKekenyangan();
                     int moodAwal = kesejahteraan.getMood();
                     try {
-                        Thread.sleep(2); // Tunggu selama 20 detik
+                        Thread.sleep(20000); // Tunggu selama 20 detik
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -539,7 +536,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int currentQuantity = inventory.getOrDefault(namaMakanan, 0);
         int kekenyanganMakanan = makanan.getKekenyangan();
 
-        if (inventory.containsKey(namaMakanan) || currentQuantity>0){
+        if (inventory.containsKey(namaMakanan) || currentQuantity>0){   // apabila di dalam inventory ada nama makanan dan jumlahnya tidak 0 (just in case)
             try {
                 Thread.sleep(30000); // Tunggu selama 30 detik
             } catch (InterruptedException e) {
@@ -565,7 +562,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             l.notifyAll();
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu();
-        setWaktuMakanAwal(currentTime);
+        setWaktuMakanAwal(currentTime);  // waktu makan awal diset setelah selesai makan
         }
     }
 
@@ -598,7 +595,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         synchronized(l){
             l.notifyAll();
         }
-        makanPertama = true;
+        makanPertama = true;   // maka pertama dijalankan game, sim sudah makan dan cekTidurdanBuang air dapat mengurangi kesejahteraan apabila tidak buang air
         sudahBuangAir = false;
         World world = World.getInstance();
         int currentTime = world.getHari()*720 + world.getWaktu();
@@ -614,7 +611,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             int count = waktu/240;
             for (int i=0; i<count; i++){
                 try {
-                    Thread.sleep(waktu*1);
+                    Thread.sleep(waktu*1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                     kesejahteraan.setMood(moodAwal+30);
@@ -656,7 +653,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        for (String bahan : arrayOfBahanMakanan) {
+        for (String bahan : arrayOfBahanMakanan) {   // mengurangi bahan makanan dalam inventory
             int jumlah = inventory.get(bahan);
             inventory.put(bahan, jumlah-1);
             if (jumlah - 1 == 0){
@@ -664,7 +661,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
             }
         }
         int jumlahMakananAwal = inventory.getOrDefault(makanan.getNama(), 0);
-        inventory.put(makanan.getNama(), jumlahMakananAwal+1);
+        inventory.put(makanan.getNama(), jumlahMakananAwal+1);    // Menambahkan makanan ke dalam inventory
         kesejahteraan.setMood(moodAwal+10);
         cekTidurdanBuangAir(waktuMemasak);
         cekKesejahteraan();
@@ -706,7 +703,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         int kekenyanganAwal = kesejahteraan.getKekenyangan();
         int moodAwal = kesejahteraan.getMood();
         try {
-            Thread.sleep(10000);
+            Thread.sleep(10000);   // siklus 10 detik
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -715,7 +712,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         World world = World.getInstance();
         int currentTime = (int) world.getHari()*720 + world.getWaktu() + 10;
         world.addWaktu(10);
-        sudahBuangAir = true;
+        sudahBuangAir = true;   // maka setelah makan SIM sudah buang air -> tidak perlu dikurangi kesejahteraannya
         cekKesejahteraan();
         synchronized(l){
             l.notifyAll();
@@ -785,7 +782,7 @@ public class Sim implements AksiAktif, AksiDitinggal, AksiPasif{
         lock.lock();
         int moodAwal = kesejahteraan.getMood();
         try {
-            Thread.sleep(1*waktu);
+            Thread.sleep(1000*waktu);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
